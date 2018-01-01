@@ -13,8 +13,6 @@
 //    Zoom - middle mouse, or mousewheel / touch: two finger spread or squish
 //    Pan - right mouse, or arrow keys / touch: three finger swipe
 
-module.exports = function ( THREE ) {
-
 	/**
  * @author qiao / https://github.com/qiao
  * @author mrdoob / http://mrdoob.com
@@ -30,7 +28,9 @@ module.exports = function ( THREE ) {
 //    Zoom - middle mouse, or mousewheel / touch: two finger spread or squish
 //    Pan - right mouse, or arrow keys / touch: three finger swipe
 
-THREE.OrbitControls = function ( object, domElement ) {
+import { EventDispatcher, Vector3, Vector2, Quaternion, Spherical, PerspectiveCamera, OrthographicCamera, MOUSE } from 'three';
+
+function OrbitControls ( object, domElement ) {
 
 	this.object = object;
 
@@ -40,7 +40,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 	this.enabled = true;
 
 	// "target" sets the location of focus, where the object orbits around
-	this.target = new THREE.Vector3();
+	this.target = new Vector3();
 
 	// How far you can dolly in and out ( PerspectiveCamera only )
 	this.minDistance = 0;
@@ -93,7 +93,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 	this.keys = { LEFT: 37, UP: 38, RIGHT: 39, BOTTOM: 40 };
 
 	// Mouse buttons
-	this.mouseButtons = { ORBIT: THREE.MOUSE.LEFT, ZOOM: THREE.MOUSE.MIDDLE, PAN: THREE.MOUSE.RIGHT };
+	this.mouseButtons = { ORBIT: MOUSE.LEFT, ZOOM: MOUSE.MIDDLE, PAN: MOUSE.RIGHT };
 
 	// for reset
 	this.target0 = this.target.clone();
@@ -142,16 +142,16 @@ THREE.OrbitControls = function ( object, domElement ) {
 	// this method is exposed, but perhaps it would be better if we can make it private...
 	this.update = function () {
 
-		var offset = new THREE.Vector3();
+		var offset = new Vector3();
 
 		var zoom = object.zoom;
 
 		// so camera.up is the orbit axis
-		var quat = new THREE.Quaternion().setFromUnitVectors( object.up, new THREE.Vector3( 0, 1, 0 ) );
+		var quat = new Quaternion().setFromUnitVectors( object.up, new Vector3( 0, 1, 0 ) );
 		var quatInverse = quat.clone().inverse();
 
-		var lastPosition = new THREE.Vector3();
-		var lastQuaternion = new THREE.Quaternion();
+		var lastPosition = new Vector3();
+		var lastQuaternion = new Quaternion();
 
 		return function update() {
 
@@ -291,25 +291,25 @@ THREE.OrbitControls = function ( object, domElement ) {
 	var EPS = 0.000001;
 
 	// current position in spherical coordinates
-	var spherical = new THREE.Spherical();
-	var sphericalDelta = new THREE.Spherical();
+	var spherical = new Spherical();
+	var sphericalDelta = new Spherical();
 
 	var distanceDelta = 0;
 	var zoomDelta = 0;
-	var panOffset = new THREE.Vector3();
+	var panOffset = new Vector3();
 	var zoomChanged = false;
 
-	var rotateStart = new THREE.Vector2();
-	var rotateEnd = new THREE.Vector2();
-	var rotateDelta = new THREE.Vector2();
+	var rotateStart = new Vector2();
+	var rotateEnd = new Vector2();
+	var rotateDelta = new Vector2();
 
-	var panStart = new THREE.Vector2();
-	var panEnd = new THREE.Vector2();
-	var panDelta = new THREE.Vector2();
+	var panStart = new Vector2();
+	var panEnd = new Vector2();
+	var panDelta = new Vector2();
 
-	var dollyStart = new THREE.Vector2();
-	var dollyEnd = new THREE.Vector2();
-	var dollyDelta = new THREE.Vector2();
+	var dollyStart = new Vector2();
+	var dollyEnd = new Vector2();
+	var dollyDelta = new Vector2();
 
 	function getAutoRotationAngle() {
 
@@ -331,7 +331,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 	var panLeft = function () {
 
-		var v = new THREE.Vector3();
+		var v = new Vector3();
 
 		return function panLeft( distance, objectMatrix ) {
 
@@ -346,7 +346,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 	var panUp = function () {
 
-		var v = new THREE.Vector3();
+		var v = new Vector3();
 
 		return function panUp( distance, objectMatrix ) {
 
@@ -362,7 +362,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 	// deltaX and deltaY are in pixels; right and down are positive
 	var pan = function () {
 
-		var offset = new THREE.Vector3();
+		var offset = new Vector3();
 
 		var height, width, box;
 
@@ -379,7 +379,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 				width = box.right - box.left;
 			}
 
-			if ( scope.object instanceof THREE.PerspectiveCamera ) {
+			if ( scope.object instanceof PerspectiveCamera ) {
 
 				// perspective
 				var position = scope.object.position;
@@ -393,7 +393,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 				panLeft( 2 * deltaX * targetDistance / height, scope.object.matrix );
 				panUp( 2 * deltaY * targetDistance / height, scope.object.matrix );
 
-			} else if ( scope.object instanceof THREE.OrthographicCamera ) {
+			} else if ( scope.object instanceof OrthographicCamera ) {
 
 				// orthographic
 				panLeft( deltaX * ( scope.object.right - scope.object.left ) / scope.object.zoom / width, scope.object.matrix );
@@ -413,11 +413,11 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 	function dolly( dollyDistance ) {
 
-		if ( scope.object instanceof THREE.PerspectiveCamera ) {
+		if ( scope.object instanceof PerspectiveCamera ) {
 
 			distanceDelta = dollyDistance;
 
-		} else if ( scope.object instanceof THREE.OrthographicCamera ) {
+		} else if ( scope.object instanceof OrthographicCamera ) {
 
 			zoomDelta = dollyDistance;
 
@@ -940,10 +940,10 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 };
 
-THREE.OrbitControls.prototype = Object.create( THREE.EventDispatcher.prototype );
-THREE.OrbitControls.prototype.constructor = THREE.OrbitControls;
+OrbitControls.prototype = Object.create( EventDispatcher.prototype );
+OrbitControls.prototype.constructor = OrbitControls;
 
-Object.defineProperties( THREE.OrbitControls.prototype, {
+Object.defineProperties( OrbitControls.prototype, {
 
 	center: {
 
@@ -1086,5 +1086,4 @@ Object.defineProperties( THREE.OrbitControls.prototype, {
 
 } );
 
-
-};
+export default OrbitControls;

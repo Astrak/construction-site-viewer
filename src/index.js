@@ -1,3 +1,3 @@
-import Renderer from './renderer';
+import Demonstrator from './Demonstrator.js';
 
-const renderer = new Renderer();
+const soult = new Demonstrator();
