@@ -11,7 +11,7 @@ export default class Renderer {
   constructor () {
 
     this.renderer = new WebGLRenderer();
-    this.renderer.setPixelRatio( Math.min( 1, window.devicePixelRatio ) );
+    this.renderer.setPixelRatio( /*Math.min( 1,*/ window.devicePixelRatio /*)*/ );
     this.renderer.setSize( innerWidth, innerHeight );
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.autoUpdate = false;
@@ -25,11 +25,14 @@ export default class Renderer {
 
     this.renderer.setSize( innerWidth, innerHeight );
 
+
     if ( this.fxaaPass ) {
+    console.log(this.fxaaPass.uniforms.resolution.value)
       this.fxaaPass.uniforms.resolution.value.set(
         1 / ( window.devicePixelRatio * innerWidth ),
         1 / ( window.devicePixelRatio * innerHeight )
       );
+    console.log(this.fxaaPass.uniforms.resolution.value)
     }
 
   }
@@ -51,7 +54,7 @@ export default class Renderer {
     this.composer = new EffectComposer( this.renderer );
     this.composer.addPass( new RenderPass( scene, camera ) );
 
-    this.SAOPass = new SAOPass( scene, camera, false, true );   
+    /*this.SAOPass = new SAOPass( scene, camera, false, true );   
     Object.assign( this.SAOPass.params, {
       saoBias: saoParams.saoBias,
       saoIntensity: saoParams.saoIntensity,
@@ -63,7 +66,7 @@ export default class Renderer {
       saoBlurStdDev: saoParams.saoBlurStdDev,
       saoBlurDepthCutoff: saoParams.saoBlurDepthCutoff
     }); 
-    this.composer.addPass( this.SAOPass );
+    this.composer.addPass( this.SAOPass );*/
 
     this.fxaaPass = new ShaderPass( FXAAShader );
     this.fxaaPass.uniforms.resolution.value.set(
@@ -71,10 +74,11 @@ export default class Renderer {
       1 / ( window.devicePixelRatio * innerHeight )
     );
     this.composer.addPass( this.fxaaPass );
+    this.fxaaPass.renderToScreen = true;
 
-    this.copyPass = new ShaderPass( CopyShader );
+    /*this.copyPass = new ShaderPass( CopyShader );
     this.copyPass.renderToScreen = true;
-    this.composer.addPass( this.copyPass );
+    this.composer.addPass( this.copyPass );*/
 
     this.camera = camera;
     this.scene = scene;

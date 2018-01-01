@@ -1,8 +1,12 @@
-import DAYTIMES from './../../constants/dayTimes';
+import DAYTIMES from './../constants/dayTimes';
 
 export default class dayTime {
 
-  constructor ( environment ) {
+  constructor ( environment, container ) {
+
+    this.domElement = document.createElement( 'div' );
+    this.domElement.id = 'ui-daytime';
+    container.appendChild( this.domElement );
 
     for ( let DAYTIME in DAYTIMES ) {
 
@@ -12,7 +16,7 @@ export default class dayTime {
         environment[ 'make' + DAYTIME ]()
       }, false );
       button.className = 'soult-daytime';
-      document.body.appendChild( button );
+      this.domElement.appendChild( button );
 
     }
 

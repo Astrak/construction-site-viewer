@@ -1,23 +1,25 @@
 import TweenLite from 'gsap';
-import { Sprite, SpriteMaterial } from 'three'
+import { Sprite, SpriteMaterial, TextureLoader } from 'three'
 
 export default class Hotspot {
   
   constructor ( parent, crds, name ) {
 
     const that = this;
+    const tLoader = new TextureLoader();
 
     this.sprite = new Sprite( 
       new SpriteMaterial({
         transparent: true,
         opacity: 1,
         depthTest: false,
-        depthWrite: false
+        depthWrite: false,
+        map: tLoader.load( 'public/img/hotspot.png' )
       })
     );
     this.sprite.name = name;
     //this.sprite.matrixAutoUpdate = false;
-    this.sprite.scale.multiplyScalar( 0.5 );
+    this.sprite.scale.multiplyScalar( 0.7 );
     this.sprite.position.set( crds[ 0 ], 1, crds[ 2 ] );
     this.sprite.matrixNeedsUpdate = true;
     parent.add( this.sprite );

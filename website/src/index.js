@@ -1,6 +1,6 @@
 import Demonstrator from './Demonstrator.js';
-import dayTime from './app/ui/dayTime';
+import UI from './ui/main';
 
 const soult = new Demonstrator();
 
-const ui = new dayTime( soult.environment );
+const ui = new UI( soult );
