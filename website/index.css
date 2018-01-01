@@ -12,3 +12,8 @@ canvas:active{
   cursor:-webkit-grabbing;
   cursor:-moz-grabbing;
 }
+.soult-daytime{
+  position: absolute;
+  top: 0;
+  left: 0;
+}

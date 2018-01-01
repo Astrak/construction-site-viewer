@@ -14,7 +14,8 @@ export default class Environment {
 
     this.setSky();
 
-    const sun = this.sun;
+    const sun = this.sun,
+      sky = this.sky;
 
     /* INTERACTION API */
     for ( let dayTime in DAYTIMES ) {

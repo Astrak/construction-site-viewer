@@ -2,7 +2,7 @@
   "name": "soult",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "website/index.html",
   "scripts": {
     "start": "webpack-dev-server --inline --content-base ."
   },

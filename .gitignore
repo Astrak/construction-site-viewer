@@ -1,4 +1,4 @@
 node_modules
-bundle.js
+website/bundle.js
 package-lock.json
 resources

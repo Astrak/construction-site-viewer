@@ -1,9 +1,9 @@
 var webpack = require( 'webpack' )
 
 module.exports = {
-  entry: './src/index.js',
+  entry: './website/src/index.js',
   output: {
-    filename: 'bundle.js',
+    filename: 'website/bundle.js',
     publicPath: ''
   },
   module: {

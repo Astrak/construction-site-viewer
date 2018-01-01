@@ -27,13 +27,16 @@ export default class SpotPicker {
 
     const intersections = this.raycaster.intersectObjects( this.hotspotsContainer.children );
 
-    if ( intersections[ 0 ] ) this.navigateTo( intersections[ 0 ].object );
+    if ( intersections[ 0 ] ) this.navigateTo( intersections[ 0 ].object.name );
 
   }
 
-  navigateTo ( sprite ) {
+  navigateTo ( place ) {
 
     const that = this;
+
+    let sprite;
+    this.hotspots.forEach( hotspot => { if ( hotspot.sprite.name === place ) sprite = hotspot.sprite; });
 
     //maintain camera zoom during tween
     const cameraDistance = this.camera.position.clone().sub( this.controls.target ).length();
