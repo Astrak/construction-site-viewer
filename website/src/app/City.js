@@ -18,7 +18,7 @@ export default class City {
     const that = this;
 
     for ( let k in ASSETS ) {
-      this.loader.load( 'public/geometries/' + ASSETS[ k ], g => {
+      this.loader.load( 'public/geometries/' + ASSETS[ k ].file, g => {
         if ( k === 'bats' ) g.addAttribute( 'uv2', g.attributes.uv );
         const mesh = new Mesh( 
           g, 

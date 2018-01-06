@@ -17,9 +17,10 @@ export default class Hotspot {
         map: tLoader.load( 'public/img/hotspot.png' )
       })
     );
+    this.scale = 0.7;
     this.sprite.name = name;
     //this.sprite.matrixAutoUpdate = false;
-    this.sprite.scale.multiplyScalar( 0.7 );
+    this.sprite.scale.multiplyScalar( this.scale );
     this.sprite.position.set( crds[ 0 ], 1, crds[ 2 ] );
     this.sprite.matrixNeedsUpdate = true;
     parent.add( this.sprite );
@@ -43,6 +44,7 @@ export default class Hotspot {
       { 
         opacity: 1,
         onComplete () {
+          sprite.scale.set( 1, 1, 1 ).multiplyScalar( sprite.material.opacity * that.scale );
           that.hiding = false;
         }
       }
@@ -52,9 +54,24 @@ export default class Hotspot {
 
   hide () {
 
+    const that = this;
+
     const sprite = this.sprite;
     sprite.visible = true;
     sprite.material.opacity = 1;
+
+    const spriteScaleTween = { value: 0 };
+
+    TweenLite.to(
+      spriteScaleTween,
+      1,
+      {
+        value: 1,
+        onUpdate () {
+          sprite.scale.set( 1, 1, 1 ).multiplyScalar( spriteScaleTween.value + that.scale );
+        }
+      }
+    );
     TweenLite.to( 
       sprite.material, 
       1, 

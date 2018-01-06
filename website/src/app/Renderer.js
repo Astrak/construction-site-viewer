@@ -6,12 +6,14 @@ import RenderPass from './../lib/RenderPass';
 import FXAAShader from './../lib/FXAAShader';
 import SAOPass from './../lib/SAOPass';
 
+import './Renderer.css';
+
 export default class Renderer {
 
   constructor () {
 
     this.renderer = new WebGLRenderer();
-    this.renderer.setPixelRatio( /*Math.min( 1,*/ window.devicePixelRatio /*)*/ );
+    this.renderer.setPixelRatio( window.devicePixelRatio );
     this.renderer.setSize( innerWidth, innerHeight );
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.autoUpdate = false;
@@ -24,61 +26,65 @@ export default class Renderer {
   resize () {
 
     this.renderer.setSize( innerWidth, innerHeight );
-
+    this.composer.setSize( innerWidth, innerHeight );
 
     if ( this.fxaaPass ) {
-    console.log(this.fxaaPass.uniforms.resolution.value)
       this.fxaaPass.uniforms.resolution.value.set(
-        1 / ( window.devicePixelRatio * innerWidth ),
-        1 / ( window.devicePixelRatio * innerHeight )
+        1 / innerWidth,
+        1 / innerHeight
       );
-    console.log(this.fxaaPass.uniforms.resolution.value)
     }
 
   }
 
   setRendering ( scene, camera, controls ) {
 
-    const saoParams  = {
-      saoBias: 0.5,
-      saoIntensity: 0.02,
-      saoScale: 30,
-      saoKernelRadius: 10,
-      saoMinResolution: 0,
-      saoBlur: true,
-      saoBlurRadius: 8,
-      saoBlurStdDev: 1.3,
-      saoBlurDepthCutoff: 0.01,
-    };
+    this.isDevice = window.devicePixelRatio > 1;
 
-    this.composer = new EffectComposer( this.renderer );
-    this.composer.addPass( new RenderPass( scene, camera ) );
+    if ( ! this.isDevice ) {
 
-    /*this.SAOPass = new SAOPass( scene, camera, false, true );   
-    Object.assign( this.SAOPass.params, {
-      saoBias: saoParams.saoBias,
-      saoIntensity: saoParams.saoIntensity,
-      saoScale: saoParams.saoScale,
-      saoKernelRadius: saoParams.saoKernelRadius,
-      saoMinResolution: saoParams.saoMinResolution,
-      saoBlur: saoParams.saoBlur,
-      saoBlurRadius: saoParams.saoBlurRadius,
-      saoBlurStdDev: saoParams.saoBlurStdDev,
-      saoBlurDepthCutoff: saoParams.saoBlurDepthCutoff
-    }); 
-    this.composer.addPass( this.SAOPass );*/
+      const saoParams  = {
+        saoBias: 0.5,
+        saoIntensity: 0.02,
+        saoScale: 30,
+        saoKernelRadius: 10,
+        saoMinResolution: 0,
+        saoBlur: true,
+        saoBlurRadius: 8,
+        saoBlurStdDev: 1.3,
+        saoBlurDepthCutoff: 0.01,
+      };
 
-    this.fxaaPass = new ShaderPass( FXAAShader );
-    this.fxaaPass.uniforms.resolution.value.set(
-      1 / ( window.devicePixelRatio * innerWidth ),
-      1 / ( window.devicePixelRatio * innerHeight )
-    );
-    this.composer.addPass( this.fxaaPass );
-    this.fxaaPass.renderToScreen = true;
+      this.composer = new EffectComposer( this.renderer );
+      this.composer.addPass( new RenderPass( scene, camera ) );
 
-    /*this.copyPass = new ShaderPass( CopyShader );
-    this.copyPass.renderToScreen = true;
-    this.composer.addPass( this.copyPass );*/
+      this.SAOPass = new SAOPass( scene, camera, false, true );   
+      Object.assign( this.SAOPass.params, {
+        saoBias: saoParams.saoBias,
+        saoIntensity: saoParams.saoIntensity,
+        saoScale: saoParams.saoScale,
+        saoKernelRadius: saoParams.saoKernelRadius,
+        saoMinResolution: saoParams.saoMinResolution,
+        saoBlur: saoParams.saoBlur,
+        saoBlurRadius: saoParams.saoBlurRadius,
+        saoBlurStdDev: saoParams.saoBlurStdDev,
+        saoBlurDepthCutoff: saoParams.saoBlurDepthCutoff
+      }); 
+      //this.composer.addPass( this.SAOPass );
+
+      this.fxaaPass = new ShaderPass( FXAAShader );
+      this.fxaaPass.uniforms.resolution.value.set(
+        1 / ( window.devicePixelRatio * innerWidth ),
+        1 / ( window.devicePixelRatio * innerHeight )
+      );
+      this.composer.addPass( this.fxaaPass );
+      //this.fxaaPass.renderToScreen = true;
+
+      this.copyPass = new ShaderPass( CopyShader );
+      this.copyPass.renderToScreen = true;
+      this.composer.addPass( this.copyPass );
+
+    }
 
     this.camera = camera;
     this.scene = scene;
@@ -96,8 +102,15 @@ export default class Renderer {
     this.controls.update();
 
     if ( this.camera.update ) {
-      this.composer.render( 0.016 );
+
+      if ( this.isDevice ) {//better benefit pixelratio than fxaa, if pr > 1
+        this.renderer.render( this.scene, this.camera );
+      } else {
+        this.composer.render( 0.016 );
+      }
+
       this.camera.update = false;
+
     }
 
   }

@@ -1,11 +1,13 @@
 import DAYTIMES from './../constants/dayTimes';
 
-export default class dayTime {
+import './DayTimer.css';
+
+export default class DayTimer {
 
   constructor ( environment, container ) {
 
     this.domElement = document.createElement( 'div' );
-    this.domElement.id = 'ui-daytime';
+    this.domElement.id = 'ui-day-timer';
     container.appendChild( this.domElement );
 
     for ( let DAYTIME in DAYTIMES ) {

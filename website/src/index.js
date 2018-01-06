@@ -1,6 +1,6 @@
-import Demonstrator from './Demonstrator.js';
+import Viewer from './app/Viewer.js';
 import UI from './ui/main';
 
-const soult = new Demonstrator();
+const viewer = new Viewer();
 
-const ui = new UI( soult );
+const ui = new UI( viewer );

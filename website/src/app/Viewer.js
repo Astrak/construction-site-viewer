@@ -1,16 +1,16 @@
 import { PerspectiveCamera, Scene, Group } from 'three';
 
-import Renderer from './app/Renderer';
-import Hotspot from './app/Hotspot';
-import SpotPicker from './app/SpotPicker';
-import City from './app/City';
-import Environment from './app/Environment';
+import Renderer from './Renderer';
+import Hotspot from './Hotspot';
+import SpotPicker from './SpotPicker';
+import City from './City';
+import Environment from './Environment';
 
-import OrbitControls from './lib/OrbitControlsr87-with-damping';
+import OrbitControls from './../lib/OrbitControlsr87-with-damping';
 
-import HOTSPOTS from './constants/hotspots';
+import HOTSPOTS from './../constants/hotspots';
 
-export default class Demonstrator {
+export default class Viewer {
 
   constructor () {
 

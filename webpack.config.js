@@ -17,7 +17,11 @@ module.exports = {
             [ 'es2015', { modules: false } ]
           ] 
         } 
-      }
+      },
+      {
+        test: /\.css$/,
+        loader: 'style-loader!css-loader?modules=true&localIdentName=[local]'
+      },
     ]
   }
 }
