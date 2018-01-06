@@ -13,7 +13,7 @@ export default class Renderer {
   constructor () {
 
     this.renderer = new WebGLRenderer();
-    this.renderer.setPixelRatio( window.devicePixelRatio );
+    this.renderer.setPixelRatio( Math.min( 1, window.devicePixelRatio ) );
     this.renderer.setSize( innerWidth, innerHeight );
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.autoUpdate = false;
@@ -25,21 +25,28 @@ export default class Renderer {
 
   resize () {
 
-    this.renderer.setSize( innerWidth, innerHeight );
-    this.composer.setSize( innerWidth, innerHeight );
+    if ( this.isDevice ) {
 
-    if ( this.fxaaPass ) {
-      this.fxaaPass.uniforms.resolution.value.set(
-        1 / innerWidth,
-        1 / innerHeight
-      );
+      this.renderer.setSize( innerWidth, innerHeight );
+
+    } else {
+
+      this.composer.setSize( innerWidth, innerHeight );
+
+      if ( this.fxaaPass ) {
+        this.fxaaPass.uniforms.resolution.value.set(
+          1 / innerWidth,
+          1 / innerHeight
+        );
+      }
+
     }
 
   }
 
   setRendering ( scene, camera, controls ) {
 
-    this.isDevice = window.devicePixelRatio > 1;
+    this.isDevice = window.devicePixelRatio > 1.1;//IE11 returns 1.001 i think.
 
     if ( ! this.isDevice ) {
 

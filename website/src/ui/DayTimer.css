@@ -12,7 +12,7 @@
   font-weight: bold;
   text-transform: uppercase; 
   position: relative;
-  -webkit-tap-highlight-color: none;
+  -webkit-tap-highlight-color: rgba( 0, 0, 0, 0 );
   outline: none;
 }
 .ui-day-timer-button:after {
