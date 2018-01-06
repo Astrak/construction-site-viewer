@@ -12,7 +12,7 @@ export default class Timeline {
 
     this.beginningDate = { year: 2017, month: 10 };
 
-    this.endDate = { year: 2020, month: 1 };
+    this.endDate = { year: 2020, month: 2 };
 
     this.currentDate = {
       year: userDate.getFullYear(),
@@ -26,18 +26,17 @@ export default class Timeline {
     };
 
     this.viewer = viewer;
-    this.viewer.city.on( 'assets-loaded', this.setSceneContentToDate.bind( this ) );
 
     /* UI Elements */
-    //container
+    this.container = container;
+    //domElement
     this.domElement = document.createElement( 'div' );
     this.domElement.id = 'ui-timeline';
-    container.appendChild( this.domElement );
 
     //svg container for dates and months
     this.captionElement = document.createElementNS( NSString, 'svg' );
     this.captionElement.setAttribute( 'viewBox', '0 0 100 10' );
-    this.captionElement.style.opacity = 0.5;
+    //this.captionElement.style.opacity = 0.8;
     this.captionElement.id = 'ui-timeline-caption';
     this.fillCaption( this.captionElement );
     this.domElement.appendChild( this.captionElement );
@@ -64,6 +63,12 @@ export default class Timeline {
     window.addEventListener( 'touchmove', this.pickTime, false );
     window.addEventListener( 'mouseup', this.onMouseUp, false );
     window.addEventListener( 'touchend', this.onMouseUp, false );
+
+  }
+
+  show () {
+
+    this.container.appendChild( this.domElement );
 
   }
 
@@ -133,9 +138,17 @@ export default class Timeline {
 
     const relativePosition = Math.min( 0.999, Math.max( 0.001, x ) ) * 100;
 
-    this.activeDateElement.style.left = relativePosition + '%';
-
     const date = this.getDateFromPosition( relativePosition );
+
+    this.setDate( date );
+
+  }
+
+  setDate ( date ) {
+
+    this.activeDate = date;
+
+    this.activeDateElement.style.left = this.getPositionFromDate( date ) + '%';
 
     this.setSceneContentToDate( date );
 

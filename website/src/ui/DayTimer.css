@@ -1,3 +1,41 @@
 #ui-day-timer{
-  
+  animation: ui-day-timer-appear 0.5s ease;
+  opacity: 1;  
+}
+.ui-day-timer-button{
+  cursor: pointer; 
+  background: none;
+  width: 90px;
+  border: none;
+  margin: 5px;
+  font-size: 18px;
+  font-weight: bold;
+  text-transform: uppercase; 
+  position: relative;
+  -webkit-tap-highlight-color: none;
+  outline: none;
+}
+.ui-day-timer-button:after {
+  content: ' ';
+  width: 0px;
+  height: 2px;
+  left: 50%;
+  margin-left: 0px;
+  background: #000;
+  position: absolute;
+  bottom: 0;
+  transition: all 0.3s ease;
+}
+.ui-day-timer-button:hover:after{
+  width: 70px;
+  margin-left: -35px
+}
+.ui-day-timer-button-selected:after{
+  width: 70px;
+  margin-left: -35px
+}
+
+@keyframes ui-day-timer-appear {
+  0%{ opacity: 0; }
+  100%{ opacity: 1; }
 }

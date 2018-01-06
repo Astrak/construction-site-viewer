@@ -1,7 +1,8 @@
 import DayTimer from './DayTimer';
 import Timeline from './Timeline';
+import SplashScreen from './SplashScreen';
 
-import './main.css';
+import './UI.css';
 
 export default class UI {
 
@@ -15,9 +16,18 @@ export default class UI {
     this.container.id = 'ui-container';
     this.wrapper.appendChild( this.container );
 
+    this.splashScreen = new SplashScreen( this.container );
+
     this.dayTime = new DayTimer( viewer.environment, this.container );
 
     this.timeline = new Timeline( viewer, this.container );
+
+  }
+
+  showViewerUI () {
+
+    this.dayTime.show();
+    this.timeline.show();
 
   }
 

@@ -2,7 +2,7 @@ import Sky from './../lib/Skyr89.js';
 import { Object3D, DirectionalLight, AmbientLight, CameraHelper } from 'three';
 import { TweenLite } from 'gsap';
 
-import DAYTIMES from './../constants/dayTimes';
+import { DAYTIMES, defaultDayTime } from './../constants/dayTimes';
 
 export default class Environment {
 
@@ -22,16 +22,20 @@ export default class Environment {
 
       this[ 'make' + dayTime ] = () => {
 
-        TweenLite.to( sun.position, 2, {
-          x: DAYTIMES[ dayTime ][ 0 ], 
-          y: DAYTIMES[ dayTime ][ 1 ], 
-          z: DAYTIMES[ dayTime ][ 2 ],
-          onUpdate () {
-            sky.material.uniforms.sunPosition.value.copy( sun.position );
-            camera.update = true;
-            renderer.shadowMap.needsUpdate = true;
+        TweenLite.to( 
+          sun.position, 
+          2, 
+          {
+            x: DAYTIMES[ dayTime ][ 0 ], 
+            y: DAYTIMES[ dayTime ][ 1 ], 
+            z: DAYTIMES[ dayTime ][ 2 ],
+            onUpdate () {
+              sky.material.uniforms.sunPosition.value.copy( sun.position );
+              camera.update = true;
+              renderer.shadowMap.needsUpdate = true;
+            }
           }
-        });
+        );
 
       }
 
@@ -43,9 +47,9 @@ export default class Environment {
 
     this.sun = new DirectionalLight( 0xffffff, 1 );
     this.sun.position.set( 
-      DAYTIMES.Afternoon[ 0 ], 
-      DAYTIMES.Afternoon[ 1 ], 
-      DAYTIMES.Afternoon[ 2 ]
+      DAYTIMES[ defaultDayTime ][ 0 ], 
+      DAYTIMES[ defaultDayTime ][ 1 ], 
+      DAYTIMES[ defaultDayTime ][ 2 ]
     );
     Object.assign( this.sun.shadow.camera, {
       top: 30,

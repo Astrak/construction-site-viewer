@@ -1,11 +1,12 @@
 #ui-timeline{
-  width: 90%;
+  width: 100%;
   bottom: 0;
   position: absolute;
-  margin-left: 5%;
   height: 100px;
   cursor: ew-resize;
   background-image: linear-gradient(0deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 100%);
+  animation: ui-timeline-appear 0.5s ease;
+  opacity: 1;
 }
 #ui-timeline-current-date{
   position: absolute;
@@ -18,7 +19,7 @@
   position: absolute;
   border: solid 15px transparent;
   margin-left: -15px;
-  border-bottom: solid 25px rgba( 0, 0, 0, 0.2 );
+  border-bottom: solid 25px rgba( 0, 0, 0, 0.5 );
   bottom: 0;
 }
 #ui-timeline-selector{
@@ -34,9 +35,14 @@
   position: absolute;
   border: solid 15px transparent;
   margin-left: -15px;
-  border-bottom: solid 25px rgba( 0, 0, 0, 0.5 );
+  border-bottom: solid 25px rgba( 0, 0, 0, 1 );
   bottom: 0;
 }
 #ui-timeline-caption{
   pointer-events: none;
+}
+
+@keyframes ui-timeline-appear {
+  0%{ opacity: 0; }
+  100%{ opacity: 1; }
 }

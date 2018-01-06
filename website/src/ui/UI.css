@@ -6,6 +6,9 @@
   height: 100%;
   pointer-events: none;
 }
+#ui-wrapper * {
+  font-family: 'Handlee', cursive;
+}
 #ui-container{
   position: relative;
   height: 100%;

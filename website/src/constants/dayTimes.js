@@ -1,7 +1,9 @@
 const DAYTIMES = {
-  Morning: [ -130, 25, -20 ],
-  Afternoon: [ 20, 100, -40 ],
-  Evening: [ 130, 5, -20 ]
+  Matin: [ -130, 25, -20 ],
+  Journée: [ 20, 100, -40 ],
+  Soirée: [ 130, 5, -20 ]
 };
 
-export default DAYTIMES;
+const defaultDayTime = 'Journée';
+
+export { DAYTIMES, defaultDayTime };
