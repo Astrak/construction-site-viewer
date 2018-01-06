@@ -1,5 +1,8 @@
 const ASSETS = {
   /* MAIN */
+    arbres: {
+      file: 'arbres.ply',
+    },
     routes: {
       file: 'routes.ply',
     },
@@ -77,7 +80,7 @@ const ASSETS = {
       }
     },
     parkingArbres: {
-      file: 'parking_abres.ply',
+      file: 'parking_arbres.ply',
       begin: {
         year: 2019,
         month: 10
@@ -116,15 +119,15 @@ const ASSETS = {
     },
   /* VILLEGOUDOU */
     villegoudou1: {
+      file: 'villegoudou1.ply',
       end: {
-        file: 'villegoudou1.ply',
         year: 2018,
         month: 9
       }
     },
     villegoudouConstruction: {
       file: 'villegoudou_construction.ply',
-      start: {
+      begin: {
         year: 2018,
         month: 9
       },

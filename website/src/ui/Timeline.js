@@ -6,11 +6,11 @@ const NSString = "http://www.w3.org/2000/svg";
 
 export default class Timeline {
 
-  constructor ( container ) {
+  constructor ( viewer, container ) {
 
     const userDate = new Date();
 
-    this.beginningDate = { year: 2017, month: 11 };
+    this.beginningDate = { year: 2017, month: 10 };
 
     this.endDate = { year: 2020, month: 1 };
 
@@ -25,10 +25,16 @@ export default class Timeline {
       month: userDate.getMonth()
     };
 
+    this.viewer = viewer;
+    this.viewer.city.on( 'assets-loaded', this.setSceneContentToDate.bind( this ) );
+
+    /* UI Elements */
+    //container
     this.domElement = document.createElement( 'div' );
     this.domElement.id = 'ui-timeline';
     container.appendChild( this.domElement );
 
+    //svg container for dates and months
     this.captionElement = document.createElementNS( NSString, 'svg' );
     this.captionElement.setAttribute( 'viewBox', '0 0 100 10' );
     this.captionElement.style.opacity = 0.5;
@@ -36,17 +42,19 @@ export default class Timeline {
     this.fillCaption( this.captionElement );
     this.domElement.appendChild( this.captionElement );
 
+    //current date element
     this.currentDateElement = document.createElement( 'span' );
     this.currentDateElement.id = 'ui-timeline-current-date';
     this.currentDateElement.style.left = this.getPositionFromDate( this.currentDate ) + '%';
     this.domElement.appendChild( this.currentDateElement );
 
+    //active date element
     this.activeDateElement = document.createElement( 'span' );
     this.activeDateElement.id = 'ui-timeline-selector';
     this.activeDateElement.style.left = this.getPositionFromDate( this.activeDate ) + '%';
     this.domElement.appendChild( this.activeDateElement );
 
-    //picker
+    /* LISTENERS */
     this.pickTime = this.pickTime.bind( this );
     this.onMouseDown = this.onMouseDown.bind( this );
     this.onMouseUp = this.onMouseUp.bind( this );
@@ -123,7 +131,7 @@ export default class Timeline {
       ( e.touches[ 0 ].pageX - e.target.offsetLeft ) / offsetWidth : 
       ( e.pageX - e.target.offsetLeft ) / offsetWidth;
 
-    const relativePosition = Math.min( 1, Math.max( 0, x ) ) * 100;
+    const relativePosition = Math.min( 0.999, Math.max( 0.001, x ) ) * 100;
 
     this.activeDateElement.style.left = relativePosition + '%';
 
@@ -136,16 +144,12 @@ export default class Timeline {
   getDateFromPosition ( relativePosition ) {
 
     const totalMonthsSpan = ( this.endDate.year * 12 + this.endDate.month ) - ( this.beginningDate.year * 12 + this.beginningDate.month );
-
     const relativeMonth = Math.floor( relativePosition / 100 * totalMonthsSpan );
-
     const date = { year: this.beginningDate.year, month: this.beginningDate.month + relativeMonth };
 
     while ( date.month > 11 ) {
-
       date.month -= 12;
       date.year ++;
-
     }
 
     return date;
@@ -155,16 +159,35 @@ export default class Timeline {
   getPositionFromDate ( date ) {
 
     const totalMonthsSpan = ( this.endDate.year * 12 + this.endDate.month ) - ( this.beginningDate.year * 12 + this.beginningDate.month );
-
     const currentMonthDuration = Math.min( totalMonthsSpan, Math.max( 0, ( date.year * 12 + date.month + ( date.day ? date.day / 31 : 0 ) ) - ( this.beginningDate.year * 12 + this.beginningDate.month ) ) );
 
     return 100 * currentMonthDuration / totalMonthsSpan;
 
   }
 
-  setSceneContentToDate ( date ) {
+  setSceneContentToDate ( date = this.currentDate ) {
 
-    
+    const that = this;
+
+    const relativeDate = this.getPositionFromDate( date );
+
+    this.viewer.city.objectsList.forEach( object => {
+
+      const data = object.userData;
+
+      const beginDate = data.begin ? data.begin : that.beginningDate;
+      const objectRelativeBeginDate = that.getPositionFromDate( beginDate ); 
+
+      const endDate = data.end ? data.end : that.endDate;
+      const objectRelativeEndDate = that.getPositionFromDate( endDate )
+
+      object.visible = relativeDate >= objectRelativeBeginDate 
+                    && relativeDate < objectRelativeEndDate;
+
+    });
+
+    this.viewer.renderer.renderer.shadowMap.needsUpdate = true;
+    this.viewer.camera.update = true;
 
   }
 

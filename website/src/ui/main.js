@@ -17,7 +17,7 @@ export default class UI {
 
     this.dayTime = new DayTimer( viewer.environment, this.container );
 
-    this.timeline = new Timeline( this.container );
+    this.timeline = new Timeline( viewer, this.container );
 
   }
 
