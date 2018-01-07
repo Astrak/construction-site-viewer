@@ -5,7 +5,7 @@
   "main": "website/index.html",
   "scripts": {
     "start": "webpack-dev-server --inline --content-base .",
-    "publish": "webpack && cd website && surge && cd .."
+    "publish": "webpack --config webpack.prod.config.js && cd website && surge --domain soult.surge.sh && cd .."
   },
   "author": "",
   "license": "ISC",
@@ -20,6 +20,7 @@
     "http-server": "^0.10.0",
     "style-loader": "^0.19.1",
     "three": "^0.89.0",
+    "uglifyjs-webpack-plugin": "^1.1.6",
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.9.7"
   }

@@ -1,4 +1,5 @@
 import { DAYTIMES, defaultDayTime } from './../constants/dayTimes';
+import Button from './Button';
 
 import './DayTimer.css';
 
@@ -15,16 +16,15 @@ export default class DayTimer {
 
     for ( let dayTime in DAYTIMES ) {
 
-      const button = document.createElement( 'button' );
-      button.innerHTML = dayTime;
-      button.classList.add( 'ui-day-timer-button' );
-      if ( defaultDayTime === dayTime ) button.classList.add( 'ui-day-timer-button-selected' );
-      button.addEventListener( 'click', e => {
+      const button = new Button( dayTime );
+      if ( defaultDayTime === dayTime ) button.select();
+      button.domElement.addEventListener( 'click', e => {
         environment[ 'make' + dayTime ]();
-        buttons.forEach( button => button.classList.remove( 'ui-day-timer-button-selected' ) );
-        button.classList.add( 'ui-day-timer-button-selected' )
+        buttons.forEach( button => button.unselect() );
+        button.select();
       }, false );
-      this.domElement.appendChild( button );
+
+      this.domElement.appendChild( button.domElement );
       buttons.push( button );
 
     }

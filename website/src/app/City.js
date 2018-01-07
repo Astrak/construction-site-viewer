@@ -33,10 +33,10 @@ export default class City extends eventEmitter {
 
         if ( k === 'bats' ) g.addAttribute( 'uv2', g.attributes.uv );
 
-        const material = k === 'arbres' ? 
+        const material = ( ASSETS[ k ].file.indexOf( 'arbres' ) > -1 ) ? 
           new MeshBasicMaterial({
             side: DoubleSide,
-            map: that.tLoader.load( 'public/img/platane.png' ),
+            map: that.tLoader.load( 'public/img/platane.png', () => renderer.shadowMap.needsUpdate = true ),
             alphaTest: 0.7,
             transparent: true
           })
@@ -55,7 +55,7 @@ export default class City extends eventEmitter {
 
         mesh.matrixAutoUpdate = false;
 
-        if ( k === 'arbres' ) {
+        if ( ASSETS[ k ].file.indexOf( 'arbres' ) > -1 ) {
 
           that.trees = mesh;
 

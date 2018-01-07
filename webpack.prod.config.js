@@ -1,5 +1,5 @@
 const webpack = require( 'webpack' );
-/*const UglifyJsPlugin = require( 'uglifyjs-webpack-plugin' );*/
+const UglifyJsPlugin = require( 'uglifyjs-webpack-plugin' );
 
 module.exports = {
   entry: './website/src/index.js',
@@ -26,7 +26,7 @@ module.exports = {
     ]
   },
   plugins: [
-    /*new UglifyJsPlugin({
+    new UglifyJsPlugin({
       uglifyOptions: {
         ie8: false,
         ecma: 8,
@@ -37,6 +37,6 @@ module.exports = {
         compress: true,
         warnings: false
       }
-    })*/
+    })
   ]
 }

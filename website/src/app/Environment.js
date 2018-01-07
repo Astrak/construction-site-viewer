@@ -17,6 +17,7 @@ export default class Environment {
     this.setSky();
 
     this.activeDayTime = 'Journée';
+    this.targetDayTime = 'Journée';
 
     const sun = this.sun,
       sky = this.sky;
@@ -26,7 +27,9 @@ export default class Environment {
 
       this[ 'make' + dayTime ] = () => {
 
-        if ( that.activeDayTime === dayTime ) return;
+        if ( that.targetDayTime === dayTime ) return;
+
+        that.targetDayTime = dayTime;
 
         TweenLite.to( 
           sun.position, 
