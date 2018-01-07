@@ -35,9 +35,9 @@ export default class Timeline {
 
     //svg container for dates and months
     this.captionElement = document.createElementNS( NSString, 'svg' );
-    this.captionElement.setAttribute( 'viewBox', '0 0 100 10' );
-    //this.captionElement.style.opacity = 0.8;
     this.captionElement.id = 'ui-timeline-caption';
+    this.captionElement.setAttribute( 'viewBox', '0 0 100 5' );
+    //this.captionElement.style.opacity = 0.8;
     this.fillCaption( this.captionElement );
     this.domElement.appendChild( this.captionElement );
 

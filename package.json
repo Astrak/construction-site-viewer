@@ -4,7 +4,8 @@
   "description": "",
   "main": "website/index.html",
   "scripts": {
-    "start": "webpack-dev-server --inline --content-base ."
+    "start": "webpack-dev-server --inline --content-base .",
+    "publish": "webpack && cd website && surge && cd .."
   },
   "author": "",
   "license": "ISC",

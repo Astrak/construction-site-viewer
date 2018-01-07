@@ -31,6 +31,7 @@ export default class Renderer {
 
     } else {
 
+      this.renderer.setSize( innerWidth, innerHeight );
       this.composer.setSize( innerWidth, innerHeight );
 
       if ( this.fxaaPass ) {

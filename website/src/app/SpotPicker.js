@@ -39,8 +39,11 @@ export default class SpotPicker {
     this.hotspots.forEach( hotspot => { if ( hotspot.sprite.name === place ) sprite = hotspot.sprite; });
 
     //maintain camera zoom during tween
-    const cameraDistance = this.camera.position.clone().sub( this.controls.target ).length();
-    this.controls.maxDistance = this.controls.minDistance = cameraDistance;
+    //const cameraDistance = this.camera.position.clone().sub( this.controls.target ).length();
+    //this.controls.maxDistance = this.controls.minDistance = cameraDistance;
+    this.controls.enabled = false;
+
+    window.camera = this.camera;
 
     //tween controls' target
     TweenLite.to( 
@@ -50,13 +53,25 @@ export default class SpotPicker {
         x: sprite.position.x, 
         z: sprite.position.z,
         onUpdate () { 
-          that.camera.update = true 
+          that.camera.update = true;
+          that.camera.lookAt( that.controls.target )
         }, 
         onComplete () { 
           //restore camera zooming limits
-          that.controls.maxDistance = 23;
-          that.controls.minDistance = 3.5 
+          //that.controls.maxDistance = 23;
+          //that.controls.minDistance = 3.5;
+          that.controls.enabled = true;
         }
+      }
+    );
+
+    TweenLite.to(
+      this.camera.position,
+      2,
+      {
+        x: sprite.userData.camera[ 0 ],
+        y: sprite.userData.camera[ 1 ],
+        z: sprite.userData.camera[ 2 ],
       }
     );
 

@@ -28,7 +28,7 @@ export default class Viewer {
       rotateSpeed: .017,
       panSpeed: 0.02,
       enablePan: false,
-      minDistance: 6,
+      minDistance: 4,
       maxDistance: 23,
       zoomSpeed: 0.12,
     });
@@ -49,7 +49,7 @@ export default class Viewer {
   buildScene () {
 
     this.city = new City( this.renderer.renderer, this.scene, this.camera );
-    this.environment = new Environment( this.renderer.renderer, this.scene, this.camera );
+    this.environment = new Environment( this.renderer.renderer, this.scene, this.camera, this.city );
 
     const hotspotsGroup = new Group();
     this.scene.add( hotspotsGroup );
@@ -61,6 +61,7 @@ export default class Viewer {
         new Hotspot( 
           hotspotsGroup, 
           HOTSPOTS[ place ].center, 
+          HOTSPOTS[ place ].camera, 
           place 
         ) 
       );

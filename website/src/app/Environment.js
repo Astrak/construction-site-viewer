@@ -6,13 +6,17 @@ import { DAYTIMES, defaultDayTime } from './../constants/dayTimes';
 
 export default class Environment {
 
-  constructor ( renderer, scene, camera ) {
+  constructor ( renderer, scene, camera, city ) {
+
+    const that = this;
 
     this.scene = scene;
 
     this.setLighting();
 
     this.setSky();
+
+    this.activeDayTime = 'Journée';
 
     const sun = this.sun,
       sky = this.sky;
@@ -21,6 +25,8 @@ export default class Environment {
     for ( let dayTime in DAYTIMES ) {
 
       this[ 'make' + dayTime ] = () => {
+
+        if ( that.activeDayTime === dayTime ) return;
 
         TweenLite.to( 
           sun.position, 
@@ -33,6 +39,26 @@ export default class Environment {
               sky.material.uniforms.sunPosition.value.copy( sun.position );
               camera.update = true;
               renderer.shadowMap.needsUpdate = true;
+            }
+          }
+        );
+
+        const treesColorTween = { value: 0 };
+
+        TweenLite.to(
+          treesColorTween,
+          2,
+          {
+            value: 1,
+            onUpdate () {
+              let v;
+              if ( dayTime === 'Journée' ) v = treesColorTween.value * 0.5 + 0.5;
+              else if ( that.activeDayTime === 'Journée' ) v = ( 1 - treesColorTween.value ) * 0.5 + 0.5;
+              else v = ( 1 - ( ( 2 * treesColorTween.value - 1 ) ** 2 ) ) * 0.5 + 0.5;
+              city.trees.material.color.setRGB( v, v, v );
+            },
+            onComplete () {
+              that.activeDayTime = dayTime;
             }
           }
         );
@@ -60,7 +86,8 @@ export default class Environment {
       near: 2
     });
     this.sun.castShadow = true;
-    this.sun.shadow.mapSize.set(4096,4096);
+    const mapSize = window.devicePixelRatio > 1.1 ? 2048 : 4096;
+    this.sun.shadow.mapSize.set( mapSize, mapSize );
     const helper = new CameraHelper( this.sun.shadow.camera );
 
     this.ambient = new AmbientLight( 0xaaaacc );
