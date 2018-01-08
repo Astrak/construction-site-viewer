@@ -29,7 +29,6 @@
   height: 100%;
   left: 50%;
   pointer-events: none;
-  transition: left 0.1s ease;
 }
 #ui-timeline-selector::after{
   content: ' ';
@@ -43,7 +42,7 @@
   pointer-events: none;
   position: absolute;
   left: 0;
-  bottom: 25px;
+  bottom: 20px;
 }
 
 @keyframes ui-timeline-appear {

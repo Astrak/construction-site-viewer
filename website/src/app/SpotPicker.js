@@ -1,9 +1,13 @@
 import { TweenLite } from 'gsap';
-import { Raycaster } from 'three'
+import { Raycaster } from 'three';
 
-export default class SpotPicker {
+import EventEmitter from 'events';
+
+export default class SpotPicker extends EventEmitter {
 
   constructor ( renderer, camera, controls, hotspotsContainer, hotspots ) {
+
+    super();
 
     this.camera = camera;
     this.renderer = renderer;
@@ -77,6 +81,8 @@ export default class SpotPicker {
 
     //show/hide hotspots
     this.hotspots.forEach( hotspot => { hotspot.sprite === sprite ? hotspot.hide() : hotspot.show() });
+
+    this.emit( 'navigation', place )
 
   }
 

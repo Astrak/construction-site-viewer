@@ -1,10 +1,10 @@
 import { WebGLRenderer, CineonToneMapping } from 'three';
 import { EffectComposer } from './../lib/EffectComposer';
-import CopyShader from './../lib/CopyShader';
+//import CopyShader from './../lib/CopyShader';
 import ShaderPass from './../lib/ShaderPass';
 import RenderPass from './../lib/RenderPass';
 import FXAAShader from './../lib/FXAAShader';
-import SAOPass from './../lib/SAOPass';
+//import SAOPass from './../lib/SAOPass';
 
 import './Renderer.css';
 
@@ -17,6 +17,7 @@ export default class Renderer {
     this.renderer.setSize( innerWidth, innerHeight );
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.autoUpdate = false;
+    this.renderer.shadowMap.renderSingleSided = false;
     this.renderer.gammaInput = this.renderer.gammaOutput = true;
     this.renderer.toneMapping = CineonToneMapping;
     document.getElementById( 'app' ).appendChild( this.renderer.domElement );
@@ -66,7 +67,7 @@ export default class Renderer {
       this.composer = new EffectComposer( this.renderer );
       this.composer.addPass( new RenderPass( scene, camera ) );
 
-      this.SAOPass = new SAOPass( scene, camera, false, true );   
+      /*this.SAOPass = new SAOPass( scene, camera, false, true );   
       Object.assign( this.SAOPass.params, {
         saoBias: saoParams.saoBias,
         saoIntensity: saoParams.saoIntensity,
@@ -78,7 +79,7 @@ export default class Renderer {
         saoBlurStdDev: saoParams.saoBlurStdDev,
         saoBlurDepthCutoff: saoParams.saoBlurDepthCutoff
       }); 
-      //this.composer.addPass( this.SAOPass );
+      this.composer.addPass( this.SAOPass );*/
 
       this.fxaaPass = new ShaderPass( FXAAShader );
       this.fxaaPass.uniforms.resolution.value.set(
@@ -86,11 +87,11 @@ export default class Renderer {
         1 / ( window.devicePixelRatio * innerHeight )
       );
       this.composer.addPass( this.fxaaPass );
-      //this.fxaaPass.renderToScreen = true;
+      this.fxaaPass.renderToScreen = true;
 
-      this.copyPass = new ShaderPass( CopyShader );
-      this.copyPass.renderToScreen = true;
-      this.composer.addPass( this.copyPass );
+      //this.copyPass = new ShaderPass( CopyShader );
+      //this.copyPass.renderToScreen = true;
+      //this.composer.addPass( this.copyPass );
 
     }
 

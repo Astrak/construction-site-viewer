@@ -6,6 +6,7 @@
   background: rgba(150, 150, 150, 0.95 );
   perspective: 30px;
   pointer-events: stroke;
+  font-family: 'Raleway', sans-serif;
 }
 .valign{
   height: 100%;
@@ -20,7 +21,7 @@
   display: inline-block;
   vertical-align: middle;
   max-width: 450px;
-  padding: 20px;
+  padding: 5px 20px;
   font-size: 16px;
 }
 .ui-splash-screen-content-hidden{

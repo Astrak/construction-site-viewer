@@ -68,15 +68,13 @@ export default class Viewer {
 
     }
 
-    const spotPicker = new SpotPicker( 
+    this.spotPicker = new SpotPicker( 
       this.renderer.renderer, 
       this.camera, 
       this.controls, 
       hotspotsGroup, 
       hotspotsArray 
     );
-
-    spotPicker.navigateTo( 'soult' );
 
   }
 

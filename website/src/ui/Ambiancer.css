@@ -1,10 +1,10 @@
-#ui-day-timer{
-  animation: ui-day-timer-appear 0.5s ease;
+#ui-ambiancer{
+  animation: ui-ambiancer-appear 0.5s ease;
   opacity: 1;
   background-image: linear-gradient( 180deg, rgba( 255, 255, 255, 0.5 ) 0%, rgba( 0, 0, 0, 0 ) 100% );
 }
 
-@keyframes ui-day-timer-appear {
+@keyframes ui-ambiancer-appear {
   0%{ opacity: 0; }
   100%{ opacity: 1; }
 }

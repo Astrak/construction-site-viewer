@@ -1,4 +1,4 @@
-import DayTimer from './DayTimer';
+import Ambiancer from './Ambiancer';
 import Timeline from './Timeline';
 import SplashScreen from './SplashScreen';
 
@@ -8,6 +8,8 @@ export default class UI {
 
   constructor ( viewer ) {
 
+    const that = this;
+
     this.wrapper = document.createElement( 'div' );
     this.wrapper.id = 'ui-wrapper';
     document.getElementById( 'app' ).appendChild( this.wrapper );
@@ -16,18 +18,16 @@ export default class UI {
     this.container.id = 'ui-container';
     this.wrapper.appendChild( this.container );
 
-    this.splashScreen = new SplashScreen( this.container );
-
-    this.dayTime = new DayTimer( viewer.environment, this.container );
+    this.ambiancer = new Ambiancer( viewer.environment, this.container );
 
     this.timeline = new Timeline( viewer, this.container );
 
-  }
-
-  showViewerUI () {
-
-    this.dayTime.show();
-    this.timeline.show();
+    this.splashScreen = new SplashScreen( this.container );
+    this.splashScreen.startCallBack = () => {
+      that.ambiancer.show();
+      that.timeline.show();
+    };
+    this.splashScreen.playAudioSpecialCallBack = that.ambiancer.playAudio.bind( that.ambiancer );
 
   }
 

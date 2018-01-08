@@ -1,11 +1,11 @@
 import { Group, Mesh, MeshLambertMaterial, LinearFilter, MeshBasicMaterial, ShaderMaterial, DoubleSide, TextureLoader } from 'three';
 import PLYLoader from './../lib/PLYLoaderr89.js';
 
-import eventEmitter from 'events';
+import EventEmitter from 'events';
 
 import ASSETS from './../constants/assets';
 
-export default class City extends eventEmitter {
+export default class City extends EventEmitter {
 
   constructor ( renderer, scene, camera ) {
 
@@ -22,6 +22,8 @@ export default class City extends eventEmitter {
     this.group = city;
 
     const that = this;
+
+    this.basicMaterialsObjects = [];
 
     const totalAssetsNumber = Object.keys( ASSETS ).length;
 
@@ -57,7 +59,7 @@ export default class City extends eventEmitter {
 
         if ( ASSETS[ k ].file.indexOf( 'arbres' ) > -1 ) {
 
-          that.trees = mesh;
+          that.basicMaterialsObjects.push( mesh );
 
           material.map.minFilter = LinearFilter;
 
@@ -111,6 +113,12 @@ export default class City extends eventEmitter {
       });
       
     }
+
+  }
+
+  setBasicMaterialsIntensity ( v ) {
+
+    this.basicMaterialsObjects.forEach( object => object.material.color.setRGB( v, v, v ) );
 
   }
 

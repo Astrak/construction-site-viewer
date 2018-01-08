@@ -1,5 +1,4 @@
 import { TweenLite } from 'gsap';
-import eventEmitter from 'events';
 
 import Button from './Button';
 
@@ -7,11 +6,9 @@ import SPLASH_SCREEN_CONTENT from '../constants/splashScreenContent';
 
 import './SplashScreen.css';
 
-export default class SplashScreen extends eventEmitter{
+export default class SplashScreen {
 
   constructor ( container ) {
-
-    super();
 
     const that = this;
 
@@ -34,40 +31,43 @@ export default class SplashScreen extends eventEmitter{
     }, 0 );
     this.domElement.appendChild( this.contentElement );
 
+    //h1 & h2
     const titleElement = document.createElement( 'h1' );
     titleElement.id = 'ui-splash-screen-title';
     titleElement.innerHTML = SPLASH_SCREEN_CONTENT.title;
     this.contentElement.appendChild( titleElement );
-
     const subtitleElement = document.createElement( 'h2' );
     subtitleElement.id = 'ui-splash-screen-subtitle';
     subtitleElement.innerHTML = SPLASH_SCREEN_CONTENT.subtitle;
     this.contentElement.appendChild( subtitleElement );
 
+    //separator
     const separator = document.createElement( 'hr' );
     separator.id = 'ui-splash-screen-separator';
     this.contentElement.appendChild( separator );
 
+    //content
     for ( let i = 0 ; i < SPLASH_SCREEN_CONTENT.introduction.length ; i++ ) {
-
       const introducerParagraph = document.createElement( 'p' );
       introducerParagraph.innerHTML = SPLASH_SCREEN_CONTENT.introduction[ i ];
       this.contentElement.appendChild( introducerParagraph );
-
     }
 
+    //progress separator
     const progressContainer = document.createElement( 'div' );
     progressContainer.id = 'ui-splash-screen-progress-container';
     this.contentElement.appendChild( progressContainer );
-
     this.progress = document.createElement( 'span' );
     this.progress.id = 'ui-splash-screen-progress';
     progressContainer.appendChild( this.progress );
 
+    //start button
     this.startButton = new Button( SPLASH_SCREEN_CONTENT.startText );
     this.startButton.domElement.addEventListener( 'click', this.remove.bind( this ), false );
     this.startButton.domElement.classList.add( 'ui-splash-screen-start-hidden' );
     this.contentElement.appendChild( this.startButton.domElement );
+    this.startCallBack = function () {};
+    this.playAudioSpecialCallBack = function () {};
 
   }
 
@@ -93,24 +93,29 @@ export default class SplashScreen extends eventEmitter{
 
     const that = this;
 
-    this.startButton.domElement.classList.add( 'ui-splash-screen-start-clicked' );
+    that.startButton.select();
+    that.playAudioSpecialCallBack();
 
-    this.contentElement.classList.toggle( 'ui-splash-screen-content-hidden' );
-    this.contentElement.classList.toggle( 'ui-splash-screen-content-show' );
+    setTimeout( () => {
 
-    TweenLite.to( 
-      this.domElement, 
-      1.5,
-      {
-        css: { top: '-100%' },
-        ease: Power3.easeOut,
-        delay: 1,
-        onComplete () { 
-          that.container.removeChild( that.domElement ); 
-          that.emit( 'splash-screen-removed' );
+      that.contentElement.classList.toggle( 'ui-splash-screen-content-hidden' );
+      that.contentElement.classList.toggle( 'ui-splash-screen-content-show' );
+
+      TweenLite.to( 
+        that.domElement, 
+        1.5,
+        {
+          css: { top: '-100%' },
+          ease: Power3.easeOut,
+          delay: 1,
+          onComplete () { 
+            that.container.removeChild( that.domElement ); 
+            that.startCallBack();
+          }
         }
-      }
-    );
+      );
+
+    }, 300 );
 
   }
 
