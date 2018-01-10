@@ -38,12 +38,12 @@ export default class City extends EventEmitter {
         const material = ( ASSETS[ k ].file.indexOf( 'arbres' ) > -1 ) ? 
           new MeshBasicMaterial({
             side: DoubleSide,
-            map: that.tLoader.load( 'public/img/platane.png', () => renderer.shadowMap.needsUpdate = true ),
+            map: that.tLoader.load( ASSETS[ k ].file.indexOf( 'nouveau' ) > -1 ? 'public/img/erable.png' : 'public/img/platane.png', () => renderer.shadowMap.needsUpdate = true ),
             alphaTest: 0.7,
             transparent: true
           })
           : new MeshLambertMaterial({
-            color: k.indexOf( 'route' ) > -1 || k.indexOf( 'villegoudou' ) > -1 ? 0x222222 : k === 'bats' ? 0xaa8866 : k.indexOf( 'trottoir' ) > -1 ? 0x444444 : 0xffffff,
+            color: ASSETS[ k ].tempColor ? ASSETS[ k ].tempColor : 0xffffff,
             aoMap: k === 'bats' ? that.tLoader.load( 'public/img/bats_ao.png' ) : null,
             aoMapIntensity: 1.2
           }) 
