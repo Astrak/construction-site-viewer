@@ -157,7 +157,7 @@ const ASSETS = {
       file: 'arbres-nouveaux-parking.ply',
       begin: {
         year: 2019,
-        month: 10,
+        month: 11,
         day: 0
       }
     },
@@ -214,6 +214,15 @@ const ASSETS = {
           day: 0
         }
       },
+      trottoirs3a: {
+        file: 'trottoirs-3a.ply',
+        tempColor: 0x444444,
+        end: {
+          year: 2018,
+          month: 8,
+          day: 0
+        }
+      },
       chantierContreAllees3a: {
         file: 'contreallees3a-chantier.ply',
         tempColor: 0x442211,
@@ -247,6 +256,15 @@ const ASSETS = {
           day: 0
         }
       },
+      trottoirs4a: {
+        file: 'trottoirs-4a.ply',
+        tempColor: 0x444444,
+        end: {
+          year: 2019,
+          month: 4,
+          day: 0
+        }
+      },
       chantier4a: {
         file: '4a-chantier.ply',
         tempColor: 0x442211,
@@ -261,7 +279,7 @@ const ASSETS = {
           day: 0
         }
       },
-      trottoirs4a: {
+      trottoirs4a_2: {
         file: '4a-trottoir.ply',
         tempColor: 0x333333,
         begin: {
@@ -289,6 +307,15 @@ const ASSETS = {
           day: 0
         }
       },
+      trottoirs4a1: {
+        file: 'trottoirs-4a1.ply',
+        tempColor: 0x444444,
+        end: {
+          year: 2019,
+          month: 7,
+          day: 0
+        }
+      },
       chantier4a1: {
         file: '4a1-chantier.ply',
         tempColor: 0x442211,
@@ -297,7 +324,7 @@ const ASSETS = {
           month: 7,
           day: 0
         },
-        begin: {
+        end: {
           year: 2019,
           month: 10,
           day: 0
@@ -305,7 +332,7 @@ const ASSETS = {
       },
       buisson4a1: {
         file: '4a1.ply',
-        tempColor: 0x222222,
+        tempColor: 0x333333,
         begin: {
           year: 2019,
           month: 10,
@@ -334,7 +361,7 @@ const ASSETS = {
         file: 'arbres-nouveaux-buisson.ply',
         begin: {
           year: 2019,
-          month: 4,
+          month: 11,
           day: 0
         }
       },
@@ -342,7 +369,7 @@ const ASSETS = {
         file: 'arbres-nouveaux-soult.ply',
         begin: {
           year: 2019,
-          month: 6,
+          month: 7,
           day: 0
         }
       },
@@ -412,6 +439,20 @@ const ASSETS = {
       begin: {
         year: 2018,
         month: 11,
+        day: 0
+      },
+      end: {
+        year: 2019,
+        month: 6,
+        day: 0
+      }
+    },
+    soult2AireChantier: {
+      file: 'soult2-aire-chantier.ply',
+      tempColor: 0x442211,
+      begin: {
+        year: 2019,
+        month: 3,
         day: 0
       },
       end: {
