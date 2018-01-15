@@ -540,6 +540,15 @@ const ASSETS = {
         month: 2,
         day: 0
       }
+    },
+    villegoudou2Trottoirs: {
+      file: 'villegoudou2-trottoirs.ply',
+      tempColor: 0x444444,
+      begin: {
+        year: 2019,
+        month: 2,
+        day: 0
+      }
     }
 };
 
