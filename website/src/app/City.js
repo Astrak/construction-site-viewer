@@ -36,17 +36,23 @@ export default class City extends EventEmitter {
         if ( k === 'bats' ) g.addAttribute( 'uv2', g.attributes.uv );
 
         const material = ( ASSETS[ k ].file.indexOf( 'arbres' ) > -1 ) ? 
-          new MeshBasicMaterial({
-            side: DoubleSide,
-            map: that.tLoader.load( ASSETS[ k ].file.indexOf( 'nouveau' ) > -1 ? 'public/img/erable.png' : 'public/img/platane.png', () => renderer.shadowMap.needsUpdate = true ),
-            alphaTest: 0.7,
-            transparent: true
-          })
+          new MeshBasicMaterial()
           : new MeshLambertMaterial({
-            color: ASSETS[ k ].tempColor ? ASSETS[ k ].tempColor : 0xffffff,
-            aoMap: k === 'bats' ? that.tLoader.load( 'public/img/bats_ao.png' ) : null,
-            aoMapIntensity: 1.2
-          }) 
+            color: ASSETS[ k ].tempColor ? ASSETS[ k ].tempColor : 0xffffff
+          });
+
+        if ( ASSETS[ k ].file.indexOf( 'arbres' ) > -1 ) {
+          material.side = DoubleSide,
+          material.map = that.tLoader.load( ASSETS[ k ].file.indexOf( 'nouveau' ) > -1 ? 'public/img/erable.png' : 'public/img/platane.png', () => renderer.shadowMap.needsUpdate = true ),
+          material.alphaTest = 0.7,
+          material.transparent = true
+        }
+
+        if ( ASSETS[ k ].file.indexOf( 'vehicules' ) > -1 ) {
+          material.transparent = true;
+        }
+
+        if ( ASSETS[ k ].tex ) material.map = this.tLoader.load( 'public/img/' + ASSETS[ k ].tex, t => t.anisotropy = 4 );
 
         const mesh = new Mesh( g, material );
 
@@ -57,7 +63,7 @@ export default class City extends EventEmitter {
 
         mesh.matrixAutoUpdate = false;
 
-        if ( ASSETS[ k ].file.indexOf( 'arbres' ) > -1 ) {
+        if ( ASSETS[ k ].file.indexOf( 'arbres' ) > -1 || ASSETS[ k ].file.indexOf( 'vehicules' ) > -1 ) {
 
           that.basicMaterialsObjects.push( mesh );
 

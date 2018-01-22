@@ -10,6 +10,7 @@ const ASSETS = {
     bats: {
       tempColor: 0xaa8866,
       file: 'batiments.ply',
+      tex: 'bats_ao.png'
     },
     trottoirs: {
       tempColor: 0x444444,
@@ -33,14 +34,6 @@ const ASSETS = {
         month: 1,
         day: 0
       },
-      end: {
-        year: 2018,
-        month: 3,
-        day: 0
-      }
-    },
-    gareAnciensArbres: {
-      file: 'arbres-gare.ply',
       end: {
         year: 2018,
         month: 3,
@@ -131,7 +124,7 @@ const ASSETS = {
     },
     contreallees2: {
       file: 'contreallees2.ply',
-      tempColor: 0x333333,
+      tex: 'parking.png',
       begin: {
         year: 2019,
         month: 3,
@@ -143,13 +136,22 @@ const ASSETS = {
         day: 0
       }
     },
-    //4. end : parking + arbres ( + game area)
+    //4. end : parking + arbres + vehicules ( + game area)
     parkingSurface: {
       file: 'parking_surface.ply',
-      tempColor: 0x444444,
+      tex: 'parking.png',
       begin: {
         year: 2019,
         month: 10,
+        day: 0
+      }
+    },
+    parkingSurfaceVehicules: {
+      file: 'parking_surface_vehicules.ply',
+      tex: 'cars.png',
+      begin: {
+        year: 2019,
+        month: 11,
         day: 0
       }
     },
@@ -197,7 +199,7 @@ const ASSETS = {
       },
       cdg2a1: {
         file: 'cdg2a1.ply',
-        tempColor: 0x222222,
+        tex: 'parking.png',
         begin: {
           year: 2018,
           month: 8,
@@ -249,7 +251,7 @@ const ASSETS = {
     //4a
       routes4a: {
         file: 'routes-4a.ply',
-        tempColor: 0x222222,
+        tex: 'parking.png',
         end: {
           year: 2019,
           month: 4,
@@ -412,7 +414,7 @@ const ASSETS = {
     },
     contreallees: {
       file: 'contreallees.ply',
-      tempColor: 0x333333,
+      tex: 'parking.png',
       begin: {
         year: 2019,
         month: 6,
@@ -463,7 +465,7 @@ const ASSETS = {
     },
     soult2: {
       file: 'soult2.ply',
-      tempColor: 0x333333,
+      tex: 'parking.png',
       begin: {
         year: 2019,
         month: 6,

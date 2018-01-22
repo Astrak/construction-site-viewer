@@ -94,7 +94,7 @@ export default class Environment {
     const helper = new CameraHelper( this.sun.shadow.camera );
 
     this.ambient = new AmbientLight( 0xaaaacc );
-    this.ambient.intensity = 0.5;
+    this.ambient.intensity = 0.4;
 
     this.scene.add( this.sun, this.ambient );
 
