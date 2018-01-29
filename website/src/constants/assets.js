@@ -2,24 +2,34 @@ const ASSETS = {
   /* MAIN */
     arbres: {
       file: 'arbres.ply',
+      map: 'platane.png',
+      receiveShadow: false,
+      material: 'basic',
+      useCustomDepthMaterial: true,
+      minFilter: 'linear',
+      tweenColorWithDayLight: true,
+      side: 'double',
+      alphaTest: 0.7,
+      transparent: true
     },
     routes: {
-      tempColor: 0x222222,
+      color: 0x222222,
       file: 'routes.ply',
     },
     bats: {
-      tempColor: 0xaa8866,
+      color: 0xaa8866,
       file: 'batiments.ply',
-      tex: 'bats_ao.png'
+      map: 'bats_ao.png',
+      useUv2: true
     },
     trottoirs: {
-      tempColor: 0x444444,
+      color: 0x444444,
       file: 'trottoirs.ply',
     },
   /* GARE */
     gare: {
       file: 'gare.ply',
-      tempColor: 0xaa8866,
+      color: 0xaa8866,
       end: {
         year: 2018,
         month: 1,
@@ -28,7 +38,7 @@ const ASSETS = {
     },
     gareDemolition: {
       file: 'gare_demolition.ply',
-      tempColor: 0x442211,
+      color: 0x442211,
       begin: {
         year: 2018,
         month: 1,
@@ -44,7 +54,7 @@ const ASSETS = {
     //1. remove trottoirs&routes above parking
     trottoirsGare: {
       file: 'trottoirs_gare.ply',
-      tempColor: 0x444444,
+      color: 0x444444,
       end: {
         year: 2018,
         month: 3,
@@ -53,7 +63,7 @@ const ASSETS = {
     },
     routeGare: {
       file: 'route_gare.ply',
-      tempColor: 0x222222,
+      color: 0x222222,
       end: {
         year: 2018,
         month: 3,
@@ -63,7 +73,7 @@ const ASSETS = {
     //2. underground
     parkingConstruction: {
       file: 'parking_construction.ply',
-      tempColor: 0x442211,
+      color: 0x442211,
       begin: {
         year: 2018,
         month: 3,
@@ -78,7 +88,7 @@ const ASSETS = {
     //3. top : surface
     parkingSurfaceConstruction: {
       file: 'parking_surface_construction.ply',
-      tempColor: 0x442211,
+      color: 0x442211,
       begin: {
         year: 2019,
         month: 3,
@@ -92,7 +102,7 @@ const ASSETS = {
     },
     routeGare2: {
       file: 'route_gare2.ply',
-      tempColor: 0x222222,
+      color: 0x222222,
       end: {
         year: 2019,
         month: 3,
@@ -101,7 +111,7 @@ const ASSETS = {
     },
     trottoirsGare2: {
       file: 'trottoirs_gare2.ply',
-      tempColor: 0x444444,
+      color: 0x444444,
       end: {
         year: 2019,
         month: 3,
@@ -110,7 +120,7 @@ const ASSETS = {
     },
     contreallees2Chantier: {
       file: 'contreallees2-chantier.ply',
-      tempColor: 0x442211,
+      color: 0x442211,
       begin: {
         year: 2019,
         month: 3,
@@ -124,7 +134,8 @@ const ASSETS = {
     },
     contreallees2: {
       file: 'contreallees2.ply',
-      tex: 'parking.png',
+      map: 'parking.png',
+      minFilter: 'linear',
       begin: {
         year: 2019,
         month: 3,
@@ -139,7 +150,8 @@ const ASSETS = {
     //4. end : parking + arbres + vehicules ( + game area)
     parkingSurface: {
       file: 'parking_surface.ply',
-      tex: 'parking.png',
+      minFilter: 'linear',
+      map: 'parking.png',
       begin: {
         year: 2019,
         month: 10,
@@ -148,7 +160,8 @@ const ASSETS = {
     },
     parkingSurfaceVehicules: {
       file: 'parking_surface_vehicules.ply',
-      tex: 'cars.png',
+      transparent: true,
+      map: 'cars.png',
       begin: {
         year: 2019,
         month: 11,
@@ -157,6 +170,15 @@ const ASSETS = {
     },
     parkingArbres: {
       file: 'arbres-nouveaux-parking.ply',
+      receiveShadow: false,
+      map: 'erable.png',
+      material: 'basic',
+      useCustomDepthMaterial: true,
+      minFilter: 'linear',
+      tweenColorWithDayLight: true,
+      side: 'double',
+      alphaTest: 0.7,
+      transparent: true,
       begin: {
         year: 2019,
         month: 11,
@@ -167,7 +189,7 @@ const ASSETS = {
     //cdg2a1
       routesCdg2a1: {
         file: 'routes-cdg2a1.ply',
-        tempColor: 0x222222,
+        color: 0x222222,
         end: {
           year: 2018,
           month: 5,
@@ -176,7 +198,7 @@ const ASSETS = {
       },
       trottoirsCdg2a1: {
         file: 'trottoirs-cdg2a1.ply',
-        tempColor: 0x444444,
+        color: 0x444444,
         end: {
           year: 2018,
           month: 5,
@@ -185,7 +207,7 @@ const ASSETS = {
       },
       cdg2a1Chantier: {
         file: 'cdg2a1-chantier.ply',
-        tempColor: 0x442211,
+        color: 0x442211,
         begin: {
           year: 2018,
           month: 5,
@@ -199,7 +221,8 @@ const ASSETS = {
       },
       cdg2a1: {
         file: 'cdg2a1.ply',
-        tex: 'parking.png',
+        minFilter: 'linear',
+        map: 'parking.png',
         begin: {
           year: 2018,
           month: 8,
@@ -209,7 +232,7 @@ const ASSETS = {
     //3a
       routes3a: {
         file: 'routes-3a.ply',
-        tempColor: 0x222222,
+        color: 0x222222,
         end: {
           year: 2018,
           month: 8,
@@ -218,7 +241,7 @@ const ASSETS = {
       },
       trottoirs3a: {
         file: 'trottoirs-3a.ply',
-        tempColor: 0x444444,
+        color: 0x444444,
         end: {
           year: 2018,
           month: 8,
@@ -227,7 +250,7 @@ const ASSETS = {
       },
       chantierContreAllees3a: {
         file: 'contreallees3a-chantier.ply',
-        tempColor: 0x442211,
+        color: 0x442211,
         begin: {
           year: 2018,
           month: 8,
@@ -241,7 +264,7 @@ const ASSETS = {
       },
       contreAllees3a: {
         file: 'contreallees3a.ply',
-        tempColor: 0x333333,
+        color: 0x333333,
         begin: {
           year: 2018,
           month: 11,
@@ -251,7 +274,7 @@ const ASSETS = {
     //4a
       routes4a: {
         file: 'routes-4a.ply',
-        tex: 'parking.png',
+        color: 0x222222,
         end: {
           year: 2019,
           month: 4,
@@ -260,7 +283,7 @@ const ASSETS = {
       },
       trottoirs4a: {
         file: 'trottoirs-4a.ply',
-        tempColor: 0x444444,
+        color: 0x444444,
         end: {
           year: 2019,
           month: 4,
@@ -269,7 +292,7 @@ const ASSETS = {
       },
       chantier4a: {
         file: '4a-chantier.ply',
-        tempColor: 0x442211,
+        color: 0x442211,
         begin: {
           year: 2019,
           month: 4,
@@ -283,7 +306,7 @@ const ASSETS = {
       },
       trottoirs4a_2: {
         file: '4a-trottoir.ply',
-        tempColor: 0x333333,
+        color: 0x333333,
         begin: {
           year: 2019,
           month: 10,
@@ -292,7 +315,7 @@ const ASSETS = {
       },
       routea4: {
         file: '4a-route.ply',
-        tempColor: 0x222222,
+        color: 0x222222,
         begin: {
           year: 2019,
           month: 10,
@@ -302,7 +325,7 @@ const ASSETS = {
     //4a1
       routesMinus4a1: {
         file: 'routes-4a1.ply',
-        tempColor: 0x222222,
+        color: 0x222222,
         end: {
           year: 2019,
           month: 7,
@@ -311,7 +334,7 @@ const ASSETS = {
       },
       trottoirs4a1: {
         file: 'trottoirs-4a1.ply',
-        tempColor: 0x444444,
+        color: 0x444444,
         end: {
           year: 2019,
           month: 7,
@@ -320,7 +343,7 @@ const ASSETS = {
       },
       chantier4a1: {
         file: '4a1-chantier.ply',
-        tempColor: 0x442211,
+        color: 0x442211,
         begin: {
           year: 2019,
           month: 7,
@@ -334,7 +357,7 @@ const ASSETS = {
       },
       buisson4a1: {
         file: '4a1.ply',
-        tempColor: 0x333333,
+        color: 0x333333,
         begin: {
           year: 2019,
           month: 10,
@@ -345,6 +368,15 @@ const ASSETS = {
     //arbres
       soultAnciensArbres: {
         file: 'arbres-soult.ply',
+        map: 'platane.png',
+        receiveShadow: false,
+        useCustomDepthMaterial: true,
+        minFilter: 'linear',
+        tweenColorWithDayLight: true,
+        material: 'basic',
+        side: 'double',
+        alphaTest: 0.7,
+        transparent: true,
         end: {
           year: 2018,
           month: 11,
@@ -353,6 +385,15 @@ const ASSETS = {
       },
       buissonAnciensArbres: {
         file: 'arbres-buisson.ply',
+        map: 'platane.png',
+        receiveShadow: false,
+        useCustomDepthMaterial: true,
+        minFilter: 'linear',
+        tweenColorWithDayLight: true,
+        material: 'basic',
+        side: 'double',
+        alphaTest: 0.7,
+        transparent: true,
         end: {
           year: 2018,
           month: 5,
@@ -361,6 +402,15 @@ const ASSETS = {
       },
       buissonNouveauxArbres: {
         file: 'arbres-nouveaux-buisson.ply',
+        map: 'erable.png',
+        receiveShadow: false,
+        useCustomDepthMaterial: true,
+        minFilter: 'linear',
+        tweenColorWithDayLight: true,
+        material: 'basic',
+        side: 'double',
+        alphaTest: 0.7,
+        transparent: true,
         begin: {
           year: 2019,
           month: 11,
@@ -369,6 +419,15 @@ const ASSETS = {
       },
       soultNouveauxArbres: {
         file: 'arbres-nouveaux-soult.ply',
+        map: 'erable.png',
+        receiveShadow: false,
+        useCustomDepthMaterial: true,
+        minFilter: 'linear',
+        tweenColorWithDayLight: true,
+        material: 'basic',
+        side: 'double',
+        alphaTest: 0.7,
+        transparent: true,
         begin: {
           year: 2019,
           month: 7,
@@ -378,7 +437,7 @@ const ASSETS = {
     
     routesContreAllees: {
       file: 'route-contreallees.ply',
-      tempColor: 0x222222,
+      color: 0x222222,
       end: {
         year: 2018,
         month: 5,
@@ -387,7 +446,7 @@ const ASSETS = {
     },
     routesSoult: {
       file: 'routes-soult.ply',
-      tempColor: 0x222222,
+      color: 0x222222,
       end: {
         year: 2018,
         month: 11,
@@ -396,7 +455,7 @@ const ASSETS = {
     },
     trottoirsContreAllees: {
       file: 'trottoirs-contreallees.ply',
-      tempColor: 0x444444,
+      color: 0x444444,
       end: {
         year: 2018,
         month: 5,
@@ -405,7 +464,7 @@ const ASSETS = {
     },
     soult1: {
       file: 'soult1.ply',
-      tempColor: 0x444444,
+      color: 0x444444,
       end: {
         year: 2018,
         month: 11,
@@ -414,30 +473,30 @@ const ASSETS = {
     },
     contreallees: {
       file: 'contreallees.ply',
-      tex: 'parking.png',
+      map: 'parking.png',
       begin: {
-        year: 2019,
-        month: 6,
+        year: 2018,
+        month: 11,
         day: 0
       }
     },
     contrealleesChantier: {
       file: 'contreallees-chantier.ply',
-      tempColor: 0x442211,
+      color: 0x442211,
       begin: {
         year: 2018,
         month: 5,
         day: 0
       },
       end: {
-        year: 2019,
-        month: 6,
+        year: 2018,
+        month: 11,
         day: 0
       }
     },
     soult2Chantier: {
       file: 'soult2-chantier.ply',
-      tempColor: 0x442211,
+      color: 0x442211,
       begin: {
         year: 2018,
         month: 11,
@@ -451,7 +510,7 @@ const ASSETS = {
     },
     soult2AireChantier: {
       file: 'soult2-aire-chantier.ply',
-      tempColor: 0x442211,
+      color: 0x442211,
       begin: {
         year: 2019,
         month: 3,
@@ -465,7 +524,8 @@ const ASSETS = {
     },
     soult2: {
       file: 'soult2.ply',
-      tex: 'parking.png',
+      minFilter: 'linear',
+      map: 'parking.png',
       begin: {
         year: 2019,
         month: 6,
@@ -475,7 +535,7 @@ const ASSETS = {
   /* INSTALLATION CHANTIER */
     chantier: {
       file: 'chantier.ply',
-      tempColor: 0xffbb55,
+      color: 0xffbb55,
       begin: {
         year: 2018,
         month: 1,
@@ -490,7 +550,7 @@ const ASSETS = {
   /* VILLEGOUDOU */
     villegoudou1: {
       file: 'villegoudou1.ply',
-      tempColor: 0x222222,
+      color: 0x222222,
       end: {
         year: 2018,
         month: 9,
@@ -499,7 +559,7 @@ const ASSETS = {
     },
     trottoirsVillegoudou: {
       file: 'trottoirs-villegoudou.ply',
-      tempColor: 0x444444,
+      color: 0x444444,
       end: {
         year: 2018,
         month: 9,
@@ -508,7 +568,7 @@ const ASSETS = {
     },
     villegoudouConstruction: {
       file: 'villegoudou_construction.ply',
-      tempColor: 0x442211,
+      color: 0x442211,
       begin: {
         year: 2018,
         month: 9,
@@ -522,7 +582,7 @@ const ASSETS = {
     },
     villegoudouConstructionMinusChantier: {
       file: 'villegoudou_construction-soult-chantier.ply',
-      tempColor: 0x442211,
+      color: 0x442211,
       begin: {
         year: 2018,
         month: 9,
@@ -536,7 +596,7 @@ const ASSETS = {
     },
     villegoudou2: {
       file: 'villegoudou2.ply',
-      tempColor: 0x222222,
+      color: 0x222222,
       begin: {
         year: 2019,
         month: 2,
@@ -545,7 +605,7 @@ const ASSETS = {
     },
     villegoudou2Trottoirs: {
       file: 'villegoudou2-trottoirs.ply',
-      tempColor: 0x444444,
+      color: 0x444444,
       begin: {
         year: 2019,
         month: 2,

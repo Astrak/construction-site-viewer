@@ -237,7 +237,7 @@ export default class Timeline {
 
     const relativeDate = this.getPositionFromDate( date );
 
-    this.viewer.city.objectsList.forEach( object => {
+    this.viewer.objectsList.forEach( object => {
 
       const data = object.userData;
 

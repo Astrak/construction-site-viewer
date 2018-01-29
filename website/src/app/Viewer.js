@@ -1,9 +1,9 @@
 import { PerspectiveCamera, Scene, Group } from 'three';
 
 import Renderer from './Renderer';
+import Loader from './Loader';
 import Hotspot from './Hotspot';
 import SpotPicker from './SpotPicker';
-import City from './City';
 import Environment from './Environment';
 
 import OrbitControls from './../lib/OrbitControlsr87-with-damping';
@@ -40,16 +40,29 @@ export default class Viewer {
 
     window.addEventListener( 'resize', this.resize.bind( this ) );
 
+    //prepares renderer, interaction, environment
     this.buildScene();
 
+    //render loop before assets load
     this.start();
+
+    //start loading
+    this.tweenedColorObjects = [];
+    this.objectsList = [];
+    this.loader = new Loader( this.renderer, this.camera, this.city, this.objectsList, this.tweenedColorObjects );
+    this.loader.start();
 
   }
 
   buildScene () {
 
-    this.city = new City( this.renderer.renderer, this.scene, this.camera );
-    this.environment = new Environment( this.renderer.renderer, this.scene, this.camera, this.city );
+    //root object
+    const city = new Group();
+    city.position.set( 50, 0, 25 );
+    this.scene.add( city );
+    this.city = city;
+
+    this.environment = new Environment( this.renderer.renderer, this.scene, this.camera, this.setBasicMaterialsIntensity.bind( this ) );
 
     const hotspotsGroup = new Group();
     this.scene.add( hotspotsGroup );
@@ -75,6 +88,12 @@ export default class Viewer {
       hotspotsGroup, 
       hotspotsArray 
     );
+
+  }
+
+  setBasicMaterialsIntensity ( v ) {
+
+    this.tweenedColorObjects.forEach( object => object.material.color.setRGB( v, v, v ) );
 
   }
 

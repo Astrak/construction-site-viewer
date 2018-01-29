@@ -6,7 +6,7 @@ import { DAYTIMES, defaultDayTime } from './../constants/dayTimes';
 
 export default class Environment {
 
-  constructor ( renderer, scene, camera, city ) {
+  constructor ( renderer, scene, camera, setBasicMaterialsIntensity ) {
 
     const that = this;
 
@@ -58,7 +58,7 @@ export default class Environment {
               if ( dayTime === 'Journée' ) v = treesColorTween.value * 0.5 + 0.5;
               else if ( that.activeDayTime === 'Journée' ) v = ( 1 - treesColorTween.value ) * 0.5 + 0.5;
               else v = ( 1 - ( ( 2 * treesColorTween.value - 1 ) ** 2 ) ) * 0.5 + 0.5;
-              city.setBasicMaterialsIntensity( v );
+              setBasicMaterialsIntensity( v );
             },
             onComplete () {
               that.activeDayTime = dayTime;

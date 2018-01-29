@@ -12,11 +12,15 @@ viewer.spotPicker.on( 'navigation', location => {
 
 viewer.spotPicker.navigateTo( 'soult' );
 
-viewer.city.on( 'asset-loaded', progress => {
+viewer.loader.on( 'asset-loaded', progress => {
   ui.splashScreen.updateProgress( progress ) 
 });
 
-viewer.city.on( 'assets-loaded', () => {
+viewer.loader.on( 'assets-loaded', () => {
   ui.timeline.setSceneContentToDate();
   ui.splashScreen.allowRemoval();
 });
+
+//
+
+console.info( 'https://interascope.com - 2018' );
