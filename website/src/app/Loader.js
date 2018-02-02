@@ -1,4 +1,4 @@
-import { Group, Mesh, MeshLambertMaterial, LinearFilter, MeshBasicMaterial, ShaderMaterial, DoubleSide, FrontSide, TextureLoader } from 'three';
+import { Group, Mesh, MeshLambertMaterial, LinearFilter, MeshBasicMaterial, MeshPhongMaterial, ShaderMaterial, DoubleSide, FrontSide, TextureLoader } from 'three';
 import PLYLoader from './../lib/PLYLoaderr89.js';
 
 import EventEmitter from 'events';
@@ -83,6 +83,9 @@ export default class Loader extends EventEmitter {
           case 'basic': 
             material = new MeshBasicMaterial( matOptions ); 
             break;
+          case 'phong': 
+            material = new MeshPhongMaterial( matOptions ); 
+            break;
           case 'lambert': 
           default:
             material = new MeshLambertMaterial( matOptions ); 
@@ -99,7 +102,7 @@ export default class Loader extends EventEmitter {
         that.objectsList.push( mesh );
         if ( ASSET.tweenColorWithDayLight ) that.tweenedColorObjects.push( mesh );
         Object.assign( mesh.userData, { begin: ASSET.begin, end: ASSET.end } );
-        if ( ASSET.useCustomDepthMaterial ) mesh.customDepthMaterial = that.getCustomDepthMaterial( material.map );
+        if ( ASSET.useCustomDepthMaterial ) mesh.customDepthMaterial = that.getCustomDepthMaterial( mesh );
           
         that.camera.update = true;
 
@@ -113,14 +116,14 @@ export default class Loader extends EventEmitter {
 
   }
 
-  getCustomDepthMaterial ( map ) {
+  getCustomDepthMaterial ( mesh ) {
 
     return new ShaderMaterial({
-      uniforms : { texture :  { value : map } },
+      uniforms : { texture :  { value : mesh.material.map } },
       vertexShader : `
         varying vec2 vUV;
         void main() {
-         vUV = 0.75 * uv;
+         vUV = uv;
          vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
          gl_Position = projectionMatrix * mvPosition;
         }`,

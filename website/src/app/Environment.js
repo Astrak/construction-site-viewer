@@ -81,7 +81,7 @@ export default class Environment {
       DAYTIMES[ defaultDayTime ][ 2 ]
     );
     Object.assign( this.sun.shadow.camera, {
-      top: 30,
+      top: 35,
       left: -50,
       right: 30,
       bottom: -30,
@@ -89,7 +89,7 @@ export default class Environment {
       near: 2
     });
     this.sun.castShadow = true;
-    const mapSize = window.devicePixelRatio > 1.1 ? 2048 : 4096;
+    const mapSize = 4096;
     this.sun.shadow.mapSize.set( mapSize, mapSize );
     const helper = new CameraHelper( this.sun.shadow.camera );
 

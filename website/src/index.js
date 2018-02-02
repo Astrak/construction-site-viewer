@@ -23,4 +23,4 @@ viewer.loader.on( 'assets-loaded', () => {
 
 //
 
-console.info( 'https://interascope.com - 2018' );
+console.info( 'App | models | textures : https://interascope.com - 2018' );
