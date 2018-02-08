@@ -197,6 +197,16 @@ const ASSETS = {
         day: 0
       }
     },
+    parkingNouvelleRoute: {
+      file: 'parking-nouvelle-route.ply',
+      minFilter: 'linear',
+      map: 'parking.png',
+      begin: {
+        year: 2019,
+        month: 10,
+        day: 0
+      }
+    },
     parkingSurfaceVehicules: {
       file: 'parking_surface_vehicules.ply',
       material: 'phong',
@@ -345,6 +355,28 @@ const ASSETS = {
         end: {
           year: 2019,
           month: 4,
+          day: 0
+        }
+      },
+      vehicules4a: {
+        file: '4a-vehicules.ply',
+        material: 'phong',
+        transparent: true,
+        map: 'cars.png',
+        end: {
+          year: 2019,
+          month: 4,
+          day: 0
+        }
+      },
+      vehicules4a2: {
+        file: '4a-vehicules2.ply',
+        material: 'phong',
+        transparent: true,
+        map: 'cars.png',
+        begin: {
+          year: 2019,
+          month: 10,
           day: 0
         }
       },
@@ -547,7 +579,7 @@ const ASSETS = {
         map: 'parking.png',
         begin: {
           year: 2019,
-          month: 7,
+          month: 10,
           day: 0
         }
       },
@@ -562,7 +594,7 @@ const ASSETS = {
         transparent: true,
         begin: {
           year: 2019,
-          month: 7,
+          month: 10,
           day: 0
         }
       },
@@ -712,7 +744,7 @@ const ASSETS = {
       },
       end: {
         year: 2019,
-        month: 6,
+        month: 10,
         day: 0
       }
     },
@@ -723,6 +755,16 @@ const ASSETS = {
       begin: {
         year: 2019,
         month: 6,
+        day: 0
+      }
+    },
+    soult2Aire: {
+      file: 'soult2-aire.ply',
+      minFilter: 'linear',
+      map: 'parking.png',
+      begin: {
+        year: 2019,
+        month: 10,
         day: 0
       }
     },
@@ -737,7 +779,7 @@ const ASSETS = {
       transparent: true,
       begin: {
         year: 2019,
-        month: 6,
+        month: 10,
         day: 0
       }
     },

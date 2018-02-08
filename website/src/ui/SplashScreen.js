@@ -42,7 +42,7 @@ export default class SplashScreen {
     this.contentElement.appendChild( subtitleElement );
 
     //separator
-    const separator = document.createElement( 'hr' );
+    const separator = document.createElement( 'span' );
     separator.id = 'ui-splash-screen-separator';
     this.contentElement.appendChild( separator );
 

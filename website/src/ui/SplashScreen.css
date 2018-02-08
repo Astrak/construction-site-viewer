@@ -14,7 +14,8 @@
   vertical-align: middle;
 }
 /* content */
-#ui-splash-screen-content > p{
+#ui-splash-screen-content > p:first-of-type{
+  margin-top: 40px;
 }
 #ui-splash-screen-content{
   transition: all 1s ease;
@@ -44,6 +45,11 @@
 #ui-splash-screen-separator{
   margin: 20px 0;
   border-color: #000;
+  width: calc( 100% - 40px );
+  height: 2px;
+  position: absolute;
+  background: #000;
+  margin-left: calc( -50% + 20px );
 }
 /* progress */
 #ui-splash-screen-progress-container{

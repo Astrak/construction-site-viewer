@@ -1,6 +1,7 @@
-import { DAYTIMES, defaultDayTime } from './../constants/dayTimes';
 import { TweenLite } from 'gsap';
 import Button from './Button';
+import { DAYTIMES, defaultDayTime } from './../constants/dayTimes';
+import INFOS from './../constants/infos';
 
 import './Ambiancer.css';
 
@@ -51,6 +52,61 @@ export default class Ambiancer {
     }, false );
     this.domElement.appendChild( volumeButton.domElement );
 
+    //info
+    const info = new Button( '<i class="material-icons">menu</i>' );
+    info.domElement.style.position = 'absolute';
+    info.domElement.style.left = '0';
+    info.domElement.addEventListener( 'click', this.showInfos.bind( this ), false );
+    this.domElement.appendChild( info.domElement );
+
+    this.infoAnimation = document.createElement( 'span' );
+    this.infoAnimation.id = 'ui-ambiancer-infos-animation';
+    this.domElement.appendChild( this.infoAnimation );
+
+    this.infoContainer = document.createElement( 'div' );
+    this.infoContainer.id = 'ui-ambiancer-infos-container';
+    this.infoContainer.classList.add( 'hide' );
+
+    const close = new Button( '<i class="material-icons">highlight_off</i>' );
+    close.domElement.id = 'ui-ambiancer-infos-close';
+    close.domElement.addEventListener( 'click', this.closeInfos.bind( this ), false );
+    this.infoContainer.appendChild( close.domElement );
+
+    const infoContent = document.createElement( 'div' );
+    infoContent.id = 'ui-ambiancer-infos-content';
+    infoContent.innerHTML = INFOS;
+    this.infoContainer.appendChild( infoContent );
+
+  }
+
+  showInfos () {
+
+    const that = this;
+
+    TweenLite.to( 
+      this.infoAnimation, 
+      1, 
+      { 
+        css: { transform: 'scale( 5 )' },
+        ease: Power2.easeOut,
+        onComplete () {
+          that.domElement.appendChild( that.infoContainer );
+          setTimeout( () => that.infoContainer.classList.remove( 'hide' ), 50 );
+        } 
+      }
+    );
+
+  }
+
+  closeInfos () {
+
+    const that = this;
+
+    this.infoContainer.classList.add( 'hide' );
+    setTimeout( () => {
+      that.domElement.removeChild( that.infoContainer );
+      TweenLite.to( that.infoAnimation, 1, { css: { transform: 'scale( 0 )' }, ease: Power4.easeOut });
+    }, 1000 );
   }
 
   playAudio () {

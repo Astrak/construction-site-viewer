@@ -8,3 +8,49 @@
   0%{ opacity: 0; }
   100%{ opacity: 1; }
 }
+
+#ui-ambiancer-infos-animation{
+  position: absolute;
+  left: 25px;
+  top: 20px;
+  margin-top: -500px;
+  margin-left: -500px;
+  border-radius: 50%;
+  transform: scale( 0 );
+  background: rgba( 150, 150, 150, 0.95 );
+  width: 1000px;
+  height: 1000px;
+  z-index: 1;
+  pointer-events: stroke;
+}
+
+#ui-ambiancer-infos-close{
+  position: fixed;
+  right: 0px;
+  top: 0;
+}
+
+#ui-ambiancer-infos-container{
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  top: 0;
+  opacity: 1;
+  pointer-events: stroke;
+  z-index: 2;
+  padding: 30px;
+  box-sizing: border-box;
+  transition: all 1s ease;
+}
+
+#ui-ambiancer-infos-container.hide{
+  opacity: 0;
+}
+
+#ui-ambiancer-infos-content{
+  font-family: 'Raleway', sans-serif;
+  overflow-y: scroll;
+  height: 100%;
+  position: relative;
+}

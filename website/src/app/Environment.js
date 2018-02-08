@@ -31,6 +31,9 @@ export default class Environment {
 
         that.targetDayTime = dayTime;
 
+        const mapSizeDuringTween = 1024;
+        that.sun.shadow.mapSize.set( mapSizeDuringTween, mapSizeDuringTween );
+
         TweenLite.to( 
           sun.position, 
           2, 
@@ -42,6 +45,11 @@ export default class Environment {
               sky.material.uniforms.sunPosition.value.copy( sun.position );
               camera.update = true;
               renderer.shadowMap.needsUpdate = true;
+            },
+            onComplete () {
+              that.sun.shadow.mapSize.set( 4096, 4096 );
+              camera.update = true;
+              renderer.shadowMap.needsUpdate = true;              
             }
           }
         );
@@ -89,8 +97,7 @@ export default class Environment {
       near: 2
     });
     this.sun.castShadow = true;
-    const mapSize = 4096;
-    this.sun.shadow.mapSize.set( mapSize, mapSize );
+    this.sun.shadow.mapSize.set( 4096, 4096 );
     const helper = new CameraHelper( this.sun.shadow.camera );
 
     this.ambient = new AmbientLight( 0xaaaacc );
