@@ -35,7 +35,6 @@ export default class Ambiancer {
       this.domElement.appendChild( dayTimeButton.domElement );
       dayTimesButtons.push( dayTimeButton );
     }
-    console.info( 'Weather icons by Rami McMin http://www.ramimcm.in/' );
 
     //audio
     this.audio = new Audio();

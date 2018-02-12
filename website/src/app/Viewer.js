@@ -97,6 +97,18 @@ export default class Viewer {
 
   }
 
+  addMode ( mode ) {
+
+    this.objectsList.forEach( object => { if ( object.userData.mode === mode ) object.visible = true; });
+
+  }
+
+  removeMode ( mode ) {
+
+    this.objectsList.forEach( object => { if ( object.userData.mode === mode ) object.visible = false; });
+
+  }
+
   resize () {
 
     this.renderer.resize();

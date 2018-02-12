@@ -46,7 +46,7 @@ const ASSETS = {
       map: 'parking.png',
       end: {
         year: 2018,
-        month: 3,
+        month: 1,
         day: 0
       }
     },/*
@@ -816,6 +816,20 @@ const ASSETS = {
         day: 0
       }
     },
+    villegoudou1Barrieres: {
+      file: 'villegoudou1-barrieres.ply',
+      map: 'parking.png',
+      material: 'phong',
+      useCustomDepthMaterial: true,
+      transparent: true,
+      side: 'double',
+      alphaTest: 0.7,
+      end: {
+        year: 2018,
+        month: 9,
+        day: 0
+      }
+    },
     trottoirsVillegoudou: {
       file: 'trottoirs-villegoudou.ply',
       map: 'parking.png',
@@ -870,7 +884,50 @@ const ASSETS = {
         month: 2,
         day: 0
       }
-    }
+    },
+  /* XRAY */
+    toilettes1: {
+      file: 'toilettes1.ply',
+      color: 0xff1111,
+      material: 'pĥong',
+      mode: 'toilets',
+      XRay: true
+    },
+    toilettes2: {
+      file: 'toilettes2.ply',
+      color: 0x1111ff,
+      material: 'pĥong',
+      mode: 'toilets',
+      XRay: true
+    },
+    parking1: {
+      file: 'parking1.ply',
+      color: 0xff1111,
+      material: 'pĥong',
+      mode: 'parking',
+      XRay: true
+    },
+    parking2: {
+      file: 'parking2.ply',
+      color: 0x1111ff,
+      material: 'pĥong',
+      mode: 'parking',
+      XRay: true
+    },
+    routes1: {
+      file: 'routes1.ply',
+      color: 0xff1111,
+      material: 'pĥong',
+      mode: 'road',
+      XRay: true
+    },
+    routes2: {
+      file: 'routes2.ply',
+      color: 0x1111ff,
+      material: 'pĥong',
+      mode: 'road',
+      XRay: true
+    },
 };
 
 export default ASSETS;

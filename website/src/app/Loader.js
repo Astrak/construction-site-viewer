@@ -77,8 +77,10 @@ export default class Loader extends EventEmitter {
           color: ASSET.color === undefined ? 0xffffff : ASSET.color,
           side: ASSET.side === 'double' ? DoubleSide : FrontSide,
           alphaTest: ASSET.alphaTest || 0,
-          transparent: ASSET.transparent === true
+          transparent: ASSET.transparent === true,
+
         };
+
         switch ( ASSET.material ) {
           case 'basic': 
             material = new MeshBasicMaterial( matOptions ); 
@@ -101,9 +103,24 @@ export default class Loader extends EventEmitter {
         that.rootObject.add( mesh );
         that.objectsList.push( mesh );
         if ( ASSET.tweenColorWithDayLight ) that.tweenedColorObjects.push( mesh );
-        Object.assign( mesh.userData, { begin: ASSET.begin, end: ASSET.end } );
+        Object.assign( mesh.userData, { begin: ASSET.begin, end: ASSET.end, mode: ASSET.mode } );
         if ( ASSET.useCustomDepthMaterial ) mesh.customDepthMaterial = that.getCustomDepthMaterial( mesh );
-          
+
+        if ( ASSET.XRay ) {
+
+          Object.assign( mesh.material, {
+            depthWrite: false,
+            depthTest: false,
+            transparent: true,
+            opacity: 0,
+            side: DoubleSide
+          });
+          mesh.renderOrder = 1;
+          mesh.receiveShadow = false;
+          mesh.castShadow = false;
+
+        }
+
         that.camera.update = true;
 
         that.loadCount ++;

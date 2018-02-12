@@ -7,7 +7,7 @@ const NSString = "http://www.w3.org/2000/svg";
 
 export default class Timeline {
 
-  constructor ( viewer, container ) {
+  constructor ( viewer, activeModes, container ) {
 
     const userDate = new Date();
 
@@ -27,6 +27,8 @@ export default class Timeline {
     };
 
     this.viewer = viewer;
+
+    this.activeModes = activeModes;
 
     /* UI Elements */
     this.container = container;
@@ -231,7 +233,7 @@ export default class Timeline {
 
   }
 
-  setSceneContentToDate ( date = this.currentDate ) {
+  setSceneContentToDate ( date = this.activeDate ) {
 
     const that = this;
 
@@ -248,7 +250,9 @@ export default class Timeline {
       const objectRelativeEndDate = that.getPositionFromDate( endDate )
 
       object.visible = relativeDate > objectRelativeBeginDate 
-                    && relativeDate < objectRelativeEndDate;
+                    && relativeDate < objectRelativeEndDate
+                    && ( ! object.userData.mode || that.activeModes.indexOf( object.userData.mode ) > -1 );
+
 
     });
 

@@ -1,5 +1,8 @@
 #ui-ambiancer{
   animation: ui-ambiancer-appear 0.5s ease;
+  position: absolute;
+  top: 0;
+  width: 100%;
   opacity: 1;
   background-image: linear-gradient( 180deg, rgba( 255, 255, 255, 0.5 ) 0%, rgba( 0, 0, 0, 0 ) 100% );
 }
