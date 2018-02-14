@@ -1,6 +1,6 @@
 #ui-modes{
   position: absolute;
-  right: 0;
+  left: 0;
   top: 50%;
   animation: ui-modes-appear 0.5s ease;
 }

@@ -7,10 +7,11 @@ import './Ambiancer.css';
 
 export default class Ambiancer {
 
-  constructor ( environment, container ) {
+  constructor ( viewer, container ) {
 
     const that = this;
 
+    this.viewer = viewer;
     this.container = container;
 
     this.domElement = document.createElement( 'div' );
@@ -21,16 +22,17 @@ export default class Ambiancer {
     for ( let dayTime in DAYTIMES ) {
       let content;
       switch ( dayTime ) {
-        case 'Journée': content = "<img width=24 src='public/img/sun.svg'/>"; break;
-        case 'Matin': content = "<img width=24 src='public/img/sunrise.svg'/>"; break;
-        case 'Soirée': content = "<img width=24 src='public/img/sunset.svg'/>"; break;
+        case 'day': content = "<img width=24 src='public/img/sun.svg'/>"; break;
+        case 'morning': content = "<img width=24 src='public/img/sunrise.svg'/>"; break;
+        case 'evening': content = "<img width=24 src='public/img/sunset.svg'/>"; break;
       }
       const dayTimeButton = new Button( content );
       if ( defaultDayTime === dayTime ) dayTimeButton.select();
       dayTimeButton.domElement.addEventListener( 'click', e => {
-        environment[ 'make' + dayTime ]();
         dayTimesButtons.forEach( button => button.unselect() );
         dayTimeButton.select();
+        viewer.environment.activeDayTime = viewer.environment.targetDayTime;
+        viewer.environment[ 'make' + dayTime ]();
       }, false );
       this.domElement.appendChild( dayTimeButton.domElement );
       dayTimesButtons.push( dayTimeButton );

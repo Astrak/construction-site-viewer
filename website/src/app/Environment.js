@@ -6,7 +6,7 @@ import { DAYTIMES, defaultDayTime } from './../constants/dayTimes';
 
 export default class Environment {
 
-  constructor ( renderer, scene, camera, setBasicMaterialsIntensity ) {
+  constructor ( renderer, scene, camera, setBasicMaterialsIntensity, objectsList ) {
 
     const that = this;
 
@@ -16,8 +16,8 @@ export default class Environment {
 
     this.setSky();
 
-    this.activeDayTime = 'Journée';
-    this.targetDayTime = 'Journée';
+    this.activeDayTime = 'day';
+    this.targetDayTime = 'day';
 
     const sun = this.sun,
       sky = this.sky;
@@ -31,9 +31,9 @@ export default class Environment {
 
         that.targetDayTime = dayTime;
 
+        //lighting + sky + shadow tween
         const mapSizeDuringTween = 1024;
         that.sun.shadow.mapSize.set( mapSizeDuringTween, mapSizeDuringTween );
-
         TweenLite.to( 
           sun.position, 
           2, 
@@ -54,8 +54,8 @@ export default class Environment {
           }
         );
 
+        //basic materials tween
         const treesColorTween = { value: 0 };
-
         TweenLite.to(
           treesColorTween,
           2,
@@ -63,8 +63,8 @@ export default class Environment {
             value: 1,
             onUpdate () {
               let v;
-              if ( dayTime === 'Journée' ) v = treesColorTween.value * 0.5 + 0.5;
-              else if ( that.activeDayTime === 'Journée' ) v = ( 1 - treesColorTween.value ) * 0.5 + 0.5;
+              if ( dayTime === 'day' ) v = treesColorTween.value * 0.5 + 0.5;
+              else if ( that.activeDayTime === 'day' ) v = ( 1 - treesColorTween.value ) * 0.5 + 0.5;
               else v = ( 1 - ( ( 2 * treesColorTween.value - 1 ) ** 2 ) ) * 0.5 + 0.5;
               setBasicMaterialsIntensity( v );
             },
@@ -73,6 +73,37 @@ export default class Environment {
             }
           }
         );
+
+        //daytimes meshes tween
+        const bottomPosition = -0.8,
+          tweenHide = { height: 0 },
+          tweenShow = { height: bottomPosition };
+
+        TweenLite.to( tweenHide, 1, {
+          height: bottomPosition,
+          onUpdate () {
+            objectsList.forEach( object => {
+              if ( object.userData.dayTime && object.userData.dayTime === that.activeDayTime ) {
+                object.position.y = tweenHide.height;
+                object.updateMatrix();
+              }
+            });
+          }
+        });
+
+        TweenLite.to( tweenShow, 1, {
+          height: 0,
+          delay: 1,
+          ease: Elastic.easeOut.config(1, 0.4),
+          onUpdate () {
+            objectsList.forEach( object => {
+              if ( object.userData.dayTime && object.userData.dayTime === that.targetDayTime ) {
+                object.position.y = tweenShow.height;
+                object.updateMatrix();
+              }
+            });
+          }
+        });
 
       }
 

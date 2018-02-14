@@ -21,8 +21,8 @@ export default class Viewer {
     this.camera = new PerspectiveCamera( 50, innerWidth / innerHeight, .1, 1200 );
     this.camera.position.set( 43, 4, 12 );
 
-    const controls = new OrbitControls( this.camera, this.renderer.renderer.domElement );
-    Object.assign( controls, {
+    this.controls = new OrbitControls( this.camera, this.renderer.renderer.domElement );
+    Object.assign( this.controls, {
       enableDamping: true,
       rotateDampingFactor: .05,
       rotateSpeed: .017,
@@ -32,13 +32,15 @@ export default class Viewer {
       maxDistance: 23,
       zoomSpeed: 0.12,
     });
-    controls.addEventListener( 'change', () => this.camera.update = true );
-    controls.target.set(35,1,17);
-    this.controls = controls;
+    this.controls.addEventListener( 'change', () => this.camera.update = true );
+    this.controls.target.set( 35, 1, 17 );
 
     this.renderer.setRendering( this.scene, this.camera, this.controls );
 
     window.addEventListener( 'resize', this.resize.bind( this ) );
+
+    this.tweenedColorObjects = [];
+    this.objectsList = [];
 
     //prepares renderer, interaction, environment
     this.buildScene();
@@ -47,8 +49,6 @@ export default class Viewer {
     this.start();
 
     //start loading
-    this.tweenedColorObjects = [];
-    this.objectsList = [];
     this.loader = new Loader( this.renderer, this.camera, this.city, this.objectsList, this.tweenedColorObjects );
     this.loader.start();
 
@@ -61,8 +61,7 @@ export default class Viewer {
     city.position.set( 50, 0, 25 );
     this.scene.add( city );
     this.city = city;
-
-    this.environment = new Environment( this.renderer.renderer, this.scene, this.camera, this.setBasicMaterialsIntensity.bind( this ) );
+    this.environment = new Environment( this.renderer.renderer, this.scene, this.camera, this.setBasicMaterialsIntensity.bind( this ), this.objectsList );
 
     const hotspotsGroup = new Group();
     this.scene.add( hotspotsGroup );

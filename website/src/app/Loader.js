@@ -78,7 +78,7 @@ export default class Loader extends EventEmitter {
           side: ASSET.side === 'double' ? DoubleSide : FrontSide,
           alphaTest: ASSET.alphaTest || 0,
           transparent: ASSET.transparent === true,
-
+          depthWrite: ASSET.hasOwnProperty( 'depthWrite' ) ? ASSET.depthWrite : true
         };
 
         switch ( ASSET.material ) {
@@ -103,11 +103,10 @@ export default class Loader extends EventEmitter {
         that.rootObject.add( mesh );
         that.objectsList.push( mesh );
         if ( ASSET.tweenColorWithDayLight ) that.tweenedColorObjects.push( mesh );
-        Object.assign( mesh.userData, { begin: ASSET.begin, end: ASSET.end, mode: ASSET.mode } );
+        Object.assign( mesh.userData, { begin: ASSET.begin, end: ASSET.end, mode: ASSET.mode, dayTime: ASSET.dayTime } );
         if ( ASSET.useCustomDepthMaterial ) mesh.customDepthMaterial = that.getCustomDepthMaterial( mesh );
 
         if ( ASSET.XRay ) {
-
           Object.assign( mesh.material, {
             depthWrite: false,
             depthTest: false,
@@ -115,11 +114,17 @@ export default class Loader extends EventEmitter {
             opacity: 0,
             side: DoubleSide
           });
-          mesh.renderOrder = 1;
+          mesh.renderOrder = Infinity;
           mesh.receiveShadow = false;
           mesh.castShadow = false;
-
         }
+
+        if ( ASSET.dayTime && ASSET.dayTime !== 'day' ) {
+          mesh.position.y = -0.8;
+          mesh.updateMatrix();
+        }
+
+        if ( ASSET.renderOrder ) mesh.renderOrder = ASSET.renderOrder;
 
         that.camera.update = true;
 

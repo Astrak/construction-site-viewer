@@ -21,6 +21,8 @@ viewer.loader.on( 'assets-loaded', () => {
   ui.splashScreen.allowRemoval();
 });
 
+viewer.renderer.onUpdate = ui.zoomer.update.bind( ui.zoomer );
+
 //
 
-console.info( 'App | models | textures : https://interascope.com - 2018' );
+console.info( 'App | models | textures | sound : https://interascope.com - 2018' );

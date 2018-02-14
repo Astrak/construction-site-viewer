@@ -889,44 +889,97 @@ const ASSETS = {
     toilettes1: {
       file: 'toilettes1.ply',
       color: 0xff1111,
-      material: 'pĥong',
+      material: 'basic',
       mode: 'toilets',
       XRay: true
     },
     toilettes2: {
       file: 'toilettes2.ply',
       color: 0x1111ff,
-      material: 'pĥong',
+      material: 'basic',
       mode: 'toilets',
       XRay: true
     },
     parking1: {
       file: 'parking1.ply',
       color: 0xff1111,
-      material: 'pĥong',
+      material: 'basic',
       mode: 'parking',
       XRay: true
     },
     parking2: {
       file: 'parking2.ply',
       color: 0x1111ff,
-      material: 'pĥong',
+      material: 'basic',
       mode: 'parking',
       XRay: true
     },
     routes1: {
       file: 'routes1.ply',
       color: 0xff1111,
-      material: 'pĥong',
+      material: 'basic',
       mode: 'road',
       XRay: true
     },
     routes2: {
       file: 'routes2.ply',
       color: 0x1111ff,
-      material: 'pĥong',
+      material: 'basic',
       mode: 'road',
       XRay: true
+    },
+    trees1: {
+      file: 'anciens_arbres.ply',
+      color: 0xff1111,
+      material: 'basic',
+      mode: 'trees',
+      XRay: true
+    },
+    trees2: {
+      file: 'nouveaux_arbres.ply',
+      color: 0x1111ff,
+      material: 'basic',
+      mode: 'trees',
+      XRay: true
+    },
+  /* DAYTIMES */
+    marche: {
+      file: 'marche.ply',
+      map: 'parking.png',
+      transparent: true,
+      dayTime: 'morning',
+      begin: {
+        year: 2019,
+        month: 10,
+        day: 0
+      }
+    },
+    concert: {
+      file: 'concert.ply',
+      map: 'parking.png',
+      transparent: true,
+      dayTime: 'evening',
+      side: 'double',
+      alphaTest: 0.01,
+      begin: {
+        year: 2019,
+        month: 10,
+        day: 0
+      }
+    },
+    concertEffects: {
+      file: 'concert-effects.ply',
+      map: 'parking.png',
+      transparent: true,
+      depthWrite: false,
+      renderOrder: 1,
+      dayTime: 'evening',
+      side: 'double',
+      begin: {
+        year: 2019,
+        month: 10,
+        day: 0
+      }
     },
 };
 

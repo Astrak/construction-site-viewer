@@ -22,6 +22,8 @@ export default class Renderer {
     this.renderer.toneMapping = CineonToneMapping;
     document.getElementById( 'app' ).appendChild( this.renderer.domElement );
 
+    this.onUpdate = function () {};
+
   }
 
   resize () {
@@ -105,20 +107,22 @@ export default class Renderer {
 
     requestAnimationFrame( this.animate.bind( this ) );
 
-    const cameraDistance = this.camera.position.clone().sub( this.controls.target ).length();
+    const cameraDistance = this.cameraDistance || this.camera.position.clone().sub( this.controls.target ).length();
     this.controls.minPolarAngle = this.controls.maxPolarAngle = 1 + 0.4 * ( ( 10 - cameraDistance ) / 5 );
 
     this.controls.update();
 
     if ( this.camera.update ) {
 
-      if ( this.isDevice ) {//better benefit pixelratio than fxaa, if pr > 1
+      if ( this.isDevice ) {//better benefit pixelratio than fxaa, if pr > 1 (?)
         this.renderer.render( this.scene, this.camera );
       } else {
         this.composer.render( 0.016 );
       }
 
       this.camera.update = false;
+
+      this.onUpdate();
 
     }
 
