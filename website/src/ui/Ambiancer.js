@@ -42,19 +42,19 @@ export default class Ambiancer {
     this.audio = new Audio();
     this.audio.src = 'public/sound/soult.mp3';
     this.audio.loop = true;
-    const volumeButton = new Button( '<i class="material-icons">volume_up</i>' );
+    const volumeButton = new Button( "<img width=24 src='public/img/volume-up.svg'/>" );
     volumeButton.domElement.style.position = 'absolute';
     volumeButton.domElement.style.right = '0';
     volumeButton.domElement.addEventListener( 'click', () => {
       that.muteAudio = ! that.muteAudio;
       that.muteAudio ? volumeButton.select() : volumeButton.unselect();
       TweenLite.to( that.audio, 2, { volume: that.muteAudio ? 0 : 0.5 } );
-      volumeButton.domElement.innerHTML = that.muteAudio ? '<i class="material-icons">volume_off</i>' : '<i class="material-icons">volume_up</i>';
+      volumeButton.domElement.innerHTML = that.muteAudio ? "<img width=24 src='public/img/volume-off.svg'/>" : "<img width=24 src='public/img/volume-up.svg'/>";
     }, false );
     this.domElement.appendChild( volumeButton.domElement );
 
     //info
-    const info = new Button( '<i class="material-icons">menu</i>' );
+    const info = new Button( "<img width=24 src='public/img/menu.svg'/>" );
     info.domElement.style.position = 'absolute';
     info.domElement.style.left = '0';
     info.domElement.addEventListener( 'click', this.showInfos.bind( this ), false );
@@ -68,7 +68,7 @@ export default class Ambiancer {
     this.infoContainer.id = 'ui-ambiancer-infos-container';
     this.infoContainer.classList.add( 'hide' );
 
-    const close = new Button( '<i class="material-icons">highlight_off</i>' );
+    const close = new Button( "<img width=24 src='public/img/close.svg'/>" );
     close.domElement.id = 'ui-ambiancer-infos-close';
     close.domElement.addEventListener( 'click', this.closeInfos.bind( this ), false );
     this.infoContainer.appendChild( close.domElement );
