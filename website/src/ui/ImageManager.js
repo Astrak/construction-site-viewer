@@ -38,11 +38,22 @@ export default class ImageManager {
     this.overlay.id = 'ui-image-overlay';
 
     this.close = new Button( "<img width=24 src='public/img/close.svg'/>" );
-    this.close.domElement.addEventListener( 'click', () => {
-      this.imageContainers
-    })
+    this.close.domElement.addEventListener( 'click', this.hideOverlay.bind( this ) );
+    this.overlay.appendChild( this.close.domElement );
 
     viewer.spotPicker.on( 'navigation', this.switchImages.bind( this ) );
+
+  }
+
+  showOverlay () {
+
+    this.container.appendChild( this.overlay );
+
+  }
+
+  hideOverlay () {
+
+    this.container.removeChild( this.overlay );
 
   }
 
@@ -51,6 +62,8 @@ export default class ImageManager {
     const padding = 20;
     const margin = 5;
     const border = 2;
+
+    this.showOverlay()
 
     //e.target.classList.add( 'ui-image-location-focus' );
 
