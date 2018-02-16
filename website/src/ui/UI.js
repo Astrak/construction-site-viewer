@@ -2,6 +2,7 @@ import Ambiancer from './Ambiancer';
 import Modes from './Modes';
 import Zoomer from './Zoomer';
 import Timeline from './Timeline';
+import ImageManager from './ImageManager';
 import SplashScreen from './SplashScreen';
 
 import './UI.css';
@@ -38,12 +39,15 @@ export default class UI {
     //right: zoomer
     this.zoomer = new Zoomer( viewer, this.container );
 
-    this.splashScreen = new SplashScreen( this.container );
+    this.imageManager = new ImageManager( viewer, this.container );
+
+    this.splashScreen = new SplashScreen( viewer, this.container );
     this.splashScreen.startCallBack = () => {
       that.ambiancer.show();
       that.timeline.show();
       that.modes.show();
       that.zoomer.show();
+      that.imageManager.show();
     };
     this.splashScreen.playAudioSpecialCallBack = that.ambiancer.playAudio.bind( that.ambiancer );
 

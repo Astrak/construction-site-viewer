@@ -2,6 +2,10 @@ const HOTSPOTS = {
   soult: {
     camera: [ 23.92, 13.75, 5.23 ],
     center: [ 26, 0, 13 ],
+    images: [
+      'public/img/main_aerial.jpg',
+      'public/img/fontaine.jpg'
+    ],
     begin: {
       month: 3,
       year: 2018
@@ -14,6 +18,9 @@ const HOTSPOTS = {
   villegoudou: {
     camera: [ 42.52, 4.68, 21.27 ],
     center: [ 37, 0, 16],
+    images: [
+      'public/img/villegoudou.jpg'
+    ],
     begin: {
       year: 2018,
       month: 9
@@ -26,6 +33,7 @@ const HOTSPOTS = {
   gare: {
     camera: [ 8.77, 6.08, 13.07 ],
     center: [ 17, 0, 12 ],
+    images: [],
     begin: {
       year: 2018,
       month: 0

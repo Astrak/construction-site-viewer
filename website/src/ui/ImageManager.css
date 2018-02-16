@@ -1,0 +1,53 @@
+#ui-images-container{
+  position: absolute;
+  width: 80px;
+  height: 30%;
+  bottom: 100px;
+  right: 50px;
+  overflow: hidden;
+  animation: ui-imagemanager-appear 0.5s ease;
+}
+
+@keyframes ui-imagemanager-appear {
+  0%{ opacity: 0; }
+  100%{ opacity: 1; }
+}
+.ui-images-location-container{
+  position: absolute;
+  bottom: 0;
+  transition: all 1s ease;
+  opacity: 0;
+  left: 100%;
+}
+.ui-images-location-container-visible{
+  left: 0%;
+  opacity: 1;
+}
+.ui-image-location{
+  width: 100%;
+  margin: 5px 0;
+  border: solid 2px #000;
+  box-sizing: border-box;
+  pointer-events: stroke;
+  cursor: pointer;
+}
+.ui-image-location-focus{
+  position: fixed;
+  padding: 20px;
+  width: 100%;
+  left: 0;
+  top: 50%;
+  z-index: 4;
+}
+#ui-image-overlay{
+  z-index: 3;
+  background: rgba( 150, 150, 150, 0.95 );
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+#ui-image-close{
+  position: fixed;
+  right: 0px;
+  top: 0;
+}

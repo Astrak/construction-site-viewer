@@ -8,7 +8,7 @@ import './SplashScreen.css';
 
 export default class SplashScreen {
 
-  constructor ( container ) {
+  constructor ( viewer, container ) {
 
     const that = this;
 
@@ -68,6 +68,9 @@ export default class SplashScreen {
     this.contentElement.appendChild( this.startButton.domElement );
     this.startCallBack = function () {};
     this.playAudioSpecialCallBack = function () {};
+
+    viewer.loader.on( 'asset-loaded', this.updateProgress.bind( this ) );
+    viewer.loader.on( 'assets-loaded', this.allowRemoval.bind( this ) );
 
   }
 

@@ -68,6 +68,9 @@ export default class Timeline {
     window.addEventListener( 'mouseup', this.onMouseUp, false );
     window.addEventListener( 'touchend', this.onMouseUp, false );
 
+    viewer.spotPicker.on( 'navigation', this.showConstructionSpan.bind( this ) );
+    viewer.loader.on( 'assets-loaded', this.setSceneContentToDate.bind( this ) );
+
   }
 
   show () {
