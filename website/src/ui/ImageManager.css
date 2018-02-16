@@ -2,7 +2,7 @@
   position: absolute;
   width: 80px;
   height: 30%;
-  bottom: 100px;
+  top: 40px;
   right: 50px;
   overflow: hidden;
   animation: ui-imagemanager-appear 0.5s ease;
@@ -14,22 +14,25 @@
 }
 .ui-images-location-container{
   position: absolute;
-  bottom: 0;
   transition: all 1s ease;
-  opacity: 0;
   left: 100%;
+  width: 100%;
 }
 .ui-images-location-container-visible{
   left: 0%;
-  opacity: 1;
 }
 .ui-image-location{
   width: 100%;
+  height: 40px;
   margin: 5px 0;
+  background-color: #000;
   border: solid 2px #000;
   box-sizing: border-box;
   pointer-events: stroke;
   cursor: pointer;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 .ui-image-location-focus{
   position: fixed;
@@ -40,7 +43,6 @@
   z-index: 4;
 }
 #ui-image-overlay{
-  z-index: 3;
   background: rgba( 150, 150, 150, 0.95 );
   position: absolute;
   top: 0; left: 0;
@@ -50,7 +52,22 @@
 }
 #ui-image-close{
   position: fixed;
-  right: 0px;
+  right: 0;
   top: 0;
+  z-index: 1;
+  filter: invert( 100% );
+}
+.ui-image{    
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border: solid 10px #000;
+  background-color: #000;
 }
 

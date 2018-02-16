@@ -24,9 +24,14 @@ export default class ImageManager {
 
       for ( let i = 0 ; i < HOTSPOTS[ location ].images.length ; i++ ) {
 
-        const thumbnail = new Image();
-        thumbnail.src = HOTSPOTS[ location ].images[ i ];
+        const image = document.createElement( 'div' );
+        image.style.backgroundImage = "url('" + HOTSPOTS[ location ].images[ i ] + "')";
+        image.className = 'ui-image';
+
+        const thumbnail = document.createElement( 'div' );
+        thumbnail.style.backgroundImage = "url('" + HOTSPOTS[ location ].images[ i ] + "')";
         thumbnail.className = 'ui-image-location';
+        thumbnail.image = image;
         thumbnail.addEventListener( 'click', this.clickImage.bind( this ), false );
         imageContainer.appendChild( thumbnail );
 
@@ -38,6 +43,7 @@ export default class ImageManager {
     this.overlay.id = 'ui-image-overlay';
 
     this.close = new Button( "<img width=24 src='public/img/close.svg'/>" );
+    this.close.domElement.id = 'ui-image-close';
     this.close.domElement.addEventListener( 'click', this.hideOverlay.bind( this ) );
     this.overlay.appendChild( this.close.domElement );
 
@@ -45,8 +51,9 @@ export default class ImageManager {
 
   }
 
-  showOverlay () {
+  showOverlay ( image ) {
 
+    this.overlay.appendChild( image );
     this.container.appendChild( this.overlay );
 
   }
@@ -55,19 +62,13 @@ export default class ImageManager {
 
     this.container.removeChild( this.overlay );
 
+    while ( this.overlay.firstChild.nextSibling ) this.overlay.removeChild( this.overlay.firstChild.nextSibling );
+
   }
 
   clickImage ( e ) {
 
-    const padding = 20;
-    const margin = 5;
-    const border = 2;
-
-    this.showOverlay()
-
-    //e.target.classList.add( 'ui-image-location-focus' );
-
-    //add screen ratio code here
+    this.showOverlay( e.target.image );
 
   }
 
@@ -75,15 +76,7 @@ export default class ImageManager {
 
     for ( let loc in this.imageContainers ) {
 
-      if ( loc !== location ) {
-
-        this.imageContainers[ loc ].classList.remove( 'ui-images-location-container-visible' );
-
-      } else {
-
-        this.imageContainers[ loc ].classList.add( 'ui-images-location-container-visible' );
-
-      }
+      this.imageContainers[ loc ].classList[ loc !== location ? 'remove' : 'add' ]( 'ui-images-location-container-visible' );
 
     }
 
