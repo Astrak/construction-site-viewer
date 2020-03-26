@@ -1,9 +1,11 @@
-import { Group, Mesh, MeshLambertMaterial, LinearFilter, MeshBasicMaterial, MeshPhongMaterial, ShaderMaterial, DoubleSide, FrontSide, TextureLoader } from 'three';
+import { Group, Mesh, MeshLambertMaterial, LinearFilter, MeshBasicMaterial, MeshPhongMaterial, ShaderMaterial, DoubleSide, FrontSide, TextureLoader, RepeatWrapping, PlaneBufferGeometry } from 'three';
 import PLYLoader from './../lib/PLYLoaderr89.js';
+import Water from './../lib/Waterr89';
 
 import EventEmitter from 'events';
 
 import ASSETS from './../constants/assets';
+import SEASONS from './../constants/seasons';
 
 export default class Loader extends EventEmitter {
 
@@ -28,6 +30,33 @@ export default class Loader extends EventEmitter {
 
   }
 
+  addWater () {
+
+    const water = new Water(
+      new PlaneBufferGeometry( 5.5, 19 ),
+      {
+        textureWidth: 512,
+        textureHeight: 512,
+        waterNormals: this.tLoader.load( 'public/img/waternormals.jpg', t => t.wrapS = t.wrapT = RepeatWrapping ),
+        alpha: 1,
+        sunColor: 0xffffff,
+        waterColor: 0x001e0f,
+        distortionScale: 0.12
+      }      
+    );
+    water.material.uniforms.size.value = 50;
+    water.rotation.x = - Math.PI / 2;
+    water.rotation.z = Math.PI / 4 * 1.3;
+    water.position.set( -42.5, -0.06, -20 );
+    water.receiveShadow = true;
+    water.renderOrder = 1;
+
+    this.rootObject.add( water );
+
+    this.renderer.water = water;
+
+  }
+
   loadTextures () {
 
     const that = this;
@@ -36,6 +65,11 @@ export default class Loader extends EventEmitter {
     for ( let k in ASSETS ) {
       const fileName = ASSETS[ k ].map;
       if ( fileName && ! this.textures[ fileName ] ) this.textures[ fileName ] = ASSETS[ k ].minFilter === 'linear';
+    }
+
+    for ( let k in SEASONS ) {
+      const fileName = SEASONS[ k ];
+      if ( ! this.textures[ fileName ] ) this.textures[ fileName ] = fileName;
     }
 
     const texturesArray = Object.keys( this.textures ),
@@ -67,9 +101,6 @@ export default class Loader extends EventEmitter {
 
         const ASSET = ASSETS[ k ];
 
-        //geometry
-        if ( ASSET.useUv2 ) g.addAttribute( 'uv2', g.attributes.uv );
-
         //material
         let material;
         const matOptions = {
@@ -94,10 +125,12 @@ export default class Loader extends EventEmitter {
             break;
         }
 
+        if ( ASSET.animateSeasons ) this.makeSeasonalMaterial( material );
+
         //mesh
         const mesh = new Mesh( g, material );
         mesh.name = k;
-        mesh.castShadow = true;
+        mesh.castShadow = ASSET.castShadow !== false;
         mesh.receiveShadow = ASSET.receiveShadow !== false;
         mesh.matrixAutoUpdate = false;
         that.rootObject.add( mesh );
@@ -126,11 +159,16 @@ export default class Loader extends EventEmitter {
 
         if ( ASSET.renderOrder ) mesh.renderOrder = ASSET.renderOrder;
 
+        if ( ASSET.waterMirrored ) mesh.userData.waterMirrored = ASSET.waterMirrored;
+
         that.camera.update = true;
 
         that.loadCount ++;
         that.emit( 'asset-loaded', that.loadCount / that.totalAssetsNumber );
-        if ( that.loadCount === that.totalAssetsNumber ) that.emit( 'assets-loaded' );
+        if ( that.loadCount === that.totalAssetsNumber ) {
+          that.addWater();
+          that.emit( 'assets-loaded' );
+        }
 
       });
       
@@ -160,6 +198,45 @@ export default class Loader extends EventEmitter {
         }`,
       side: DoubleSide
     });
+
+  }
+
+  makeSeasonalMaterial ( material ) {
+
+    const that = this;
+
+    material.map = this.textures[ SEASONS.summer ];
+
+    material.onBeforeCompile = shader => {
+
+      shader.uniforms.fallTexture = { value: that.textures[ SEASONS.fall ] };
+      shader.uniforms.winterTexture = { value: that.textures[ SEASONS.winter ] };
+      shader.uniforms.springTexture = { value: that.textures[ SEASONS.spring ] };
+      shader.uniforms.yearTime = { value: 0.5 };
+      material.yearTime = shader.uniforms.yearTime;
+
+      shader.fragmentShader = shader.fragmentShader.replace(
+        '#include <map_pars_fragment>',
+        `uniform sampler2D map;
+        uniform sampler2D fallTexture;
+        uniform sampler2D winterTexture;
+        uniform sampler2D springTexture;
+        uniform float yearTime;`
+      );
+
+      shader.fragmentShader = shader.fragmentShader.replace(
+        '#include <map_fragment>',
+        `vec4 texelColor = vec4( 0.0, 0.0, 0.0, 0.0 );
+        texelColor += texture2D( map, vUv ) * ( max( 0.0, 1.0 - 4.0 * abs( yearTime ) ) + max( 0.0, 1.0 - 4.0 * abs( yearTime - 1.0 ) ) );
+        texelColor += texture2D( fallTexture, vUv ) * max( 0.0, 1.0 - 4.0 * abs( yearTime - 0.25 ) );
+        texelColor += texture2D( winterTexture, vUv ) * max( 0.0, 1.0 - 4.0 * abs( yearTime - 0.5 ) );
+        texelColor += texture2D( springTexture, vUv ) * max( 0.0, 1.0 - 4.0 * abs( yearTime - 0.75 ) );
+
+        texelColor = mapTexelToLinear( texelColor );
+        diffuseColor *= texelColor;`
+      );
+
+    };
 
   }
 

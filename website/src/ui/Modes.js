@@ -19,6 +19,8 @@ export default class Modes {
     this.domElement.style.marginTop = - Object.keys( MODES ).length * 39 / 2 + 'px';
     this.domElement.id = 'ui-modes';
 
+    this.animations = [];
+
     const modesButton = [];
 
     for ( let MODE in MODES ) {
@@ -29,6 +31,12 @@ export default class Modes {
       this.domElement.appendChild( modeButton.domElement );
 
       modeButton.domElement.addEventListener( 'click', () => {
+        if ( this.animations.length ) {
+          this.animations.forEach( animation => animation.kill() );
+          this.animations = [];
+          this.activeModes.splice( 0, 1 );
+          this.timeline.setSceneContentToDate();
+        }
         if ( modeButton.selected ) {//unselect mode
           modeButton.unselect();
           this.hideObjectsInMode( MODE );
@@ -40,7 +48,6 @@ export default class Modes {
           this.showObjectsInMode( MODE );
         }
       }, false );
-
     }
 
   }
@@ -57,7 +64,8 @@ export default class Modes {
 
     const disappear = { opacity: 0.7 };
 
-    TweenLite.to( disappear, 1, {
+    let anim;
+    anim = TweenLite.to( disappear, 1, {
       opacity: 0,
       onUpdate () {
         that.viewer.objectsList.forEach( object => { 
@@ -69,8 +77,10 @@ export default class Modes {
         const index = that.activeModes.indexOf( mode );
         that.activeModes.splice( index, 1 );
         that.timeline.setSceneContentToDate();
+        that.animations.splice( that.animations.indexOf( anim ), 1 );
       }
     });
+    this.animations.push( anim );
 
   }
 
@@ -82,15 +92,21 @@ export default class Modes {
     that.timeline.setSceneContentToDate();
 
     const appear = { opacity: 0 };
-    TweenLite.to( appear, 1, {
+
+    let anim;
+    anim = TweenLite.to( appear, 1, {
       opacity: 0.7,
       onUpdate () {
         that.viewer.objectsList.forEach( object => { 
           if ( object.userData.mode === mode ) object.material.opacity = appear.opacity; 
         });
         that.viewer.camera.update = true;
+      },
+      onComplete () {
+        that.animations.splice( that.animations.indexOf( anim ), 1 );
       }
     });
+    this.animations.push( anim );
 
   }
 

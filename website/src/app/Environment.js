@@ -1,4 +1,4 @@
-import Sky from './../lib/Skyr89.js';
+import Sky from './../lib/Skyr89';
 import { Object3D, DirectionalLight, AmbientLight, CameraHelper } from 'three';
 import { TweenLite } from 'gsap';
 
@@ -18,6 +18,8 @@ export default class Environment {
 
     this.activeDayTime = 'day';
     this.targetDayTime = 'day';
+
+    this.meshAnimations = [];
 
     const sun = this.sun,
       sky = this.sky;
@@ -79,7 +81,19 @@ export default class Environment {
           tweenHide = { height: 0 },
           tweenShow = { height: bottomPosition };
 
-        TweenLite.to( tweenHide, 1, {
+        if ( that.meshAnimations.length ) {
+          that.meshAnimations.forEach( animation => animation.kill() );
+          that.meshAnimations = [];
+          objectsList.forEach( object => {
+            if ( object.userData.dayTime && object.userData.dayTime !== that.targetDayTime ) {
+              object.position.y = bottomPosition;
+              object.updateMatrix()
+            }
+          })
+        }
+
+        let hideAnim;
+        hideAnim = TweenLite.to( tweenHide, 1, {
           height: bottomPosition,
           onUpdate () {
             objectsList.forEach( object => {
@@ -88,13 +102,16 @@ export default class Environment {
                 object.updateMatrix();
               }
             });
+          },
+          onComplete () {
+            that.meshAnimations.splice( that.meshAnimations.indexOf( hideAnim ), 1 );
           }
         });
+        that.meshAnimations.push( hideAnim );
 
-        TweenLite.to( tweenShow, 1, {
+        let showAnim;
+        showAnim = TweenLite.to( tweenShow, 1, {
           height: 0,
-          delay: 1,
-          ease: Elastic.easeOut.config(1, 0.4),
           onUpdate () {
             objectsList.forEach( object => {
               if ( object.userData.dayTime && object.userData.dayTime === that.targetDayTime ) {
@@ -102,8 +119,12 @@ export default class Environment {
                 object.updateMatrix();
               }
             });
+          },
+          onComplete () {
+            that.meshAnimations.splice( that.meshAnimations.indexOf( showAnim ), 1 );
           }
         });
+        that.meshAnimations.push( showAnim );
 
       }
 
@@ -142,6 +163,8 @@ export default class Environment {
 
     const sky = new Sky();
     sky.scale.setScalar( 100 );
+    sky.name = 'sky';
+    sky.userData.waterMirrored = true;
 
     sky.sunSphere = new Object3D();
     sky.sunSphere.position.set( 1, 1, 1 );

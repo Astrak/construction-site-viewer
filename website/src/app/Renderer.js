@@ -10,7 +10,9 @@ import './Renderer.css';
 
 export default class Renderer {
 
-  constructor () {
+  constructor ( viewer ) {
+
+    this.viewer = viewer;
 
     this.renderer = new WebGLRenderer();
     this.renderer.setPixelRatio( window.location.hash === 'low' ? 1 : window.devicePixelRatio );
@@ -23,6 +25,8 @@ export default class Renderer {
     document.getElementById( 'app' ).appendChild( this.renderer.domElement );
 
     this.onUpdate = function () {};
+
+    this.lastRenderTime = performance.now();
 
   }
 
@@ -107,12 +111,32 @@ export default class Renderer {
 
     requestAnimationFrame( this.animate.bind( this ) );
 
+    //controls
     const cameraDistance = this.cameraDistance || this.camera.position.clone().sub( this.controls.target ).length();
     this.controls.minPolarAngle = this.controls.maxPolarAngle = 1 + 0.4 * ( ( 10 - cameraDistance ) / 5 );
 
     this.controls.update();
 
-    if ( this.camera.update ) {
+    //seasons and water (uniforms update)
+    this.currentRenderTime = performance.now();
+    const timeDiff = this.currentRenderTime - this.lastRenderTime;
+    this.lastRenderTime = this.currentRenderTime;
+
+    let yearTime;
+    this.viewer.objectsList.forEach( object => {
+      if ( object.material && object.material.yearTime ) {
+        if ( ! yearTime ) {
+          yearTime = object.material.yearTime.value;
+          yearTime = ( yearTime + timeDiff / 32 / 1000 ) % 1
+        }
+        object.material.yearTime.value = yearTime;
+      }
+    });
+
+    if ( this.water ) this.water.material.uniforms.time.value += timeDiff / 1000;
+
+    //render rules
+    if ( this.camera.update || this.viewer.userIsViewing ) {
 
       if ( this.isDevice ) {//better benefit pixelratio than fxaa, if pr > 1 (?)
         this.renderer.render( this.scene, this.camera );

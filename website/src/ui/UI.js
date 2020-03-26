@@ -43,6 +43,7 @@ export default class UI {
 
     this.splashScreen = new SplashScreen( viewer, this.container );
     this.splashScreen.startCallBack = () => {
+      viewer.userIsViewing = true;
       that.ambiancer.show();
       that.timeline.show();
       that.modes.show();

@@ -14,7 +14,9 @@ export default class Viewer {
 
   constructor () {
 
-    this.renderer = new Renderer();
+    this.userIsViewing = false;
+
+    this.renderer = new Renderer( this );
 
     this.scene = new Scene();
 

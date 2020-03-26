@@ -3,8 +3,8 @@ const HOTSPOTS = {
     camera: [ 23.92, 13.75, 5.23 ],
     center: [ 26, 0, 13 ],
     images: [
-      'public/img/main_aerial.jpg',
-      'public/img/fontaine.jpg'
+      { thumbnail : 'public/img/main_aerial-thumbnail.jpg', fullImage: 'public/img/main_aerial.jpg' },
+      { thumbnail : 'public/img/fontaine-thumbnail.jpg', fullImage: 'public/img/fontaine.jpg' }
     ],
     begin: {
       month: 3,
@@ -19,7 +19,7 @@ const HOTSPOTS = {
     camera: [ 42.52, 4.68, 21.27 ],
     center: [ 37, 0, 16],
     images: [
-      'public/img/villegoudou.jpg'
+      { thumbnail : 'public/img/villegoudou-thumbnail.jpg', fullImage: 'public/img/villegoudou.jpg' }
     ],
     begin: {
       year: 2018,

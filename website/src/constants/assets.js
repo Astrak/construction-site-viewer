@@ -12,33 +12,56 @@ const ASSETS = {
       alphaTest: 0.7,
       transparent: true
     },
-    arbresSoult: {
-      file: 'soult-arbres.ply',
+    voitures: {
+      file: 'voitures.ply',
+      material: 'phong',
+      transparent: true,
+      map: 'cars.png',
+    },
+    arbres2: {
+      file: 'arbres2.ply',
       map: 'parking.png',
+      waterMirrored: true
     },
     arbresSoultFeuillage: {
       file: 'soult-arbres-feuillage.ply',
       tweenColorWithDayLight: true,
-      map: 'parking.png',
+      animateSeasons: true,
       useCustomDepthMaterial: true,
       minFilter: 'linear',
       side: 'double',
       alphaTest: 0.7,
       transparent: true
     },
+    mailFeuillage: {
+      file: 'mail-feuillage.ply',
+      tweenColorWithDayLight: true,
+      animateSeasons: true,
+      useCustomDepthMaterial: true,
+      minFilter: 'linear',
+      side: 'double',
+      alphaTest: 0.7,
+      transparent: true,
+      waterMirrored: true
+    },
     routes: {
-      color: 0x222222,
+      color: 0x151515,
       file: 'routes.ply',
     },
     bats: {
       color: 0xaa8866,
       file: 'batiments.ply',
-      map: 'bats_ao.png',
-      useUv2: true
+      map: 'bats.png',
+      waterMirrored: false,
+
     },
     trottoirs: {
       color: 0x444444,
       file: 'trottoirs.ply',
+    },
+    mail: {
+      map: 'parking.png',
+      file: 'mail.ply',
     },
   /* GARE */
     gare: {
@@ -88,7 +111,7 @@ const ASSETS = {
     },
     gareBacs: {
       file: 'gare-bacs.ply',
-      map: 'parking.png',
+      map: 'verdure.png',
       tweenColorWithDayLight: true,
       useCustomDepthMaterial: true,
       side: 'double',
@@ -230,7 +253,7 @@ const ASSETS = {
     parkingArbresFeuillage: {
       file: 'arbres-nouveaux-parking-feuillage.ply',
       tweenColorWithDayLight: true,
-      map: 'parking.png',
+      animateSeasons: true,
       useCustomDepthMaterial: true,
       minFilter: 'linear',
       side: 'double',
@@ -433,7 +456,7 @@ const ASSETS = {
       },
       routes4a1Bacs: {
         file: 'routes-4a1-bacs.ply',
-        map: 'parking.png',
+        map: 'verdure.png',
         useCustomDepthMaterial: true,
         transparent: true,
         side: 'double',
@@ -489,7 +512,7 @@ const ASSETS = {
       },
       soultAnciensArbresFeuillage: {
         file: 'arbres-soult-feuillage.ply',
-        map: 'parking.png',
+        animateSeasons: true,
         useCustomDepthMaterial: true,
         minFilter: 'linear',
         tweenColorWithDayLight: true,
@@ -513,7 +536,7 @@ const ASSETS = {
       },
       buissonAnciensArbresFeuillage: {
         file: 'arbres-buisson-feuillage.ply',
-        map: 'parking.png',
+        animateSeasons: true,
         useCustomDepthMaterial: true,
         minFilter: 'linear',
         tweenColorWithDayLight: true,
@@ -537,7 +560,7 @@ const ASSETS = {
       },
       cdg2a1AnciensArbresFeuillage: {
         file: 'arbres-cdg2a1-feuillage.ply',
-        map: 'parking.png',
+        animateSeasons: true,
         useCustomDepthMaterial: true,
         minFilter: 'linear',
         tweenColorWithDayLight: true,
@@ -562,7 +585,7 @@ const ASSETS = {
       buissonNouveauxArbresFeuillage: {
         file: 'arbres-nouveaux-buisson-feuillage.ply',
         tweenColorWithDayLight: true,
-        map: 'parking.png',
+        animateSeasons: true,
         useCustomDepthMaterial: true,
         minFilter: 'linear',
         side: 'double',
@@ -586,7 +609,7 @@ const ASSETS = {
       soultNouveauxArbresFeuillage: {
         file: 'arbres-nouveaux-soult-feuillage.ply',
         tweenColorWithDayLight: true,
-        map: 'parking.png',
+        animateSeasons: true,
         useCustomDepthMaterial: true,
         minFilter: 'linear',
         side: 'double',
@@ -639,7 +662,7 @@ const ASSETS = {
     },
     contrealleesBacs: {
       file: 'contreallees-bacs.ply',
-      map: 'parking.png',
+      map: 'verdure.png',
       useCustomDepthMaterial: true,
       transparent: true,
       side: 'double',
@@ -675,7 +698,7 @@ const ASSETS = {
     },
     soult1Bacs: {
       file: 'soult1-bacs.ply',
-      map: 'parking.png',
+      map: 'verdure.png',
       useCustomDepthMaterial: true,
       transparent: true,
       side: 'double',
@@ -771,7 +794,7 @@ const ASSETS = {
     soult2AireFeuillage: {
       file: 'soult2-aire-feuillage.ply',
       tweenColorWithDayLight: true,
-      map: 'parking.png',
+      animateSeasons: true,
       useCustomDepthMaterial: true,
       minFilter: 'linear',
       side: 'double',
@@ -785,9 +808,10 @@ const ASSETS = {
     },
     fontaines: {
       file: 'fontaines.ply',
-      map: 'parking.png',
+      map: 'verdure.png',
       useCustomDepthMaterial: true,
       minFilter: 'linear',
+      dayTime: 'day',
       tweenColorWithDayLight: true,
       alphaTest: 0.7,
       transparent: true,
@@ -954,6 +978,28 @@ const ASSETS = {
         day: 0
       }
     },
+    terrasses1: {
+      file: 'terrasses1.ply',
+      map: 'parking.png',
+      transparent: true,
+      dayTime: 'day',
+      end: {
+        year: 2018,
+        month: 5,
+        day: 0
+      }
+    },
+    terrasses2: {
+      file: 'terrasses2.ply',
+      map: 'parking.png',
+      transparent: true,
+      dayTime: 'day',
+      begin: {
+        year: 2019,
+        month: 10,
+        day: 0
+      }
+    },
     concert: {
       file: 'concert.ply',
       map: 'parking.png',
@@ -972,8 +1018,9 @@ const ASSETS = {
       map: 'parking.png',
       transparent: true,
       depthWrite: false,
-      renderOrder: 1,
+      renderOrder: 2,
       dayTime: 'evening',
+      material: 'basic',
       side: 'double',
       begin: {
         year: 2019,

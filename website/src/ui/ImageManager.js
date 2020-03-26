@@ -9,6 +9,7 @@ export default class ImageManager {
   constructor ( viewer, container ) {
 
     this.container = container;
+    this.viewer = viewer;
 
     this.domElement = document.createElement( 'div' );
     this.domElement.id = 'ui-images-container';
@@ -25,11 +26,11 @@ export default class ImageManager {
       for ( let i = 0 ; i < HOTSPOTS[ location ].images.length ; i++ ) {
 
         const image = document.createElement( 'div' );
-        image.style.backgroundImage = "url('" + HOTSPOTS[ location ].images[ i ] + "')";
+        image.style.backgroundImage = "url('" + HOTSPOTS[ location ].images[ i ].fullImage + "')";
         image.className = 'ui-image';
 
         const thumbnail = document.createElement( 'div' );
-        thumbnail.style.backgroundImage = "url('" + HOTSPOTS[ location ].images[ i ] + "')";
+        thumbnail.style.backgroundImage = "url('" + HOTSPOTS[ location ].images[ i ].thumbnail + "')";
         thumbnail.className = 'ui-image-location';
         thumbnail.image = image;
         thumbnail.addEventListener( 'click', this.clickImage.bind( this ), false );
@@ -64,11 +65,14 @@ export default class ImageManager {
 
     while ( this.overlay.firstChild.nextSibling ) this.overlay.removeChild( this.overlay.firstChild.nextSibling );
 
+    this.viewer.userIsViewing = true;
+
   }
 
   clickImage ( e ) {
 
     this.showOverlay( e.target.image );
+    this.viewer.userIsViewing = false;
 
   }
 

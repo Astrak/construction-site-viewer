@@ -84,6 +84,8 @@ export default class Ambiancer {
 
     const that = this;
 
+    this.viewer.userIsViewing = false;
+
     TweenLite.to( 
       this.infoAnimation, 
       1, 
@@ -106,8 +108,9 @@ export default class Ambiancer {
     this.infoContainer.classList.add( 'hide' );
     setTimeout( () => {
       that.domElement.removeChild( that.infoContainer );
-      TweenLite.to( that.infoAnimation, 1, { css: { transform: 'scale( 0 )' }, ease: Power4.easeOut });
+      TweenLite.to( that.infoAnimation, 1, { css: { transform: 'scale( 0 )' }, ease: Power4.easeOut, onComplete () { that.viewer.userIsViewing = true; } });
     }, 1000 );
+
   }
 
   playAudio () {
