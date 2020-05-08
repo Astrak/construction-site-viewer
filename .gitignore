@@ -2,3 +2,4 @@ node_modules
 website/bundle.js
 package-lock.json
 resources
+yarn.lock
