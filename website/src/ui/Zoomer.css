@@ -1,38 +1,42 @@
-#ui-zoomer{
-  position: absolute;
-  right: 0;
-  top: 20%;
-  height: 60%;
-  animation: ui-zoomer-appear 0.5s ease;
+#ui-zoomer {
+    position: absolute;
+    right: 0;
+    top: 20%;
+    height: 60%;
+    animation: ui-zoomer-appear 0.5s ease;
 }
 
 @keyframes ui-zoomer-appear {
-  0%{ opacity: 0; }
-  100%{ opacity: 1; }
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
-#ui-zoomer-box{
-  position: relative;
-  height: calc( 100% - 78px );
-  pointer-events: stroke;
-  cursor: ns-resize;
+#ui-zoomer-box {
+    position: relative;
+    height: calc(100% - 78px);
+    pointer-events: stroke;
+    cursor: ns-resize;
 }
 
-.ui-zoomer-level{
-  position: absolute;
-  width: 10px;
-  margin-left: -5px;
-  height: 2px;
-  background: #000;
-  pointer-events: none;
+.ui-zoomer-level {
+    position: absolute;
+    width: 10px;
+    margin-left: -5px;
+    height: 2px;
+    background: #000;
+    pointer-events: none;
 }
 
-#ui-zoom-indicator{
-  position: absolute;
-  width: 16px;
-  height: 5px;
-  margin-left: -8px;
-  left: 50%;
-  background: #000;
-  pointer-events: none;
+#ui-zoom-indicator {
+    position: absolute;
+    width: 16px;
+    height: 5px;
+    margin-left: -8px;
+    left: 50%;
+    background: #000;
+    pointer-events: none;
 }

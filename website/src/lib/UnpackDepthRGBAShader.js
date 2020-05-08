@@ -5,46 +5,38 @@
  * - show RGBA encoded depth as monochrome color
  */
 const UnpackDepthRGBAShader = {
+    uniforms: {
+        tDiffuse: { value: null },
+        opacity: { value: 1.0 },
+    },
 
-	uniforms: {
+    vertexShader: [
+        "varying vec2 vUv;",
 
-		"tDiffuse": { value: null },
-		"opacity":  { value: 1.0 }
+        "void main() {",
 
-	},
+        "vUv = uv;",
+        "gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );",
 
-	vertexShader: [
+        "}",
+    ].join("\n"),
 
-		"varying vec2 vUv;",
+    fragmentShader: [
+        "uniform float opacity;",
 
-		"void main() {",
+        "uniform sampler2D tDiffuse;",
 
-			"vUv = uv;",
-			"gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );",
+        "varying vec2 vUv;",
 
-		"}"
+        "#include <packing>",
 
-	].join( "\n" ),
+        "void main() {",
 
-	fragmentShader: [
+        "float depth = 1.0 - unpackRGBAToDepth( texture2D( tDiffuse, vUv ) );",
+        "gl_FragColor = opacity * vec4( vec3( depth ), 1.0 );",
 
-		"uniform float opacity;",
-
-		"uniform sampler2D tDiffuse;",
-
-		"varying vec2 vUv;",
-
-		"#include <packing>",
-
-		"void main() {",
-
-			"float depth = 1.0 - unpackRGBAToDepth( texture2D( tDiffuse, vUv ) );",
-			"gl_FragColor = opacity * vec4( vec3( depth ), 1.0 );",
-
-		"}"
-
-	].join( "\n" )
-
+        "}",
+    ].join("\n"),
 };
 
 export default UnpackDepthRGBAShader;

@@ -1,5 +1,5 @@
-const INFOS = 
-  /*<p style='text-transform: uppercase; font-weight: bold; font-family: sans-serif;'>
+const INFOS =
+    /*<p style='text-transform: uppercase; font-weight: bold; font-family: sans-serif;'>
     Informations légales
   </p>
 
@@ -7,7 +7,7 @@ const INFOS =
     Maître d'oeuvre : <br>
     Maître d'ouvrage : <br>
     Permis de construire : <br>
-    Durée des travaux : 
+    Durée des travaux :
   </p>
 
   <span style='position: absolute; width: 70%; height: 2px; background: #000; margin-left: -35%;'></span><br>
@@ -16,7 +16,7 @@ const INFOS =
     Visuels supplémentaires
   </p>*/
 
-  `<div>
+    `<div>
     <img style='width: calc( 70% - 60px );' src='public/img/main_aerial.jpg'>
     <img style='width: calc( 70% - 60px );' src='public/img/fontaine.jpg'>
     <img style='width: calc( 70% - 60px );' src='public/img/villegoudou.jpg'>

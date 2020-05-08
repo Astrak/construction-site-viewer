@@ -1,31 +1,31 @@
-.ui-button{
-  cursor: pointer; 
-  pointer-events: stroke;
-  background: none;
-  border: none;
-  outline: none;
-  font-size: 18px;
-  font-weight: bold;
-  text-transform: uppercase; 
-  position: relative;
-  transition: opacity 1s ease;
-  color: #000;
-  padding: 5px;
-  margin: 0 5px;
-  -webkit-tap-highlight-color: rgba( 0, 0, 0, 0 );
+.ui-button {
+    cursor: pointer;
+    pointer-events: stroke;
+    background: none;
+    border: none;
+    outline: none;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    position: relative;
+    transition: opacity 1s ease;
+    color: #000;
+    padding: 5px;
+    margin: 0 5px;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
-.ui-button:after{
-  content: ' ';
-  width: 0%;
-  left: 50%;
-  height: 2px;
-  background: #000;
-  position: absolute;
-  bottom: 0;
-  transition: all 0.3s ease;
+.ui-button:after {
+    content: " ";
+    width: 0%;
+    left: 50%;
+    height: 2px;
+    background: #000;
+    position: absolute;
+    bottom: 0;
+    transition: all 0.3s ease;
 }
 .ui-button:hover:after,
-.ui-button-selected:after{
-  width: 100%;
-  left: 0%;
+.ui-button-selected:after {
+    width: 100%;
+    left: 0%;
 }

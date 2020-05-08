@@ -201,9 +201,9 @@ function OrbitControls ( object, domElement ) {
 			scope.object.lookAt( scope.target );
 
 			if ( Math.abs( zoomDelta ) > EPS ) {//zoomDelta is only changed for orthographic camera
-				
+
 				zoom = Math.min( scope.maxZoom, Math.max( scope.minZoom, scope.object.zoom * ( 1 - zoomDelta ) ) );
-				
+
 				if ( zoom !== scope.object.zoom ) {
 
 					scope.object.zoom = zoom;
@@ -211,7 +211,7 @@ function OrbitControls ( object, domElement ) {
 					zoomChanged = true;
 
 				}
-				
+
 			}
 
 			if ( scope.enableDamping === true ) {
@@ -612,7 +612,7 @@ function OrbitControls ( object, domElement ) {
 
 		var element = scope.domElement === document ? scope.domElement.body : scope.domElement;
 		var width, height, box;
-		
+
 		if ( ! element instanceof SVGElement ) {
 			height = element.clientHeight;
 			width = element.clientWidth

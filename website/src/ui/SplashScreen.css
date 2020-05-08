@@ -1,83 +1,83 @@
-#ui-splash-screen{
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0%;
-  background: rgba( 150, 150, 150, 0.95 );
-  perspective: 30px;
-  pointer-events: stroke;
-  font-family: 'Raleway', sans-serif;
+#ui-splash-screen {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0%;
+    background: rgba(150, 150, 150, 0.95);
+    perspective: 30px;
+    pointer-events: stroke;
+    font-family: "Raleway", sans-serif;
 }
-.valign{
-  height: 100%;
-  display: inline-block;
-  vertical-align: middle;
+.valign {
+    height: 100%;
+    display: inline-block;
+    vertical-align: middle;
 }
 /* content */
-#ui-splash-screen-content > p:first-of-type{
-  margin-top: 40px;
+#ui-splash-screen-content > p:first-of-type {
+    margin-top: 40px;
 }
-#ui-splash-screen-content{
-  transition: all 1s ease;
-  display: inline-block;
-  vertical-align: middle;
-  max-width: 450px;
-  padding: 5px 20px;
-  font-size: 16px;
+#ui-splash-screen-content {
+    transition: all 1s ease;
+    display: inline-block;
+    vertical-align: middle;
+    max-width: 450px;
+    padding: 5px 20px;
+    font-size: 16px;
 }
-.ui-splash-screen-content-hidden{
-  opacity: 0;
-  transform: translateZ( -12px );
+.ui-splash-screen-content-hidden {
+    opacity: 0;
+    transform: translateZ(-12px);
 }
-.ui-splash-screen-content-show{
-  visibility: visible;
-  opacity: 1;
-  transform: translateZ( 0px );
+.ui-splash-screen-content-show {
+    visibility: visible;
+    opacity: 1;
+    transform: translateZ(0px);
 }
-#ui-splash-screen-title{
-  font-size: 30px;
-  margin: 0;
+#ui-splash-screen-title {
+    font-size: 30px;
+    margin: 0;
 }
-#ui-splash-screen-subtitle{
-  font-size: 15px;
-  margin: 0;
+#ui-splash-screen-subtitle {
+    font-size: 15px;
+    margin: 0;
 }
-#ui-splash-screen-separator{
-  margin: 20px 0;
-  border-color: #000;
-  width: calc( 100% - 40px );
-  height: 2px;
-  position: absolute;
-  background: #000;
-  margin-left: calc( -50% + 20px );
+#ui-splash-screen-separator {
+    margin: 20px 0;
+    border-color: #000;
+    width: calc(100% - 40px);
+    height: 2px;
+    position: absolute;
+    background: #000;
+    margin-left: calc(-50% + 20px);
 }
 /* progress */
-#ui-splash-screen-progress-container{
-  width: 100%;
-  height: 2px;
-  /*border: solid 1px #000;*/
-  margin: 20px 0;
-  left: 50%;
-  margin-left: -50%;
-  position: relative;
-  text-align: center;
+#ui-splash-screen-progress-container {
+    width: 100%;
+    height: 2px;
+    /*border: solid 1px #000;*/
+    margin: 20px 0;
+    left: 50%;
+    margin-left: -50%;
+    position: relative;
+    text-align: center;
 }
-#ui-splash-screen-progress{
-  position: absolute;
-  left: 50%;
-  width: 0;
-  height: 100%;
-  background: #000;
-  transition: all 0.5s ease;
-  display: inherit;
+#ui-splash-screen-progress {
+    position: absolute;
+    left: 50%;
+    width: 0;
+    height: 100%;
+    background: #000;
+    transition: all 0.5s ease;
+    display: inherit;
 }
 /* start button */
-.ui-splash-screen-start-hidden{
-  visibility: hidden;
-  opacity: 0;
+.ui-splash-screen-start-hidden {
+    visibility: hidden;
+    opacity: 0;
 }
-.ui-splash-screen-start-show{
-  cursor: pointer;
-  visibility: visible;
-  opacity: 1;
+.ui-splash-screen-start-show {
+    cursor: pointer;
+    visibility: visible;
+    opacity: 1;
 }

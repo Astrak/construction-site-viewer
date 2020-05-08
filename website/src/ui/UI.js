@@ -1,57 +1,60 @@
-import Ambiancer from './Ambiancer';
-import Modes from './Modes';
-import Zoomer from './Zoomer';
-import Timeline from './Timeline';
-import ImageManager from './ImageManager';
-import SplashScreen from './SplashScreen';
+import Ambiancer from "./Ambiancer";
+import Modes from "./Modes";
+import Zoomer from "./Zoomer";
+import Timeline from "./Timeline";
+import ImageManager from "./ImageManager";
+import SplashScreen from "./SplashScreen";
 
-import './UI.css';
+import "./UI.css";
 
 export default class UI {
+    constructor(viewer) {
+        const that = this;
 
-  constructor ( viewer ) {
+        this.activeModes = [];
 
-    const that = this;
+        this.wrapper = document.createElement("div");
+        this.wrapper.id = "ui-wrapper";
+        document.getElementById("app").appendChild(this.wrapper);
 
-    this.activeModes = [];
+        this.container = document.createElement("div");
+        this.container.id = "ui-container";
+        this.wrapper.appendChild(this.container);
 
-    this.wrapper = document.createElement( 'div' );
-    this.wrapper.id = 'ui-wrapper';
-    document.getElementById( 'app' ).appendChild( this.wrapper );
+        this.verticalAligner = document.createElement("span");
+        this.verticalAligner.id = "ui-container-vertical-aligner";
+        this.container.appendChild(this.verticalAligner);
 
-    this.container = document.createElement( 'div' );
-    this.container.id = 'ui-container';
-    this.wrapper.appendChild( this.container );
+        //top : ambiancer (+ menu button)
+        this.ambiancer = new Ambiancer(viewer, this.container);
 
-    this.verticalAligner = document.createElement( 'span' );
-    this.verticalAligner.id = 'ui-container-vertical-aligner';
-    this.container.appendChild( this.verticalAligner );
+        //bottom : timeline
+        this.timeline = new Timeline(viewer, this.activeModes, this.container);
 
-    //top : ambiancer (+ menu button)
-    this.ambiancer = new Ambiancer( viewer, this.container );
+        //left : display modes
+        this.modes = new Modes(
+            viewer,
+            this.timeline,
+            this.activeModes,
+            this.container
+        );
 
-    //bottom : timeline
-    this.timeline = new Timeline( viewer, this.activeModes, this.container );
+        //right: zoomer
+        this.zoomer = new Zoomer(viewer, this.container);
 
-    //left : display modes
-    this.modes = new Modes( viewer, this.timeline, this.activeModes, this.container );
+        this.imageManager = new ImageManager(viewer, this.container);
 
-    //right: zoomer
-    this.zoomer = new Zoomer( viewer, this.container );
-
-    this.imageManager = new ImageManager( viewer, this.container );
-
-    this.splashScreen = new SplashScreen( viewer, this.container );
-    this.splashScreen.startCallBack = () => {
-      viewer.userIsViewing = true;
-      that.ambiancer.show();
-      that.timeline.show();
-      that.modes.show();
-      that.zoomer.show();
-      that.imageManager.show();
-    };
-    this.splashScreen.playAudioSpecialCallBack = that.ambiancer.playAudio.bind( that.ambiancer );
-
-  }
-
+        this.splashScreen = new SplashScreen(viewer, this.container);
+        this.splashScreen.startCallBack = () => {
+            viewer.userIsViewing = true;
+            that.ambiancer.show();
+            that.timeline.show();
+            that.modes.show();
+            that.zoomer.show();
+            that.imageManager.show();
+        };
+        this.splashScreen.playAudioSpecialCallBack = that.ambiancer.playAudio.bind(
+            that.ambiancer
+        );
+    }
 }

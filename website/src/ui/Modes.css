@@ -1,11 +1,15 @@
-#ui-modes{
-  position: absolute;
-  left: 0;
-  top: 50%;
-  animation: ui-modes-appear 0.5s ease;
+#ui-modes {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    animation: ui-modes-appear 0.5s ease;
 }
 
 @keyframes ui-modes-appear {
-  0%{ opacity: 0; }
-  100%{ opacity: 1; }
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }

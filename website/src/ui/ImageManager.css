@@ -1,73 +1,77 @@
-#ui-images-container{
-  position: absolute;
-  width: 80px;
-  height: 30%;
-  top: 40px;
-  right: 50px;
-  overflow: hidden;
-  animation: ui-imagemanager-appear 0.5s ease;
+#ui-images-container {
+    position: absolute;
+    width: 80px;
+    height: 30%;
+    top: 40px;
+    right: 50px;
+    overflow: hidden;
+    animation: ui-imagemanager-appear 0.5s ease;
 }
 
 @keyframes ui-imagemanager-appear {
-  0%{ opacity: 0; }
-  100%{ opacity: 1; }
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
-.ui-images-location-container{
-  position: absolute;
-  transition: all 1s ease;
-  left: 100%;
-  width: 100%;
+.ui-images-location-container {
+    position: absolute;
+    transition: all 1s ease;
+    left: 100%;
+    width: 100%;
 }
-.ui-images-location-container-visible{
-  left: 0%;
+.ui-images-location-container-visible {
+    left: 0%;
 }
-.ui-image-location{
-  width: 100%;
-  height: 40px;
-  margin: 5px 0;
-  background-color: #000;
-  border: solid 2px #000;
-  box-sizing: border-box;
-  pointer-events: stroke;
-  cursor: pointer;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
+.ui-image-location {
+    width: 100%;
+    height: 40px;
+    margin: 5px 0;
+    background-color: #000;
+    border: solid 2px #000;
+    box-sizing: border-box;
+    pointer-events: stroke;
+    cursor: pointer;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
 }
-.ui-image-location-focus{
-  position: fixed;
-  padding: 20px;
-  width: 100%;
-  left: 0;
-  top: 50%;
-  z-index: 4;
+.ui-image-location-focus {
+    position: fixed;
+    padding: 20px;
+    width: 100%;
+    left: 0;
+    top: 50%;
+    z-index: 4;
 }
-#ui-image-overlay{
-  background: rgba( 150, 150, 150, 0.95 );
-  position: absolute;
-  top: 0; left: 0;
-  height: 100%;
-  width: 100%;
-  pointer-events: stroke;
+#ui-image-overlay {
+    background: rgba(150, 150, 150, 0.95);
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    pointer-events: stroke;
 }
-#ui-image-close{
-  position: fixed;
-  right: 0;
-  top: 0;
-  z-index: 1;
-  filter: invert( 100% );
+#ui-image-close {
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 1;
+    filter: invert(100%);
 }
-.ui-image{    
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
-  border: solid 10px #000;
-  background-color: #000;
+.ui-image {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    border: solid 10px #000;
+    background-color: #000;
 }
-

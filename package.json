@@ -1,32 +1,32 @@
 {
-  "name": "soult",
-  "version": "1.0.0",
-  "description": "",
-  "main": "website/index.html",
-  "scripts": {
-    "start": "webpack-dev-server --inline --content-base .",
-    "publish": "webpack --config webpack.prod.config.js && cd website && surge --domain soult.surge.sh && cd .."
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "react": "^16.13.1",
-    "react-spring": "^8.0.27",
-    "react-three-fiber": "^4.1.4",
-    "three": "^0.116.1",
-    "zustand": "^2.2.3"
-  },
-  "devDependencies": {
-    "css-loader": "^0.28.8",
-    "source-map-loader": "^0.2.4",
-    "style-loader": "^0.19.1",
-    "ts-loader": "^7.0.3",
-    "typescript": "^3.8.3",
-    "uglifyjs-webpack-plugin": "^1.1.6",
-    "webpack": "^4.43.0",
-    "webpack-dev-server": "^3.11.0"
-  },
-  "engines": {
-    "yarn": "1.12.3"
-  }
+    "name": "soult",
+    "version": "1.0.0",
+    "description": "",
+    "main": "website/index.html",
+    "scripts": {
+        "start": "webpack-dev-server --inline --content-base .",
+        "publish": "webpack --config webpack.prod.config.js && cd website && surge --domain soult.surge.sh && cd .."
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "react": "^16.13.1",
+        "react-spring": "^8.0.27",
+        "react-three-fiber": "^4.1.4",
+        "three": "^0.116.1",
+        "zustand": "^2.2.3"
+    },
+    "devDependencies": {
+        "css-loader": "^0.28.8",
+        "source-map-loader": "^0.2.4",
+        "style-loader": "^0.19.1",
+        "ts-loader": "^7.0.3",
+        "typescript": "^3.8.3",
+        "uglifyjs-webpack-plugin": "^1.1.6",
+        "webpack": "^4.43.0",
+        "webpack-dev-server": "^3.11.0"
+    },
+    "engines": {
+        "yarn": "1.12.3"
+    }
 }

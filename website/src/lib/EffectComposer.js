@@ -2,114 +2,110 @@
  * @author alteredq / http://alteredqualia.com/
  */
 
-import { WebGLRenderTarget, LinearFilter, RGBAFormat } from 'three';
-import CopyShader from './CopyShader';
-import ShaderPass from './ShaderPass';
+import { WebGLRenderTarget, LinearFilter, RGBAFormat } from "three";
+import CopyShader from "./CopyShader";
+import ShaderPass from "./ShaderPass";
 
-function EffectComposer ( renderer, renderTarget ) {
+function EffectComposer(renderer, renderTarget) {
+    this.renderer = renderer;
 
-	this.renderer = renderer;
+    if (renderTarget === undefined) {
+        var parameters = {
+            minFilter: LinearFilter,
+            magFilter: LinearFilter,
+            format: RGBAFormat,
+            stencilBuffer: false,
+        };
 
-	if ( renderTarget === undefined ) {
+        var size = renderer.getDrawingBufferSize();
+        renderTarget = new WebGLRenderTarget(
+            size.width,
+            size.height,
+            parameters
+        );
+        renderTarget.texture.name = "EffectComposer.rt1";
+    }
 
-		var parameters = {
-			minFilter: LinearFilter,
-			magFilter: LinearFilter,
-			format: RGBAFormat,
-			stencilBuffer: false
-		};
+    this.renderTarget1 = renderTarget;
+    this.renderTarget2 = renderTarget.clone();
+    this.renderTarget2.texture.name = "EffectComposer.rt2";
 
-		var size = renderer.getDrawingBufferSize();
-		renderTarget = new WebGLRenderTarget( size.width, size.height, parameters );
-		renderTarget.texture.name = 'EffectComposer.rt1';
+    this.writeBuffer = this.renderTarget1;
+    this.readBuffer = this.renderTarget2;
 
-	}
+    this.passes = [];
 
-	this.renderTarget1 = renderTarget;
-	this.renderTarget2 = renderTarget.clone();
-	this.renderTarget2.texture.name = 'EffectComposer.rt2';
+    // dependencies
 
-	this.writeBuffer = this.renderTarget1;
-	this.readBuffer = this.renderTarget2;
+    if (CopyShader === undefined) {
+        console.error("THREE.EffectComposer relies on THREE.CopyShader");
+    }
 
-	this.passes = [];
+    if (ShaderPass === undefined) {
+        console.error("THREE.EffectComposer relies on THREE.ShaderPass");
+    }
 
-	// dependencies
+    this.copyPass = new ShaderPass(CopyShader);
+}
 
-	if ( CopyShader === undefined ) {
+Object.assign(EffectComposer.prototype, {
+    swapBuffers: function () {
+        var tmp = this.readBuffer;
+        this.readBuffer = this.writeBuffer;
+        this.writeBuffer = tmp;
+    },
 
-		console.error( 'THREE.EffectComposer relies on THREE.CopyShader' );
+    addPass: function (pass) {
+        this.passes.push(pass);
 
-	}
+        var size = this.renderer.getDrawingBufferSize();
+        pass.setSize(size.width, size.height);
+    },
 
-	if ( ShaderPass === undefined ) {
+    insertPass: function (pass, index) {
+        this.passes.splice(index, 0, pass);
+    },
 
-		console.error( 'THREE.EffectComposer relies on THREE.ShaderPass' );
+    render: function (delta) {
+        var maskActive = false;
 
-	}
+        var pass,
+            i,
+            il = this.passes.length;
 
-	this.copyPass = new ShaderPass( CopyShader );
+        for (i = 0; i < il; i++) {
+            pass = this.passes[i];
 
-};
+            if (pass.enabled === false) continue;
 
-Object.assign( EffectComposer.prototype, {
+            pass.render(
+                this.renderer,
+                this.writeBuffer,
+                this.readBuffer,
+                delta,
+                maskActive
+            );
 
-	swapBuffers: function() {
+            if (pass.needsSwap) {
+                if (maskActive) {
+                    var context = this.renderer.context;
 
-		var tmp = this.readBuffer;
-		this.readBuffer = this.writeBuffer;
-		this.writeBuffer = tmp;
+                    context.stencilFunc(context.NOTEQUAL, 1, 0xffffffff);
 
-	},
+                    this.copyPass.render(
+                        this.renderer,
+                        this.writeBuffer,
+                        this.readBuffer,
+                        delta
+                    );
 
-	addPass: function ( pass ) {
+                    context.stencilFunc(context.EQUAL, 1, 0xffffffff);
+                }
 
-		this.passes.push( pass );
+                this.swapBuffers();
+            }
 
-		var size = this.renderer.getDrawingBufferSize();
-		pass.setSize( size.width, size.height );
-
-	},
-
-	insertPass: function ( pass, index ) {
-
-		this.passes.splice( index, 0, pass );
-
-	},
-
-	render: function ( delta ) {
-
-		var maskActive = false;
-
-		var pass, i, il = this.passes.length;
-
-		for ( i = 0; i < il; i ++ ) {
-
-			pass = this.passes[ i ];
-
-			if ( pass.enabled === false ) continue;
-
-			pass.render( this.renderer, this.writeBuffer, this.readBuffer, delta, maskActive );
-
-			if ( pass.needsSwap ) {
-
-				if ( maskActive ) {
-
-					var context = this.renderer.context;
-
-					context.stencilFunc( context.NOTEQUAL, 1, 0xffffffff );
-
-					this.copyPass.render( this.renderer, this.writeBuffer, this.readBuffer, delta );
-
-					context.stencilFunc( context.EQUAL, 1, 0xffffffff );
-
-				}
-
-				this.swapBuffers();
-
-			}
-
-			/*if ( MaskPass !== undefined ) {
+            /*if ( MaskPass !== undefined ) {
 
 				if ( pass instanceof MaskPass ) {
 
@@ -122,74 +118,58 @@ Object.assign( EffectComposer.prototype, {
 				}
 
 			}*/
+        }
+    },
 
-		}
+    reset: function (renderTarget) {
+        if (renderTarget === undefined) {
+            var size = this.renderer.getDrawingBufferSize();
 
-	},
+            renderTarget = this.renderTarget1.clone();
+            renderTarget.setSize(size.width, size.height);
+        }
 
-	reset: function ( renderTarget ) {
+        this.renderTarget1.dispose();
+        this.renderTarget2.dispose();
+        this.renderTarget1 = renderTarget;
+        this.renderTarget2 = renderTarget.clone();
 
-		if ( renderTarget === undefined ) {
+        this.writeBuffer = this.renderTarget1;
+        this.readBuffer = this.renderTarget2;
+    },
 
-			var size = this.renderer.getDrawingBufferSize();
+    setSize: function (width, height) {
+        this.renderTarget1.setSize(width, height);
+        this.renderTarget2.setSize(width, height);
 
-			renderTarget = this.renderTarget1.clone();
-			renderTarget.setSize( size.width, size.height );
+        for (var i = 0; i < this.passes.length; i++) {
+            this.passes[i].setSize(width, height);
+        }
+    },
+});
 
-		}
+function Pass() {
+    // if set to true, the pass is processed by the composer
+    this.enabled = true;
 
-		this.renderTarget1.dispose();
-		this.renderTarget2.dispose();
-		this.renderTarget1 = renderTarget;
-		this.renderTarget2 = renderTarget.clone();
+    // if set to true, the pass indicates to swap read and write buffer after rendering
+    this.needsSwap = true;
 
-		this.writeBuffer = this.renderTarget1;
-		this.readBuffer = this.renderTarget2;
+    // if set to true, the pass clears its buffer before rendering
+    this.clear = false;
 
-	},
+    // if set to true, the result of the pass is rendered to screen
+    this.renderToScreen = false;
+}
 
-	setSize: function ( width, height ) {
+Object.assign(Pass.prototype, {
+    setSize: function (width, height) {},
 
-		this.renderTarget1.setSize( width, height );
-		this.renderTarget2.setSize( width, height );
-
-		for ( var i = 0; i < this.passes.length; i ++ ) {
-
-			this.passes[i].setSize( width, height );
-
-		}
-
-	}
-
-} );
-
-
-function Pass () {
-
-	// if set to true, the pass is processed by the composer
-	this.enabled = true;
-
-	// if set to true, the pass indicates to swap read and write buffer after rendering
-	this.needsSwap = true;
-
-	// if set to true, the pass clears its buffer before rendering
-	this.clear = false;
-
-	// if set to true, the result of the pass is rendered to screen
-	this.renderToScreen = false;
-
-};
-
-Object.assign( Pass.prototype, {
-
-	setSize: function( width, height ) {},
-
-	render: function ( renderer, writeBuffer, readBuffer, delta, maskActive ) {
-
-		console.error( 'THREE.Pass: .render() must be implemented in derived pass.' );
-
-	}
-
-} );
+    render: function (renderer, writeBuffer, readBuffer, delta, maskActive) {
+        console.error(
+            "THREE.Pass: .render() must be implemented in derived pass."
+        );
+    },
+});
 
 export { Pass, EffectComposer };

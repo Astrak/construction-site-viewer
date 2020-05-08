@@ -1,51 +1,59 @@
-#ui-timeline{
-  width: 100%;
-  bottom: 0;
-  position: absolute;
-  height: 100px;
-  cursor: ew-resize;
-  background-image: linear-gradient( 0deg, rgba( 255, 255, 255, 0.5 ) 0%, rgba( 0, 0, 0, 0 ) 100% );
-  animation: ui-timeline-appear 0.5s ease;
-  opacity: 1;
-  pointer-events: stroke;
+#ui-timeline {
+    width: 100%;
+    bottom: 0;
+    position: absolute;
+    height: 100px;
+    cursor: ew-resize;
+    background-image: linear-gradient(
+        0deg,
+        rgba(255, 255, 255, 0.5) 0%,
+        rgba(0, 0, 0, 0) 100%
+    );
+    animation: ui-timeline-appear 0.5s ease;
+    opacity: 1;
+    pointer-events: stroke;
 }
-#ui-timeline-current-date{
-  position: absolute;
-  width: 4px;
-  height: 100%;
-  pointer-events: none;  
+#ui-timeline-current-date {
+    position: absolute;
+    width: 4px;
+    height: 100%;
+    pointer-events: none;
 }
-#ui-timeline-current-date::after{
-  content: ' ';
-  position: absolute;
-  border: solid 15px transparent;
-  margin-left: -15px;
-  border-bottom: solid 25px rgba( 0, 0, 0, 0.5 );
-  bottom: 0;
+#ui-timeline-current-date::after {
+    content: " ";
+    position: absolute;
+    border: solid 15px transparent;
+    margin-left: -15px;
+    border-bottom: solid 25px rgba(0, 0, 0, 0.5);
+    bottom: 0;
 }
-#ui-timeline-selector{
-  position: absolute;
-  width: 4px;
-  height: 100%;
-  left: 50%;
-  pointer-events: none;
+#ui-timeline-selector {
+    position: absolute;
+    width: 4px;
+    height: 100%;
+    left: 50%;
+    pointer-events: none;
 }
-#ui-timeline-selector::after{
-  content: ' ';
-  position: absolute;
-  border: solid 15px transparent;
-  margin-left: -15px;
-  border-bottom: solid 25px rgba( 0, 0, 0, 1 );
-  bottom: 0;
+#ui-timeline-selector::after {
+    content: " ";
+    position: absolute;
+    border: solid 15px transparent;
+    margin-left: -15px;
+    border-bottom: solid 25px rgba(0, 0, 0, 1);
+    bottom: 0;
 }
-#ui-timeline-caption{
-  pointer-events: none;
-  position: absolute;
-  left: 0;
-  bottom: 20px;
+#ui-timeline-caption {
+    pointer-events: none;
+    position: absolute;
+    left: 0;
+    bottom: 20px;
 }
 
 @keyframes ui-timeline-appear {
-  0%{ opacity: 0; }
-  100%{ opacity: 1; }
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
