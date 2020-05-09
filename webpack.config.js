@@ -1,7 +1,7 @@
 module.exports = {
-    entry: "./website/src/index.ts",
+    entry: "./src/index.ts",
     output: {
-        filename: "website/bundle.js",
+        filename: "bundle.js",
         publicPath: "",
     },
     resolve: {

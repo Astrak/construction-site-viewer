@@ -5,7 +5,7 @@
     "main": "website/index.html",
     "scripts": {
         "start": "webpack-dev-server --inline --content-base .",
-        "publish": "webpack --config webpack.prod.config.js && cd website && surge --domain soult.surge.sh && cd .."
+        "publish": "webpack --config webpack.prod.config.js && surge --domain soult.surge.sh"
     },
     "author": "",
     "license": "ISC",

@@ -1,5 +1,3 @@
 node_modules
-website/bundle.js
+bundle.js
 package-lock.json
-resources
-yarn.lock
