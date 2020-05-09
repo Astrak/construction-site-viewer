@@ -1,18 +1,19 @@
 import { TweenLite } from "gsap";
-
-import Button from "./Button";
-
-import SPLASH_SCREEN_CONTENT from "../constants/splashScreenContent";
-
+import { Viewer } from "../app/Viewer";
+import { SPLASH_SCREEN_CONTENT } from "../constants/splashScreenContent";
+import { Button } from "./Button";
 import "./SplashScreen.css";
 
-export default class SplashScreen {
-    constructor(viewer, container) {
-        const that = this;
-
-        this.container = container;
-
-        this.domElement = document.createElement("div");
+export class SplashScreen {
+    domElement = document.createElement("div");
+    contentElement = document.createElement("div");
+    progress = document.createElement("span");
+    // tslint:disable-next-line: no-empty
+    startCallBack: () => void = () => {};
+    // tslint:disable-next-line: no-empty
+    playAudioSpecialCallBack: () => void = () => {};
+    startButton = new Button(SPLASH_SCREEN_CONTENT.startText);
+    constructor(viewer: Viewer, public container: HTMLDivElement) {
         this.domElement.id = "ui-splash-screen";
         container.appendChild(this.domElement);
 
@@ -20,18 +21,17 @@ export default class SplashScreen {
         aligner.className = "valign";
         this.domElement.appendChild(aligner);
 
-        this.contentElement = document.createElement("div");
         this.contentElement.id = "ui-splash-screen-content";
         this.contentElement.classList.add("ui-splash-screen-content-hidden");
         setTimeout(() => {
-            that.contentElement.classList.remove(
+            this.contentElement.classList.remove(
                 "ui-splash-screen-content-hidden"
             );
-            that.contentElement.classList.add("ui-splash-screen-content-show");
+            this.contentElement.classList.add("ui-splash-screen-content-show");
         }, 0);
         this.domElement.appendChild(this.contentElement);
 
-        //h1 & h2
+        // h1 & h2
         const titleElement = document.createElement("h1");
         titleElement.id = "ui-splash-screen-title";
         titleElement.innerHTML = SPLASH_SCREEN_CONTENT.title;
@@ -41,29 +41,26 @@ export default class SplashScreen {
         subtitleElement.innerHTML = SPLASH_SCREEN_CONTENT.subtitle;
         this.contentElement.appendChild(subtitleElement);
 
-        //separator
+        // separator
         const separator = document.createElement("span");
         separator.id = "ui-splash-screen-separator";
         this.contentElement.appendChild(separator);
 
-        //content
-        for (let i = 0; i < SPLASH_SCREEN_CONTENT.introduction.length; i++) {
+        // content
+        for (const introduction of SPLASH_SCREEN_CONTENT.introduction) {
             const introducerParagraph = document.createElement("p");
-            introducerParagraph.innerHTML =
-                SPLASH_SCREEN_CONTENT.introduction[i];
+            introducerParagraph.innerHTML = introduction;
             this.contentElement.appendChild(introducerParagraph);
         }
 
-        //progress separator
+        // progress separator
         const progressContainer = document.createElement("div");
         progressContainer.id = "ui-splash-screen-progress-container";
         this.contentElement.appendChild(progressContainer);
-        this.progress = document.createElement("span");
         this.progress.id = "ui-splash-screen-progress";
         progressContainer.appendChild(this.progress);
 
-        //start button
-        this.startButton = new Button(SPLASH_SCREEN_CONTENT.startText);
+        // start button
         this.startButton.domElement.addEventListener(
             "click",
             this.remove.bind(this),
@@ -73,52 +70,46 @@ export default class SplashScreen {
             "ui-splash-screen-start-hidden"
         );
         this.contentElement.appendChild(this.startButton.domElement);
-        this.startCallBack = function () {};
-        this.playAudioSpecialCallBack = function () {};
 
         viewer.loader.on("asset-loaded", this.updateProgress.bind(this));
         viewer.loader.on("assets-loaded", this.allowRemoval.bind(this));
     }
 
-    updateProgress(progress) {
+    updateProgress(progress: number) {
         this.progress.style.width = progress * 100 + "%";
         this.progress.style.left = 50 - (progress * 100) / 2 + "%";
     }
 
     allowRemoval() {
-        const that = this;
-
         setTimeout(() => {
-            that.startButton.domElement.classList.toggle(
+            this.startButton.domElement.classList.toggle(
                 "ui-splash-screen-start-hidden"
             );
-            that.startButton.domElement.classList.toggle(
+            this.startButton.domElement.classList.toggle(
                 "ui-splash-screen-start-show"
             );
         }, 500);
     }
 
     remove() {
-        const that = this;
-
-        that.startButton.select();
-        that.playAudioSpecialCallBack();
+        this.startButton.select();
+        this.playAudioSpecialCallBack();
 
         setTimeout(() => {
-            that.contentElement.classList.toggle(
+            this.contentElement.classList.toggle(
                 "ui-splash-screen-content-hidden"
             );
-            that.contentElement.classList.toggle(
+            this.contentElement.classList.toggle(
                 "ui-splash-screen-content-show"
             );
 
-            TweenLite.to(that.domElement, 1.5, {
+            TweenLite.to(this.domElement, 1.5, {
                 css: { top: "-100%" },
                 ease: Power3.easeOut,
                 delay: 1,
                 onComplete() {
-                    that.container.removeChild(that.domElement);
-                    that.startCallBack();
+                    this.container.removeChild(this.domElement);
+                    this.startCallBack();
                 },
             });
         }, 300);

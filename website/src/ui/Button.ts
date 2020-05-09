@@ -1,12 +1,12 @@
 import "./Button.css";
 
-export default class Button {
-    constructor(content, id = "") {
-        this.domElement = document.createElement("button");
+export class Button {
+    domElement = document.createElement("button");
+    selected: boolean = false;
+    constructor(content: string, id = "") {
         this.domElement.id = id;
         this.domElement.className = "ui-button";
         this.domElement.innerHTML = content;
-        this.selected = false;
     }
 
     select() {

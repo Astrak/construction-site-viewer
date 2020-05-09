@@ -1,36 +1,44 @@
-import { TweenLite } from "gsap";
-import Button from "./Button";
-import HOTSPOTS from "./../constants/hotspots";
-
+import { Viewer } from "../app/Viewer";
+import { HOTSPOTS } from "../constants/hotspots";
+import { Button } from "./Button";
 import "./ImageManager.css";
 
-export default class ImageManager {
-    constructor(viewer, container) {
-        this.container = container;
-        this.viewer = viewer;
-
-        this.domElement = document.createElement("div");
+export class ImageManager {
+    domElement = document.createElement("div");
+    imageContainers: { [key: string]: HTMLDivElement } = {};
+    overlay = document.createElement("div");
+    close = new Button("<img width=24 src='public/img/close.svg'/>");
+    constructor(public viewer: Viewer, public container: HTMLDivElement) {
         this.domElement.id = "ui-images-container";
-        this.imageContainers = {};
 
-        for (let location in HOTSPOTS) {
+        // tslint:disable-next-line: forin
+        for (const location in HOTSPOTS) {
             const imageContainer = document.createElement("div");
             imageContainer.className = "ui-images-location-container";
             this.domElement.appendChild(imageContainer);
 
             this.imageContainers[location] = imageContainer;
 
-            for (let i = 0; i < HOTSPOTS[location].images.length; i++) {
+            // tslint:disable-next-line: prefer-for-of
+            for (
+                let i = 0;
+                i < (HOTSPOTS as any)[location].images.length;
+                i++
+            ) {
                 const image = document.createElement("div");
                 image.style.backgroundImage =
-                    "url('" + HOTSPOTS[location].images[i].fullImage + "')";
+                    "url('" +
+                    (HOTSPOTS as any)[location].images[i].fullImage +
+                    "')";
                 image.className = "ui-image";
 
                 const thumbnail = document.createElement("div");
                 thumbnail.style.backgroundImage =
-                    "url('" + HOTSPOTS[location].images[i].thumbnail + "')";
+                    "url('" +
+                    (HOTSPOTS as any)[location].images[i].thumbnail +
+                    "')";
                 thumbnail.className = "ui-image-location";
-                thumbnail.image = image;
+                (thumbnail as any).image = image;
                 thumbnail.addEventListener(
                     "click",
                     this.clickImage.bind(this),
@@ -40,10 +48,8 @@ export default class ImageManager {
             }
         }
 
-        this.overlay = document.createElement("div");
         this.overlay.id = "ui-image-overlay";
 
-        this.close = new Button("<img width=24 src='public/img/close.svg'/>");
         this.close.domElement.id = "ui-image-close";
         this.close.domElement.addEventListener(
             "click",
@@ -54,7 +60,7 @@ export default class ImageManager {
         viewer.spotPicker.on("navigation", this.switchImages.bind(this));
     }
 
-    showOverlay(image) {
+    showOverlay(image: HTMLDivElement) {
         this.overlay.appendChild(image);
         this.container.appendChild(this.overlay);
     }
@@ -62,19 +68,26 @@ export default class ImageManager {
     hideOverlay() {
         this.container.removeChild(this.overlay);
 
-        while (this.overlay.firstChild.nextSibling)
+        while (
+            !(
+                this.overlay.firstChild.nextSibling === undefined ||
+                this.overlay.firstChild.nextSibling === null
+            )
+        ) {
             this.overlay.removeChild(this.overlay.firstChild.nextSibling);
+        }
 
         this.viewer.userIsViewing = true;
     }
 
-    clickImage(e) {
-        this.showOverlay(e.target.image);
+    clickImage(e: MouseEvent) {
+        this.showOverlay((e.target as any).image);
         this.viewer.userIsViewing = false;
     }
 
-    switchImages(location) {
-        for (let loc in this.imageContainers) {
+    switchImages(location: string) {
+        // tslint:disable-next-line: forin
+        for (const loc in this.imageContainers) {
             this.imageContainers[loc].classList[
                 loc !== location ? "remove" : "add"
             ]("ui-images-location-container-visible");

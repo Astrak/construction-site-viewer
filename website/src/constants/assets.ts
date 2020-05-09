@@ -1,4 +1,4 @@
-const ASSETS = {
+export const ASSETS = {
     /* MAIN */
     arbres: {
         file: "arbres.ply",
@@ -98,7 +98,7 @@ const ASSETS = {
         },
     },
     /* PARKING*/
-    //1. remove trottoirs&routes above parking
+    // 1. remove trottoirs&routes above parking
     trottoirsGare: {
         file: "trottoirs_gare.ply",
         map: "parking.png",
@@ -131,7 +131,7 @@ const ASSETS = {
             day: 0,
         },
     },
-    //2. underground
+    // 2. underground
     parkingConstruction: {
         file: "parking_construction.ply",
         color: 0x442211,
@@ -146,7 +146,7 @@ const ASSETS = {
             day: 0,
         },
     },
-    //3. top : surface
+    // 3. top : surface
     parkingSurfaceConstruction: {
         file: "parking_surface_construction.ply",
         color: 0x442211,
@@ -202,13 +202,13 @@ const ASSETS = {
             month: 3,
             day: 0,
         },
-        begin: {
+        end: {
             year: 2019,
             month: 10,
             day: 0,
         },
     },
-    //4. end : parking + arbres + vehicules ( + game area)
+    // 4. end : parking + arbres + vehicules ( + game area)
     parkingSurface: {
         file: "parking_surface.ply",
         minFilter: "linear",
@@ -274,7 +274,7 @@ const ASSETS = {
         },
     },
     /* PLACE SOULT-BUISSON */
-    //cdg2a1
+    // cdg2a1
     routesCdg2a1: {
         file: "routes-cdg2a1.ply",
         map: "parking.png",
@@ -317,7 +317,7 @@ const ASSETS = {
             day: 0,
         },
     },
-    //3a
+    // 3a
     routes3a: {
         file: "routes-3a.ply",
         map: "parking.png",
@@ -370,7 +370,7 @@ const ASSETS = {
             day: 0,
         },
     },
-    //4a
+    // 4a
     routes4a: {
         file: "routes-4a.ply",
         map: "parking.png",
@@ -443,7 +443,7 @@ const ASSETS = {
             day: 0,
         },
     },
-    //4a1
+    // 4a1
     routesMinus4a1: {
         file: "routes-4a1.ply",
         map: "parking.png",
@@ -499,7 +499,7 @@ const ASSETS = {
         },
     },
 
-    //arbres
+    // arbres
     soultAnciensArbres: {
         file: "arbres-soult.ply",
         map: "parking.png",
@@ -1028,5 +1028,3 @@ const ASSETS = {
         },
     },
 };
-
-export default ASSETS;

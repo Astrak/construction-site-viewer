@@ -1,4 +1,4 @@
-const HOTSPOTS = {
+export const HOTSPOTS = {
     soult: {
         camera: [23.92, 13.75, 5.23],
         center: [26, 0, 13],
@@ -42,7 +42,6 @@ const HOTSPOTS = {
     gare: {
         camera: [8.77, 6.08, 13.07],
         center: [17, 0, 12],
-        images: [],
         begin: {
             year: 2018,
             month: 0,
@@ -53,5 +52,3 @@ const HOTSPOTS = {
         },
     },
 };
-
-export default HOTSPOTS;

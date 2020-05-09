@@ -1,61 +1,70 @@
-import ASSETS from "./../constants/assets";
-import HOTSPOTS from "./../constants/hotspots";
-
+import { Viewer } from "../app/Viewer";
+import { HOTSPOTS } from "../constants/hotspots";
+import { state } from "../store";
+import { isTouchEvent } from "../utils";
 import "./Timeline.css";
 
 const NSString = "http://www.w3.org/2000/svg";
 
-export default class Timeline {
-    constructor(viewer, activeModes, container) {
+interface IDate {
+    year: number;
+    month: number;
+    day?: number;
+}
+
+export class Timeline {
+    beginningDate = { year: 2017, month: 10 };
+    endDate = { year: 2020, month: 2 };
+    domElement = document.createElement("div");
+    currentDate: IDate;
+    activeDate: IDate;
+    captionElement = document.createElementNS(NSString, "svg");
+    activeDateElement = document.createElement("span");
+    currentDateElement = document.createElement("span");
+    constructionSpans: { [key: string]: any } = {};
+    captionTweenUnderBottomValue: string;
+    captionBottomValue: string;
+    mouseDown: boolean = false;
+    wantsPickTime: boolean = false;
+    activeLocation?: string;
+
+    constructor(
+        public viewer: Viewer,
+        public activeModes: string[],
+        public container: HTMLDivElement
+    ) {
         const userDate = new Date();
-
-        this.beginningDate = { year: 2017, month: 10 };
-
-        this.endDate = { year: 2020, month: 2 };
-
         this.currentDate = {
             year: userDate.getFullYear(),
             month: userDate.getMonth(),
             day: userDate.getDate(),
         };
-
         this.activeDate = {
             year: this.currentDate.year,
             month: this.currentDate.month,
         };
-
-        this.viewer = viewer;
-
-        this.activeModes = activeModes;
-
-        /* UI Elements */
-        this.container = container;
-        //domElement
-        this.domElement = document.createElement("div");
         this.domElement.id = "ui-timeline";
 
-        //svg container for dates and months
-        this.captionElement = document.createElementNS(NSString, "svg");
+        // SVG container for dates and months
         this.captionElement.id = "ui-timeline-caption";
         this.captionBottomValue = "7";
-        this.captionTweenUnderBottomValue =
-            parseFloat(this.captionBottomValue) + 3;
+        this.captionTweenUnderBottomValue = (
+            Number(this.captionBottomValue) + 3
+        ).toString();
         this.captionElement.setAttribute(
             "viewBox",
             "0 0 100 " + this.captionBottomValue
         );
-        this.fillCaption(this.captionElement);
+        this.fillCaption();
         this.domElement.appendChild(this.captionElement);
 
-        //current date element
-        this.currentDateElement = document.createElement("span");
+        // current date element
         this.currentDateElement.id = "ui-timeline-current-date";
         this.currentDateElement.style.left =
             this.getPositionFromDate(this.currentDate) + "%";
         this.domElement.appendChild(this.currentDateElement);
 
-        //active date element
-        this.activeDateElement = document.createElement("span");
+        // active date element
         this.activeDateElement.id = "ui-timeline-selector";
         this.activeDateElement.style.left =
             this.getPositionFromDate(this.beginningDate) + "%";
@@ -83,56 +92,64 @@ export default class Timeline {
     }
 
     show() {
-        //1. re-render in case there is uncompiled materials that could break the animation
+        // 1. re-render in case there is uncompiled materials that could break
+        // the animation
         this.viewer.renderer.renderer.shadowMap.needsUpdate = true;
-        this.viewer.camera.update = true;
-
-        const that = this;
+        state.updateCamera = true;
 
         const tween = { value: 3, lastSceneUpdate: 3 };
 
-        //2. animate appearance
+        // 2. animate appearance
         this.container.appendChild(this.domElement);
 
-        //3. and tween the construction
-        let animation;
-        animation = TweenLite.to(tween, 5, {
+        // 3. and tween the construction
+        const animation: gsap.core.Tween = TweenLite.to(tween, 5, {
             value: 97,
             delay: 1,
             ease: Power0.easeNone,
             onUpdate() {
-                if (that.wantsPickTime) return animation.kill();
-                that.activeDateElement.style.left = tween.value + "%";
-                that.activeDate = that.getDateFromPosition(
-                    parseFloat(that.activeDateElement.style.left)
+                if (this.wantsPickTime) {
+                    return animation.kill();
+                }
+                this.activeDateElement.style.left = tween.value + "%";
+                this.activeDate = this.getDateFromPosition(
+                    parseFloat(this.activeDateElement.style.left)
                 );
                 if (tween.value - tween.lastSceneUpdate > 5) {
-                    that.setSceneContentToDate(that.activeDate);
+                    this.setSceneContentToDate(this.activeDate);
                     tween.lastSceneUpdate = tween.value;
                 }
+                return undefined;
             },
         });
     }
 
-    fillCaption(captionElement) {
-        //1. construction spans in the background
-        this.constructionsSpans = {};
-        for (let k in HOTSPOTS) {
+    fillCaption() {
+        // 1. construction spans in the background
+        // tslint:disable-next-line: forin
+        for (const k in HOTSPOTS) {
             const constructionSpan = document.createElementNS(NSString, "rect");
-            const startPosition = this.getPositionFromDate(HOTSPOTS[k].begin),
-                endPosition = this.getPositionFromDate(HOTSPOTS[k].end);
-            constructionSpan.setAttribute("x", startPosition);
+            const startPosition = this.getPositionFromDate(
+                (HOTSPOTS as any)[k].begin
+            );
+            const endPosition = this.getPositionFromDate(
+                (HOTSPOTS as any)[k].end
+            );
+            constructionSpan.setAttribute("x", startPosition.toString());
             constructionSpan.setAttribute(
                 "y",
                 this.captionTweenUnderBottomValue
             );
-            constructionSpan.setAttribute("width", endPosition - startPosition);
+            constructionSpan.setAttribute(
+                "width",
+                (endPosition - startPosition).toString()
+            );
             constructionSpan.setAttribute("height", "0.5");
-            captionElement.appendChild(constructionSpan);
-            this.constructionsSpans[k] = constructionSpan;
+            this.captionElement.appendChild(constructionSpan);
+            this.constructionSpans[k] = constructionSpan;
         }
 
-        //2. caption rects and year text
+        // 2. caption rects and year text
         const date = JSON.parse(JSON.stringify(this.beginningDate));
         while (
             !(
@@ -144,11 +161,14 @@ export default class Timeline {
 
             const monthRect = document.createElementNS(NSString, "rect");
             monthRect.setAttribute("fill", "#000");
-            monthRect.setAttribute("x", this.getPositionFromDate(date));
+            monthRect.setAttribute(
+                "x",
+                this.getPositionFromDate(date).toString()
+            );
             monthRect.setAttribute("y", "4");
             monthRect.setAttribute("width", "0.2");
             monthRect.setAttribute("height", "1");
-            captionElement.appendChild(monthRect);
+            this.captionElement.appendChild(monthRect);
 
             if (date.month === 12) {
                 date.month = 0;
@@ -159,17 +179,19 @@ export default class Timeline {
                 yearText.setAttribute("stroke-width", "0.1");
                 yearText.setAttribute("text-anchor", "middle");
                 yearText.setAttribute("font-size", "2");
-                yearText.setAttribute("x", this.getPositionFromDate(date));
+                yearText.setAttribute(
+                    "x",
+                    this.getPositionFromDate(date).toString()
+                );
                 yearText.setAttribute("y", "3");
                 yearText.innerHTML = date.year;
-                captionElement.appendChild(yearText);
+                this.captionElement.appendChild(yearText);
             }
         }
     }
 
-    onMouseDown(e) {
+    onMouseDown(e: MouseEvent | TouchEvent) {
         this.mouseDown = true;
-
         this.pickTime(e);
     }
 
@@ -177,20 +199,21 @@ export default class Timeline {
         this.mouseDown = false;
     }
 
-    pickTime(e) {
+    pickTime(e: MouseEvent | TouchEvent) {
         e.preventDefault();
         e.stopPropagation();
 
-        if (!this.mouseDown) return;
+        if (!this.mouseDown) {
+            return;
+        }
 
         this.wantsPickTime = true;
 
-        const offsetWidth = e.target.offsetWidth;
+        const offsetWidth = (e.target as any).offsetWidth;
 
-        const x =
-            e.touches && e.touches.length && e.touches[0]
-                ? (e.touches[0].pageX - e.target.offsetLeft) / offsetWidth
-                : (e.pageX - e.target.offsetLeft) / offsetWidth;
+        const x = isTouchEvent(e)
+            ? (e.touches[0].pageX - (e.target as any).offsetLeft) / offsetWidth
+            : (e.pageX - (e.target as any).offsetLeft) / offsetWidth;
 
         const relativePosition = Math.min(0.999, Math.max(0.03, x)) * 100;
 
@@ -199,16 +222,14 @@ export default class Timeline {
         this.setDate(date);
     }
 
-    setDate(date) {
+    setDate(date: IDate) {
         this.activeDate = date;
-
         this.activeDateElement.style.left =
             this.getPositionFromDate(date) + "%";
-
         this.setSceneContentToDate(date);
     }
 
-    getDateFromPosition(relativePosition) {
+    getDateFromPosition(relativePosition: number) {
         const totalMonthsSpan =
             this.endDate.year * 12 +
             this.endDate.month -
@@ -217,12 +238,10 @@ export default class Timeline {
         const relativeDay = Math.floor(
             (relativePosition / 100) * totalDaysSpan
         );
-        const date = {
-            year: this.beginningDate.year,
-            month: this.beginningDate.month,
-            day: (this.beginningDate.day || 0) + relativeDay,
-        };
-
+        const date: IDate = { ...this.beginningDate };
+        if (date.day === undefined) {
+            date.day = relativeDay;
+        }
         while (date.day > 30) {
             date.day -= 30;
             date.month++;
@@ -231,11 +250,10 @@ export default class Timeline {
             date.month -= 12;
             date.year++;
         }
-
         return date;
     }
 
-    getPositionFromDate(date) {
+    getPositionFromDate(date: IDate) {
         const totalMonthsSpan =
             this.endDate.year * 12 +
             this.endDate.month -
@@ -246,7 +264,7 @@ export default class Timeline {
                 0,
                 date.year * 12 +
                     date.month +
-                    (date.day ? date.day / 31 : 0) -
+                    (date.day !== undefined ? date.day / 31 : 0) -
                     (this.beginningDate.year * 12 + this.beginningDate.month)
             )
         );
@@ -254,66 +272,56 @@ export default class Timeline {
         return (100 * currentMonthDuration) / totalMonthsSpan;
     }
 
-    setSceneContentToDate(date = this.activeDate) {
-        const that = this;
-
+    setSceneContentToDate(date: IDate = this.activeDate) {
         const relativeDate = this.getPositionFromDate(date);
 
         this.viewer.objectsList.forEach((object) => {
             const data = object.userData;
 
-            const beginDate = data.begin ? data.begin : that.beginningDate;
-            const objectRelativeBeginDate = that.getPositionFromDate(beginDate);
+            const beginDate = data.begin ? data.begin : this.beginningDate;
+            const objectRelativeBeginDate = this.getPositionFromDate(beginDate);
 
-            const endDate = data.end ? data.end : that.endDate;
-            const objectRelativeEndDate = that.getPositionFromDate(endDate);
+            const endDate = data.end ? data.end : this.endDate;
+            const objectRelativeEndDate = this.getPositionFromDate(endDate);
 
             object.visible =
                 relativeDate > objectRelativeBeginDate &&
                 relativeDate < objectRelativeEndDate &&
                 (!object.userData.mode ||
-                    that.activeModes.indexOf(object.userData.mode) > -1);
+                    this.activeModes.indexOf(object.userData.mode) > -1);
         });
 
         this.viewer.renderer.renderer.shadowMap.needsUpdate = true;
-        this.viewer.camera.update = true;
+        state.updateCamera = true;
     }
 
-    showConstructionSpan(location) {
-        const that = this;
-
-        if (this.activeLocation) this.hideConstructionSpan(this.activeLocation);
+    showConstructionSpan(location: string) {
+        if (this.activeLocation !== undefined) {
+            this.hideConstructionSpan(this.activeLocation);
+        }
 
         const tween = { value: this.captionTweenUnderBottomValue };
 
         TweenLite.to(tween, 1, {
             value: 4.5,
             onUpdate() {
-                that.constructionsSpans[location].setAttribute(
-                    "y",
-                    tween.value
-                );
+                this.constructionSpans[location].setAttribute("y", tween.value);
             },
             onComplete() {
-                that.activeLocation = location;
+                this.activeLocation = location;
             },
         });
     }
 
-    hideConstructionSpan(location) {
-        const that = this;
-
+    hideConstructionSpan(location: string) {
         const tween = {
-            value: this.constructionsSpans[location].getAttribute("y"),
+            value: this.constructionSpans[location].getAttribute("y"),
         };
 
         TweenLite.to(tween, 0.5, {
             value: this.captionTweenUnderBottomValue,
             onUpdate() {
-                that.constructionsSpans[location].setAttribute(
-                    "y",
-                    tween.value
-                );
+                this.constructionSpans[location].setAttribute("y", tween.value);
             },
         });
     }

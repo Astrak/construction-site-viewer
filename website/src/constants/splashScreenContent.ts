@@ -1,4 +1,4 @@
-const SPLASH_SCREEN_CONTENT = {
+export const SPLASH_SCREEN_CONTENT = {
     title: "Place Soult",
     subtitle: "Visualiseur des travaux",
     introduction: [
@@ -8,5 +8,3 @@ const SPLASH_SCREEN_CONTENT = {
     ],
     startText: "Commencer",
 };
-
-export default SPLASH_SCREEN_CONTENT;

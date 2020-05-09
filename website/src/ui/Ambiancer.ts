@@ -1,23 +1,23 @@
 import { TweenLite } from "gsap";
-import Button from "./Button";
-import { DAYTIMES, defaultDayTime } from "./../constants/dayTimes";
-import INFOS from "./../constants/infos";
-
+import { Viewer } from "../app/Viewer";
+import { DAYTIMES, defaultDayTime } from "../constants/dayTimes";
+import { INFOS } from "../constants/infos";
 import "./Ambiancer.css";
+import { Button } from "./Button";
 
-export default class Ambiancer {
-    constructor(viewer, container) {
-        const that = this;
-
-        this.viewer = viewer;
-        this.container = container;
-
-        this.domElement = document.createElement("div");
+export class Ambiancer {
+    domElement = document.createElement("div");
+    audio = new Audio();
+    infoAnimation = document.createElement("span");
+    infoContainer = document.createElement("div");
+    muteAudio: boolean = false;
+    constructor(public viewer: Viewer, public container: HTMLDivElement) {
         this.domElement.id = "ui-ambiancer";
 
-        //day times
-        const dayTimesButtons = [];
-        for (let dayTime in DAYTIMES) {
+        // day times
+        const dayTimesButtons: Button[] = [];
+        // tslint:disable-next-line: forin
+        for (const dayTime in DAYTIMES) {
             let content;
             switch (dayTime) {
                 case "day":
@@ -31,7 +31,9 @@ export default class Ambiancer {
                     break;
             }
             const dayTimeButton = new Button(content);
-            if (defaultDayTime === dayTime) dayTimeButton.select();
+            if (defaultDayTime === dayTime) {
+                dayTimeButton.select();
+            }
             dayTimeButton.domElement.addEventListener(
                 "click",
                 (e) => {
@@ -39,7 +41,7 @@ export default class Ambiancer {
                     dayTimeButton.select();
                     viewer.environment.activeDayTime =
                         viewer.environment.targetDayTime;
-                    viewer.environment["make" + dayTime]();
+                    (viewer.environment.actions as any)["make" + dayTime]();
                 },
                 false
             );
@@ -47,8 +49,7 @@ export default class Ambiancer {
             dayTimesButtons.push(dayTimeButton);
         }
 
-        //audio
-        this.audio = new Audio();
+        // audio
         this.audio.src = "public/sound/soult.mp3";
         this.audio.loop = true;
         const volumeButton = new Button(
@@ -59,14 +60,14 @@ export default class Ambiancer {
         volumeButton.domElement.addEventListener(
             "click",
             () => {
-                that.muteAudio = !that.muteAudio;
-                that.muteAudio
+                this.muteAudio = !this.muteAudio;
+                this.muteAudio
                     ? volumeButton.select()
                     : volumeButton.unselect();
-                TweenLite.to(that.audio, 2, {
-                    volume: that.muteAudio ? 0 : 0.5,
+                TweenLite.to(this.audio, 2, {
+                    volume: this.muteAudio ? 0 : 0.5,
                 });
-                volumeButton.domElement.innerHTML = that.muteAudio
+                volumeButton.domElement.innerHTML = this.muteAudio
                     ? "<img width=24 src='public/img/volume-off.svg'/>"
                     : "<img width=24 src='public/img/volume-up.svg'/>";
             },
@@ -74,7 +75,7 @@ export default class Ambiancer {
         );
         this.domElement.appendChild(volumeButton.domElement);
 
-        //info
+        // info
         const info = new Button("<img width=24 src='public/img/menu.svg'/>");
         info.domElement.style.position = "absolute";
         info.domElement.style.left = "0";
@@ -85,11 +86,9 @@ export default class Ambiancer {
         );
         this.domElement.appendChild(info.domElement);
 
-        this.infoAnimation = document.createElement("span");
         this.infoAnimation.id = "ui-ambiancer-infos-animation";
         this.domElement.appendChild(this.infoAnimation);
 
-        this.infoContainer = document.createElement("div");
         this.infoContainer.id = "ui-ambiancer-infos-container";
         this.infoContainer.classList.add("hide");
 
@@ -109,17 +108,14 @@ export default class Ambiancer {
     }
 
     showInfos() {
-        const that = this;
-
         this.viewer.userIsViewing = false;
-
         TweenLite.to(this.infoAnimation, 1, {
             css: { transform: "scale( 5 )" },
             ease: Power2.easeOut,
             onComplete() {
-                that.domElement.appendChild(that.infoContainer);
+                this.domElement.appendChild(this.infoContainer);
                 setTimeout(
-                    () => that.infoContainer.classList.remove("hide"),
+                    () => this.infoContainer.classList.remove("hide"),
                     50
                 );
             },
@@ -127,16 +123,14 @@ export default class Ambiancer {
     }
 
     closeInfos() {
-        const that = this;
-
         this.infoContainer.classList.add("hide");
         setTimeout(() => {
-            that.domElement.removeChild(that.infoContainer);
-            TweenLite.to(that.infoAnimation, 1, {
+            this.domElement.removeChild(this.infoContainer);
+            TweenLite.to(this.infoAnimation, 1, {
                 css: { transform: "scale( 0 )" },
                 ease: Power4.easeOut,
                 onComplete() {
-                    that.viewer.userIsViewing = true;
+                    this.viewer.userIsViewing = true;
                 },
             });
         }, 1000);

@@ -1,0 +1,22 @@
+{
+    "defaultSeverity": "error",
+    "extends": ["tslint:latest", "tslint-react", "tslint-config-prettier"],
+    "jsRules": {},
+    "rules": {
+        "ordered-imports": true,
+        "strict-boolean-expressions": true,
+        "no-var-keyword": true,
+        "no-console": true,
+        "no-default-export": true,
+        "no-unused-variable": true,
+        "max-line-length": { "options": [80] },
+        "curly": true,
+        "no-arg": true,
+        "comment-format": {
+            "options": ["check-space"]
+        },
+        "no-for-in-array": false,
+        "no-submodule-imports": false
+    },
+    "rulesDirectory": []
+}

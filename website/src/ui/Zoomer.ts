@@ -1,14 +1,16 @@
 import { TweenLite } from "gsap";
-import Button from "./Button.js";
-
+import { Viewer } from "../app/Viewer";
+import { getRelativeCoordinates } from "../utils";
+import { Button } from "./Button";
 import "./Zoomer.css";
 
-export default class Zoomer {
-    constructor(viewer, container) {
-        this.container = container;
-        this.viewer = viewer;
-
-        this.domElement = document.createElement("div");
+export class Zoomer {
+    domElement = document.createElement("div");
+    interactionBox = document.createElement("div");
+    indicator = document.createElement("div");
+    currentTween: null | any = null;
+    mousedown: boolean = false;
+    constructor(public viewer: Viewer, public container: HTMLDivElement) {
         this.domElement.id = "ui-zoomer";
 
         const zoomIn = new Button(
@@ -21,7 +23,6 @@ export default class Zoomer {
         );
         this.domElement.appendChild(zoomIn.domElement);
 
-        this.interactionBox = document.createElement("div");
         this.interactionBox.id = "ui-zoomer-box";
         this.interactionBox.addEventListener(
             "click",
@@ -72,7 +73,6 @@ export default class Zoomer {
         );
         this.domElement.appendChild(zoomOut.domElement);
 
-        this.indicator = document.createElement("div");
         this.indicator.id = "ui-zoom-indicator";
         this.interactionBox.appendChild(this.indicator);
 
@@ -83,14 +83,17 @@ export default class Zoomer {
         this.mousedown = true;
     }
 
-    onMouseMove(e) {
-        if (!this.mousedown) return;
+    onMouseMove(e: TouchEvent | MouseEvent) {
+        if (!this.mousedown) {
+            return;
+        }
 
         const y = Math.min(
             1,
             Math.max(
                 0,
                 getRelativeCoordinates(e, this.interactionBox).y /
+                    // tslint:disable-next-line: radix
                     parseInt(getComputedStyle(this.interactionBox, null).height)
             )
         );
@@ -98,7 +101,8 @@ export default class Zoomer {
         const nextZoomDistance = y * (23 - 3.5) + 3.5;
 
         this.viewer.renderer.cameraDistance = nextZoomDistance;
-        this.viewer.controls.minDistance = this.viewer.controls.maxDistance = nextZoomDistance;
+        this.viewer.controls.minDistance = nextZoomDistance;
+        this.viewer.controls.maxDistance = nextZoomDistance;
     }
 
     onMouseUp() {
@@ -127,12 +131,13 @@ export default class Zoomer {
         this.container.appendChild(this.domElement);
     }
 
-    setZoom(e) {
+    setZoom(e: TouchEvent | MouseEvent) {
         const y = Math.min(
             1,
             Math.max(
                 0,
                 getRelativeCoordinates(e, this.interactionBox).y /
+                    // tslint:disable-next-line: radix
                     parseInt(getComputedStyle(this.interactionBox, null).height)
             )
         );
@@ -144,23 +149,23 @@ export default class Zoomer {
         this.zoomFromTo(currentZoomDistance, nextZoomDistance);
     }
 
-    zoomFromTo(currentZoomDistance, nextZoomDistance) {
-        const that = this;
-
+    zoomFromTo(currentZoomDistance: number, nextZoomDistance: number) {
         const tween = { distance: currentZoomDistance };
 
-        if (this.currentTween) this.currentTween.kill();
+        if (this.currentTween) {
+            this.currentTween.kill();
+        }
 
         this.currentTween = TweenLite.to(tween, 1, {
             distance: nextZoomDistance,
             onUpdate() {
-                that.viewer.controls.minDistance = that.viewer.controls.maxDistance =
-                    tween.distance;
-                that.viewer.camera.update = true;
+                this.viewer.controls.minDistance = tween.distance;
+                this.viewer.controls.maxDistance = tween.distance;
+                this.viewer.camera.update = true;
             },
             onComplete() {
-                that.viewer.controls.minDistance = 3.5;
-                that.viewer.controls.maxDistance = 23;
+                this.viewer.controls.minDistance = 3.5;
+                this.viewer.controls.maxDistance = 23;
             },
         });
     }
@@ -180,30 +185,4 @@ export default class Zoomer {
 
         this.zoomFromTo(currentZoomDistance, nextZoomDistance);
     }
-}
-
-function getRelativeCoordinates(e, container) {
-    var pos = {},
-        offset = {},
-        ref;
-
-    ref = container.offsetParent;
-
-    pos.x = !!e.touches ? e.touches[0].pageX : e.pageX;
-    pos.y = !!e.touches ? e.touches[0].pageY : e.pageY;
-
-    offset.left = container.offsetLeft;
-    offset.top = container.offsetTop;
-
-    while (ref) {
-        offset.left += ref.offsetLeft;
-        offset.top += ref.offsetTop;
-
-        ref = ref.offsetParent;
-    }
-
-    return {
-        x: pos.x - offset.left,
-        y: pos.y - offset.top,
-    };
 }

@@ -1,31 +1,35 @@
-import { PerspectiveCamera, Scene, Group } from "three";
+import { Group, Mesh, Object3D, PerspectiveCamera, Scene } from "three";
+import { Environment } from "./Environment";
+import { Hotspot } from "./Hotspot";
+import { Loader } from "./Loader";
+import { Renderer } from "./Renderer";
+import { SpotPicker } from "./SpotPicker";
 
-import Renderer from "./Renderer";
-import Loader from "./Loader";
-import Hotspot from "./Hotspot";
-import SpotPicker from "./SpotPicker";
-import Environment from "./Environment";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
-import OrbitControls from "./../lib/OrbitControlsr87-with-damping";
+import { HOTSPOTS } from "../constants/hotspots";
+import { state } from "../store";
 
-import HOTSPOTS from "./../constants/hotspots";
-
-export default class Viewer {
+export class Viewer {
+    userIsViewing: boolean = false;
+    renderer: Renderer;
+    scene: Scene = new Scene();
+    camera: PerspectiveCamera = new PerspectiveCamera(
+        50,
+        innerWidth / innerHeight,
+        0.1,
+        1200
+    );
+    tweenedColorObjects: Mesh[] = [];
+    objectsList: Object3D[] = [];
+    controls: OrbitControls;
+    environment: Environment;
+    spotPicker: SpotPicker;
+    loader: Loader;
+    city = new Group();
     constructor() {
-        this.userIsViewing = false;
-
         this.renderer = new Renderer(this);
-
-        this.scene = new Scene();
-
-        this.camera = new PerspectiveCamera(
-            50,
-            innerWidth / innerHeight,
-            0.1,
-            1200
-        );
         this.camera.position.set(43, 4, 12);
-
         this.controls = new OrbitControls(
             this.camera,
             this.renderer.renderer.domElement
@@ -42,24 +46,22 @@ export default class Viewer {
         });
         this.controls.addEventListener(
             "change",
-            () => (this.camera.update = true)
+            () => (state.updateCamera = true)
         );
         this.controls.target.set(35, 1, 17);
 
         this.renderer.setRendering(this.scene, this.camera, this.controls);
 
-        window.addEventListener("resize", this.resize.bind(this));
+        const boundResize = this.resize.bind(this);
+        window.addEventListener("resize", boundResize);
 
-        this.tweenedColorObjects = [];
-        this.objectsList = [];
-
-        //prepares renderer, interaction, environment
+        // prepares renderer, interaction, environment
         this.buildScene();
 
-        //render loop before assets load
+        // render loop before assets load
         this.start();
 
-        //start loading
+        // start loading
         this.loader = new Loader(
             this.renderer,
             this.camera,
@@ -71,11 +73,8 @@ export default class Viewer {
     }
 
     buildScene() {
-        //root object
-        const city = new Group();
-        city.position.set(50, 0, 25);
-        this.scene.add(city);
-        this.city = city;
+        this.city.position.set(50, 0, 25);
+        this.scene.add(this.city);
         this.environment = new Environment(
             this.renderer.renderer,
             this.scene,
@@ -88,12 +87,13 @@ export default class Viewer {
         this.scene.add(hotspotsGroup);
         const hotspotsArray = [];
 
-        for (let place in HOTSPOTS) {
+        // tslint:disable-next-line: forin
+        for (const place in HOTSPOTS) {
             hotspotsArray.push(
                 new Hotspot(
                     hotspotsGroup,
-                    HOTSPOTS[place].center,
-                    HOTSPOTS[place].camera,
+                    (HOTSPOTS as any)[place].center,
+                    (HOTSPOTS as any)[place].camera,
                     place
                 )
             );
@@ -108,21 +108,29 @@ export default class Viewer {
         );
     }
 
-    setBasicMaterialsIntensity(v) {
+    setBasicMaterialsIntensity(intensity: number) {
         this.tweenedColorObjects.forEach((object) =>
-            object.material.color.setRGB(v, v, v)
+            (object.material as any).color.setRGB(
+                intensity,
+                intensity,
+                intensity
+            )
         );
     }
 
-    addMode(mode) {
+    addMode(mode: string) {
         this.objectsList.forEach((object) => {
-            if (object.userData.mode === mode) object.visible = true;
+            if (object.userData.mode === mode) {
+                object.visible = true;
+            }
         });
     }
 
-    removeMode(mode) {
+    removeMode(mode: string) {
         this.objectsList.forEach((object) => {
-            if (object.userData.mode === mode) object.visible = false;
+            if (object.userData.mode === mode) {
+                object.visible = false;
+            }
         });
     }
 
@@ -130,7 +138,7 @@ export default class Viewer {
         this.renderer.resize();
         this.camera.aspect = innerWidth / innerHeight;
         this.camera.updateProjectionMatrix();
-        this.camera.update = true;
+        state.updateCamera = true;
     }
 
     start() {

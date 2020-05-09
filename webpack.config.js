@@ -1,21 +1,18 @@
-const webpack = require("webpack");
-/*const UglifyJsPlugin = require( 'uglifyjs-webpack-plugin' );*/
-
 module.exports = {
-    entry: "./website/src/index.js",
+    entry: "./website/src/index.ts",
     output: {
         filename: "website/bundle.js",
         publicPath: "",
     },
+    resolve: {
+        extensions: [".ts", ".tsx", ".js"],
+    },
+    devtool: "source-map",
     module: {
-        loaders: [
+        rules: [
             {
-                test: /\.js/,
-                loader: "babel-loader",
-                query: {
-                    compact: true,
-                    presets: [["es2015", { modules: false }]],
-                },
+                test: /\.tsx?$/,
+                loader: "ts-loader",
             },
             {
                 test: /\.css$/,
@@ -24,18 +21,4 @@ module.exports = {
             },
         ],
     },
-    plugins: [
-        /*new UglifyJsPlugin({
-      uglifyOptions: {
-        ie8: false,
-        ecma: 8,
-        output: {
-          comments: false,
-          beautify: false
-        },
-        compress: true,
-        warnings: false
-      }
-    })*/
-    ],
 };

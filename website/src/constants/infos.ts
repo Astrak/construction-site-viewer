@@ -1,4 +1,4 @@
-const INFOS =
+export const INFOS =
     /*<p style='text-transform: uppercase; font-weight: bold; font-family: sans-serif;'>
     Informations légales
   </p>
@@ -22,5 +22,3 @@ const INFOS =
     <img style='width: calc( 70% - 60px );' src='public/img/villegoudou.jpg'>
   </div>
 `;
-
-export default INFOS;
