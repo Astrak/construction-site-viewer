@@ -1,0 +1,35 @@
+{
+    "extensions": {
+        "recommendations": [
+            "esbenp.prettier-vscode",
+            "ms-vscode.vscode-typescript-tslint-plugin",
+            "eamodio.gitlens",
+            "kisstkondoros.vscode-codemetrics",
+            "waderyan.gitblame"
+        ]
+    },
+    "folders": [{ "path": "." }],
+    "launch": {
+        "configurations": [
+            {
+                "type": "chrome",
+                "request": "launch",
+                "name": "Launch Chrome against localhost",
+                "url": "http://localhost:8080",
+                "webRoot": "${workspaceFolder}"
+            }
+        ]
+    },
+    "settings": {
+        "editor.formatOnType": false,
+        "editor.formatOnSave": true,
+        "editor.rulers": [80],
+        "editor.wordWrapColumn": 80,
+        "prettier.printWidth": 80,
+        "files.exclude": {
+            "node_modules/": true
+        },
+        "javascript.preferences.quoteStyle": "double",
+        "typescript.preferences.quoteStyle": "double"
+    }
+}
