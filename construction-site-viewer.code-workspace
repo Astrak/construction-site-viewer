@@ -5,10 +5,15 @@
             "ms-vscode.vscode-typescript-tslint-plugin",
             "eamodio.gitlens",
             "kisstkondoros.vscode-codemetrics",
-            "waderyan.gitblame"
+            "waderyan.gitblame",
+            "HookyQR.beautify"
         ]
     },
-    "folders": [{ "path": "." }],
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
     "launch": {
         "configurations": [
             {
@@ -23,14 +28,18 @@
     "settings": {
         "editor.formatOnType": false,
         "editor.formatOnSave": true,
-        "editor.rulers": [100],
-        "editor.wordWrapColumn": 100,
-        "prettier.printWidth": 100,
+        "editor.rulers": [80],
+        "editor.wordWrapColumn": 80,
+        "prettier.printWidth": 80,
         "files.exclude": {
             "node_modules/": true
         },
         "javascript.preferences.quoteStyle": "double",
         "typescript.preferences.quoteStyle": "double",
-        "tslint.triple-equals": [true, "allow-undefined-check"]
+        "tslint.triple-equals": [true, "allow-undefined-check"],
+        "beautify.language": {
+            "html": ["html"],
+            "js": []
+        }
     }
 }
