@@ -1,16 +1,26 @@
 {
     "name": "construction-site-viewer",
     "version": "2.0.0",
+    "author": "Adrien Coffre",
+    "license": "ISC",
     "description": "",
+    "keywords": [
+        "construction",
+        "three",
+        "3D",
+        "city planning"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Astrak/construction-site-viewer.git"
+    },
+    "browsers": {},
     "main": "index.html",
     "scripts": {
         "start": "webpack-dev-server --mode=development",
         "build": "webpack -p",
         "publish": "npm run build && surge --domain soult.surge.sh"
     },
-    "author": "Adrien Coffre",
-    "license": "ISC",
-    "browsers": {},
     "dependencies": {
         "gsap": "^3.2.6",
         "three": "^0.116.1"
@@ -18,12 +28,11 @@
     "devDependencies": {
         "compression-webpack-plugin": "^3.1.0",
         "css-loader": "^0.28.8",
+        "eslint": "^7.0.0",
+        "eslint-config-prettier": "^6.11.0",
         "source-map-loader": "^0.2.4",
         "style-loader": "^0.19.1",
         "ts-loader": "^7.0.3",
-        "tslint": "^6.1.2",
-        "tslint-config-prettier": "^1.18.0",
-        "tslint-react": "^5.0.0",
         "typescript": "^3.8.3",
         "uglifyjs-webpack-plugin": "^1.1.6",
         "webpack": "^4.43.0",

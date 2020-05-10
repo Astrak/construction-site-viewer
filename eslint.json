@@ -19,7 +19,8 @@
         "no-submodule-imports": false,
         "quotemark": [true, "double"],
         "prefer-readonly": true,
-        "prefer-object-spread": true
+        "prefer-object-spread": true,
+        "triple-equals": [true, "allow-undefined-check"]
     },
     "rulesDirectory": []
 }
