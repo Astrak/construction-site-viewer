@@ -19,12 +19,13 @@ export class ImageManager {
 
             this.imageContainers[location] = imageContainer;
 
+            const images = (HOTSPOTS as any)[location].images;
+            if (images === undefined) {
+                continue;
+            }
+
             // tslint:disable-next-line: prefer-for-of
-            for (
-                let i = 0;
-                i < (HOTSPOTS as any)[location].images.length;
-                i++
-            ) {
+            for (let i = 0; i < images.length; i++) {
                 const image = document.createElement("div");
                 image.style.backgroundImage =
                     "url('" +

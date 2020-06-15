@@ -1,10 +1,11 @@
-const path = require("path");
-const config = {
+var path = require("path");
+var config = {
     entry: "./src/index.ts",
     output: {
         filename: "bundle.js",
         path: path.resolve(__dirname),
     },
+    devtool: "source-map",
     resolve: {
         extensions: [".ts", ".tsx", ".js"],
     },
@@ -13,8 +14,7 @@ const config = {
             { test: /\.tsx?$/, loader: "ts-loader" },
             {
                 test: /\.css$/,
-                loader:
-                    "style-loader!css-loader?modules=true&localIdentName=[local]",
+                loader: "css-loader",
             },
         ],
     },

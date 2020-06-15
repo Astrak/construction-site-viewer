@@ -26,10 +26,17 @@
         "three": "^0.116.1"
     },
     "devDependencies": {
+        "@typescript-eslint/eslint-plugin": "^2.31.0",
+        "@typescript-eslint/parser": "^2.31.0",
         "compression-webpack-plugin": "^3.1.0",
-        "css-loader": "^0.28.8",
+        "css-loader": "^3.5.3",
         "eslint": "^7.0.0",
         "eslint-config-prettier": "^6.11.0",
+        "eslint-plugin-eslint-comments": "^3.1.2",
+        "eslint-plugin-import": "^2.20.2",
+        "eslint-plugin-node": "^11.1.0",
+        "eslint-plugin-react": "^7.19.0",
+        "eslint-plugin-react-hooks": "^4.0.0",
         "source-map-loader": "^0.2.4",
         "style-loader": "^0.19.1",
         "ts-loader": "^7.0.3",

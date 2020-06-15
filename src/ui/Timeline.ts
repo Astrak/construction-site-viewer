@@ -2,6 +2,7 @@ import { Viewer } from "../app/Viewer";
 import { HOTSPOTS } from "../constants/hotspots";
 import { state } from "../store";
 import { isTouchEvent } from "../utils";
+import { TweenLite } from "gsap";
 import "./Timeline.css";
 
 const NSString = "http://www.w3.org/2000/svg";
@@ -301,14 +302,17 @@ export class Timeline {
         }
 
         const tween = { value: this.captionTweenUnderBottomValue };
+        const constructionSpans = this.constructionSpans;
+        const setActiveLocation = (location: string) =>
+            (this.activeLocation = location);
 
         TweenLite.to(tween, 1, {
             value: 4.5,
             onUpdate() {
-                this.constructionSpans[location].setAttribute("y", tween.value);
+                constructionSpans[location].setAttribute("y", tween.value);
             },
             onComplete() {
-                this.activeLocation = location;
+                setActiveLocation(location);
             },
         });
     }
@@ -317,11 +321,13 @@ export class Timeline {
         const tween = {
             value: this.constructionSpans[location].getAttribute("y"),
         };
+        const captionTweenUnderBottomValue = this.captionTweenUnderBottomValue;
+        const constructionSpans = this.constructionSpans;
 
         TweenLite.to(tween, 0.5, {
-            value: this.captionTweenUnderBottomValue,
+            value: captionTweenUnderBottomValue,
             onUpdate() {
-                this.constructionSpans[location].setAttribute("y", tween.value);
+                constructionSpans[location].setAttribute("y", tween.value);
             },
         });
     }

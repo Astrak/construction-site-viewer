@@ -10,7 +10,7 @@ export function isTouchEvent(
     return (
         e.touches !== undefined &&
         e.touches.length > 0 &&
-        e.touches[0] !== undefined
+        e.touches[0] != undefined
     );
 }
 

@@ -51,21 +51,23 @@ export class SpotPicker extends EventEmitter {
             (hotspot) => hotspot.sprite.name === place
         )!.sprite;
         this.controls.enabled = false;
+        const camera = this.camera;
+        const controls = this.controls;
 
         // Tween controls' target
-        TweenLite.to(this.controls.target, 2, {
+        TweenLite.to(controls.target, 2, {
             x: sprite.position.x,
             z: sprite.position.z,
             onUpdate() {
                 state.updateCamera = true;
-                this.camera.lookAt(this.controls.target);
+                camera.lookAt(controls.target);
             },
             onComplete() {
-                this.controls.enabled = true;
+                controls.enabled = true;
             },
         });
 
-        TweenLite.to(this.camera.position, 2, {
+        TweenLite.to(camera.position, 2, {
             x: sprite.userData.camera[0],
             y: sprite.userData.camera[1],
             z: sprite.userData.camera[2],
