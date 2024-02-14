@@ -1,4 +1,4 @@
-# Demonstrateur de sites web
+# Demonstrateur de chantiers
 
 ## Scripts
 `npm start` runs the app at localhost:xxxx/website via webpack-dev-server
